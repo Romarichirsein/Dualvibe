@@ -1,0 +1,92 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Outfit", sans-serif;
+  
+  --color-brand-pink: #ff00cc;
+  --color-brand-purple: #3333ff;
+  --color-brand-glow: rgba(255, 0, 204, 0.3);
+}
+
+@layer base {
+  :root {
+    --bg-primary: #ffffff;
+    --text-primary: #0f172a;
+    --card-bg: rgba(255, 255, 255, 0.7);
+    --card-border: rgba(0, 0, 0, 0.05);
+    --section-bg: #ffffff;
+  }
+
+  .dark {
+    --bg-primary: #000000;
+    --text-primary: #ffffff;
+    --card-bg: rgba(15, 15, 15, 0.6);
+    --card-border: rgba(255, 255, 255, 0.08);
+    --section-bg: #000000;
+  }
+
+  body {
+    @apply bg-[var(--bg-primary)] text-[var(--text-primary)] transition-colors duration-300 font-sans overflow-x-hidden;
+  }
+
+  @keyframes blob {
+    0% { transform: translate(0px, 0px) scale(1); }
+    33% { transform: translate(30px, -50px) scale(1.1); }
+    66% { transform: translate(-20px, 20px) scale(0.9); }
+    100% { transform: translate(0px, 0px) scale(1); }
+  }
+
+  @keyframes neon-rain {
+    0% { transform: translateY(-20vh); opacity: 0; }
+    20% { opacity: 1; }
+    80% { opacity: 1; }
+    100% { transform: translateY(120vh); opacity: 0; }
+  }
+
+  .animate-blob {
+    animation: blob 7s infinite;
+  }
+
+  .animate-neon-rain {
+    animation: neon-rain linear infinite;
+  }
+
+  .animation-delay-2000 {
+    animation-delay: 2s;
+  }
+
+  .animation-delay-4000 {
+    animation-delay: 4s;
+  }
+}
+
+.glass {
+  @apply backdrop-blur-xl bg-[var(--card-bg)] border border-[var(--card-border)];
+}
+
+.gradient-text {
+  @apply bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-purple-600;
+}
+
+.glow-pink {
+  box-shadow: 0 0 20px rgba(255, 0, 204, 0.4);
+}
+
+.glow-purple {
+  box-shadow: 0 0 20px rgba(51, 51, 255, 0.4);
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-pink-500/20 rounded-full hover:bg-pink-500/40 transition-colors;
+}
