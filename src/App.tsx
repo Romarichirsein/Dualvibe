@@ -29,7 +29,10 @@ import {
   Search,
   CheckCircle2,
   Mail,
-  Quote
+  Quote,
+  Play,
+  Pause,
+  Music
 } from 'lucide-react';
 
 // --- Types & Constants ---
@@ -57,6 +60,7 @@ interface Product {
   category: { fr: string; en: string };
   image: string;
   images?: string[];
+  audioPreview?: string;
   type: 'digital' | 'physical';
   date: string;
   description: { fr: string; en: string };
@@ -190,7 +194,13 @@ const TRANSLATIONS = {
     skills: "Compétences Principales",
     languages: "Langues & Loisirs",
     backToCart: "Retour au panier",
-    submitOrder: "Soumettre et Commander"
+    submitOrder: "Soumettre et Commander",
+    musicFormTitle: "Création Musicale Sur-Mesure",
+    musicFormDesc: "Pour concevoir l'univers sonore parfait, parlez-nous de votre vision.",
+    musicEvent: "Occasion / Événement (ex: Mariage, Vidéo, Rap...)",
+    musicEmotion: "Émotions recherchées (ex: Joie, Nostalgie...)",
+    musicTarget: "Pour qui est-ce destiné ?",
+    musicStory: "L'histoire à raconter (Instruments, Style, Contexte...)"
   },
   en: {
     welcome: "Welcome to DualVibe",
@@ -279,7 +289,13 @@ const TRANSLATIONS = {
     skills: "Core Skills",
     languages: "Languages & Hobbies",
     backToCart: "Back to Cart",
-    submitOrder: "Submit & Order"
+    submitOrder: "Submit & Order",
+    musicFormTitle: "Custom Music Creation",
+    musicFormDesc: "To design the perfect sound universe, tell us about your vision.",
+    musicEvent: "Occasion / Event (e.g. Wedding, Video, Rap...)",
+    musicEmotion: "Desired Emotions (e.g. Joy, Nostalgia...)",
+    musicTarget: "Who is this for?",
+    musicStory: "The story to tell (Instruments, Style, Context...)"
   }
 };
 
@@ -1088,6 +1104,87 @@ const PRODUCTS: Product[] = [
       { label: "Abonnement 1 mois", price: 3500 }
     ],
     reviews: []
+  },
+  // 14. Création Musicale (Audio & Beats)
+  { 
+    id: 49, 
+    title: { fr: "Pack Célébration & Amour", en: "Celebration & Love Pack" }, 
+    price: 2000, 
+    category: { fr: "Création Musicale", en: "Music Creation" }, 
+    image: "https://picsum.photos/seed/music-celebration/800/600", 
+    audioPreview: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
+    type: 'digital', 
+    date: '2024-05-02',
+    description: { 
+      fr: "Création musicale sur-mesure pour vos mariages, baptêmes, demandes en mariage ou anniversaires. Suscitez des larmes de joie avec des mélodies pop émotionnelles, afropop ou orchestrales.", 
+      en: "Custom music creation for weddings, baptisms, proposals or birthdays. Evoke tears of joy with emotional pop, afropop or orchestral melodies." 
+    },
+    options: [
+      { label: "Standard (Usage Personnel, 1 min)", price: 2000 },
+      { label: "Professionnel (Standard, jusqu'à 3 min)", price: 3500 },
+      { label: "Premium (Droits Commerciaux, Illimité)", price: 5000 }
+    ],
+    reviews: []
+  },
+  { 
+    id: 50, 
+    title: { fr: "Pack Déclaration & Pardon", en: "Declaration & Forgiveness Pack" }, 
+    price: 2000, 
+    category: { fr: "Création Musicale", en: "Music Creation" }, 
+    image: "https://picsum.photos/seed/music-forgive/800/600", 
+    audioPreview: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3",
+    type: 'digital', 
+    date: '2024-05-03',
+    description: { 
+      fr: "Une lettre musicale pour demander pardon (parents, amis) ou faire une déclaration d'amour intense. Des sons profonds (piano nostalgique, R&B spirituel, acoustique intimiste).", 
+      en: "A musical letter to apologize (parents, friends) or make an intense declaration of love. Deep sounds (nostalgic piano, spiritual R&B, intimate acoustic)." 
+    },
+    options: [
+      { label: "Standard (Usage Personnel, 1 min)", price: 2000 },
+      { label: "Professionnel (Standard, jusqu'à 3 min)", price: 3500 },
+      { label: "Premium (Droits Commerciaux, Illimité)", price: 5000 }
+    ],
+    reviews: []
+  },
+  { 
+    id: 51, 
+    title: { fr: "Pack Créateur & Beats", en: "Creator & Beats Pack" }, 
+    price: 2000, 
+    category: { fr: "Création Musicale", en: "Music Creation" }, 
+    image: "https://picsum.photos/seed/music-beats/800/600", 
+    audioPreview: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3",
+    type: 'digital', 
+    date: '2024-05-04',
+    description: { 
+      fr: "Des beats explosifs pour le Rap/Chant (Afrobeats, Trap, Drill) ou de la musique de fond parfaite pour vos vidéos YouTube, podcasts et publicités.", 
+      en: "Explosive beats for Rap/Singing (Afrobeats, Trap, Drill) or perfect background music for your YouTube videos, podcasts, and ads." 
+    },
+    options: [
+      { label: "Standard (Usage Personnel, 1 min)", price: 2000 },
+      { label: "Professionnel (Standard, jusqu'à 3 min)", price: 3500 },
+      { label: "Premium (Droits Commerciaux, Illimité)", price: 5000 }
+    ],
+    reviews: []
+  },
+  { 
+    id: 52, 
+    title: { fr: "Pack Cinématique & Zen", en: "Cinematic & Zen Pack" }, 
+    price: 2000, 
+    category: { fr: "Création Musicale", en: "Music Creation" }, 
+    image: "https://picsum.photos/seed/music-zen/800/600", 
+    audioPreview: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3",
+    type: 'digital', 
+    date: '2024-05-05',
+    description: { 
+      fr: "Plongez dans des univers sonores absolus. Idéal pour la méditation (fréquences de guérison), le yoga, ou pour des trailers et courts-métrages épiques.", 
+      en: "Immerse yourself in absolute sound universes. Ideal for meditation (healing frequencies), yoga, or epic trailers and short films." 
+    },
+    options: [
+      { label: "Standard (Usage Personnel, 1 min)", price: 2000 },
+      { label: "Professionnel (Standard, jusqu'à 3 min)", price: 3500 },
+      { label: "Premium (Droits Commerciaux, Illimité)", price: 5000 }
+    ],
+    reviews: []
   }
 ];
 
@@ -1791,6 +1888,18 @@ const ProductDetail = ({ lang, country, addToCart }: { lang: Language; country: 
   const t = TRANSLATIONS[lang];
   const [product, setProduct] = useState<Product | null>(null);
   const [selectedOption, setSelectedOption] = useState<ProductOption | undefined>(undefined);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const audioRef = React.useRef<HTMLAudioElement>(null);
+
+  const togglePlay = () => {
+    if (!audioRef.current) return;
+    if (isPlaying) {
+      audioRef.current.pause();
+    } else {
+      audioRef.current.play();
+    }
+    setIsPlaying(!isPlaying);
+  };
 
   useEffect(() => {
     const p = PRODUCTS.find(p => p.id === Number(id));
@@ -1850,6 +1959,35 @@ const ProductDetail = ({ lang, country, addToCart }: { lang: Language; country: 
             <p className="text-base md:text-lg text-slate-600 dark:text-slate-200 leading-relaxed">
               {product.description[lang]}
             </p>
+
+            {product.audioPreview && (
+              <div className="glass p-6 rounded-3xl flex flex-col gap-4 bg-pink-500/5 relative overflow-hidden group">
+                <div className="absolute top-0 right-0 w-32 h-32 bg-pink-500/10 blur-3xl rounded-full" />
+                <div className="flex items-center gap-4 relative z-10">
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={togglePlay}
+                    className="w-14 h-14 bg-gradient-to-tr from-pink-500 to-purple-600 rounded-full flex items-center justify-center text-white shadow-xl shadow-pink-500/30"
+                  >
+                    {isPlaying ? <Pause className="w-6 h-6 fill-current" /> : <Play className="w-6 h-6 fill-current ml-1" />}
+                  </motion.button>
+                  <div>
+                    <h4 className="font-bold text-lg flex items-center gap-2">
+                      <Music className="w-4 h-4 text-pink-500" />
+                      Extrait Audio
+                    </h4>
+                    <p className="text-xs text-slate-500 dark:text-slate-400">Écoutez un aperçu du style musical</p>
+                  </div>
+                </div>
+                {/* Audio Element Hidden */}
+                <audio 
+                  ref={audioRef} 
+                  src={product.audioPreview} 
+                  onEnded={() => setIsPlaying(false)}
+                />
+              </div>
+            )}
 
             {product.options && product.options.length > 0 && (
               <div className="space-y-4">
@@ -1974,6 +2112,14 @@ const CartModal = ({
     languages: ''
   });
 
+  const [showMusicForm, setShowMusicForm] = useState(false);
+  const [musicData, setMusicData] = useState({
+    event: '',
+    emotion: '',
+    target: '',
+    story: ''
+  });
+
   const VALID_PROMOS = ['Princestore', 'Baecstore', 'Mervistore', 'Gicostore', 'Ashstore'];
   const DISCOUNT_AMOUNT = 200; // 200 FCFA (converti automatiquement dans la monnaie du pays)
 
@@ -2006,9 +2152,15 @@ const CartModal = ({
 
   const handleCheckout = () => {
     const hasCvProduct = cart.some(item => item.id === 13 || item.id === 14);
+    const hasMusicProduct = cart.some(item => [49, 50, 51, 52].includes(item.id));
     
     if (hasCvProduct && !showCvForm) {
       setShowCvForm(true);
+      return;
+    }
+
+    if (hasMusicProduct && !showMusicForm) {
+      setShowMusicForm(true);
       return;
     }
 
@@ -2036,6 +2188,14 @@ const CartModal = ({
       message += `Compétences:\n${cvData.skills}\n\n`;
       message += `Langues / Loisirs:\n${cvData.languages}\n`;
     }
+
+    if (hasMusicProduct && showMusicForm) {
+      message += `\n\n--- INSTRUCTIONS MUSICALES ---\n`;
+      message += `Occasion/Événement: ${musicData.event}\n`;
+      message += `Émotions recherchées: ${musicData.emotion}\n`;
+      message += `Destinataire: ${musicData.target}\n\n`;
+      message += `L'Histoire à raconter:\n${musicData.story}\n`;
+    }
     
     const encodedMessage = encodeURIComponent(message);
     window.open(`https://wa.me/12896301143?text=${encodedMessage}`, '_blank');
@@ -2062,7 +2222,7 @@ const CartModal = ({
             <div className="p-6 flex justify-between items-center border-b border-white/10">
               <h2 className="text-2xl font-display font-bold flex items-center gap-3">
                 <ShoppingCart className="text-pink-500" />
-                {showCvForm ? (t as any).cvFormTitle : t.cart}
+                {showMusicForm ? (t as any).musicFormTitle : showCvForm ? (t as any).cvFormTitle : t.cart}
               </h2>
               <button onClick={onClose} className="p-2 hover:bg-white/10 rounded-full transition-colors">
                 <X />
@@ -2070,7 +2230,18 @@ const CartModal = ({
             </div>
 
             <div className="flex-1 overflow-y-auto p-6 space-y-6">
-              {showCvForm ? (
+              {showMusicForm ? (
+                <div className="space-y-4">
+                  <p className="text-sm text-slate-600 dark:text-slate-200 mb-4">{(t as any).musicFormDesc}</p>
+                  
+                  <div className="space-y-4">
+                    <input type="text" placeholder={(t as any).musicEvent} value={musicData.event} onChange={e => setMusicData({...musicData, event: e.target.value})} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 outline-none focus:border-pink-500/50 placeholder:text-slate-400" />
+                    <input type="text" placeholder={(t as any).musicEmotion} value={musicData.emotion} onChange={e => setMusicData({...musicData, emotion: e.target.value})} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 outline-none focus:border-pink-500/50 placeholder:text-slate-400" />
+                    <input type="text" placeholder={(t as any).musicTarget} value={musicData.target} onChange={e => setMusicData({...musicData, target: e.target.value})} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 outline-none focus:border-pink-500/50 placeholder:text-slate-400" />
+                    <textarea placeholder={(t as any).musicStory} value={musicData.story} onChange={e => setMusicData({...musicData, story: e.target.value})} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 outline-none focus:border-pink-500/50 h-32 resize-none placeholder:text-slate-400" />
+                  </div>
+                </div>
+              ) : showCvForm ? (
                 <div className="space-y-4">
                   <p className="text-sm text-slate-600 dark:text-slate-200 mb-4">{(t as any).cvFormDesc}</p>
                   
@@ -2207,7 +2378,7 @@ const CartModal = ({
 
             {cart.length > 0 && (
               <div className="p-6 border-t border-white/10 space-y-4">
-                {!showCvForm && (
+                {!showCvForm && !showMusicForm && (
                   <>
                     {appliedPromo && (
                       <div className="flex justify-between items-center text-sm">
@@ -2222,11 +2393,11 @@ const CartModal = ({
                   </>
                 )}
                 <div className="flex gap-4">
-                  {showCvForm && (
+                  {(showCvForm || showMusicForm) && (
                     <motion.button 
                       whileHover={{ scale: 1.02, y: -2 }}
                       whileTap={{ scale: 0.98 }}
-                      onClick={() => setShowCvForm(false)}
+                      onClick={() => { setShowCvForm(false); setShowMusicForm(false); }}
                       className="flex-1 py-4 glass text-slate-800 dark:text-white rounded-2xl font-bold flex items-center justify-center hover:bg-white/10 transition-all border border-white/10"
                     >
                       {(t as any).backToCart}
@@ -2236,10 +2407,10 @@ const CartModal = ({
                     whileHover={{ scale: 1.02, y: -2 }}
                     whileTap={{ scale: 0.98 }}
                     onClick={handleCheckout}
-                    className={`${showCvForm ? 'flex-[2]' : 'w-full'} py-4 bg-gradient-to-r from-pink-500 to-purple-600 text-white rounded-2xl font-bold flex items-center justify-center gap-3 shadow-xl shadow-pink-500/20 hover:shadow-pink-500/40 transition-all`}
+                    className={`${(showCvForm || showMusicForm) ? 'flex-[2]' : 'w-full'} py-4 bg-gradient-to-r from-pink-500 to-purple-600 text-white rounded-2xl font-bold flex items-center justify-center gap-3 shadow-xl shadow-pink-500/20 hover:shadow-pink-500/40 transition-all`}
                   >
-                    {!showCvForm && <MessageCircle className="w-6 h-6" />}
-                    {showCvForm ? (t as any).submitOrder : t.checkout}
+                    {!showCvForm && !showMusicForm && <MessageCircle className="w-6 h-6" />}
+                    {(showCvForm || showMusicForm) ? (t as any).submitOrder : t.checkout}
                   </motion.button>
                 </div>
               </div>
