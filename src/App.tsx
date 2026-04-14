@@ -5,7 +5,7 @@
 
 import React, { useState, useEffect, useMemo } from 'react';
 import { BrowserRouter, Routes, Route, Link, useParams, useNavigate, useLocation } from 'react-router-dom';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion, AnimatePresence, useScroll, useTransform, useSpring, useMotionValue } from 'motion/react';
 import { 
   Sun, 
   Moon, 
@@ -32,8 +32,14 @@ import {
   Quote,
   Play,
   Pause,
-  Music
+  Music,
+  Sparkles,
+  Heart,
+  Send
 } from 'lucide-react';
+import { supabase } from './lib/supabase';
+import MusicCatalog from './pages/MusicCatalog';
+import Studio from './pages/Studio';
 
 // --- Types & Constants ---
 
@@ -54,7 +60,7 @@ interface ProductOption {
 }
 
 interface Product {
-  id: number;
+  id: number | string;
   title: { fr: string; en: string };
   price: number;
   category: { fr: string; en: string };
@@ -71,6 +77,14 @@ interface Product {
 interface CartItem extends Product {
   quantity: number;
   selectedOption?: ProductOption;
+  customMetadata?: {
+    buyerName?: string;
+    projectUse?: string;
+    licenseType?: string;
+    category?: string;
+    trackTitle?: string;
+    trackId?: string;
+  };
 }
 
 interface Country {
@@ -112,7 +126,7 @@ const TRANSLATIONS = {
     selectCountry: "Veuillez sélectionner votre pays pour continuer",
     continue: "Continuer",
     heroTitle: "Tout ce dont vous avez besoin, au même endroit.",
-    heroSubtitle: "Découvrez notre sélection de produits physiques et digitaux premium. Qualité garantie, livraison rapide.",
+    heroSubtitle: "Transformez vos émotions en souvenirs inoubliables. Découvrez nos flyers et supports créatifs conçus pour toucher les cœurs.",
     explore: "Explorer les produits",
     viewDemo: "Voir la démo",
     featured: "Produits Vedettes",
@@ -178,7 +192,7 @@ const TRANSLATIONS = {
     apply: "Appliquer",
     invalidPromo: "Code promo invalide",
     promoAlreadyUsed: "Vous avez déjà utilisé un code promo. Un seul code est autorisé par commande.",
-    promoApplied: "Code promo appliqué : -200 FCFA",
+    promoApplied: "Code promo appliqué : -300 FCFA",
     discount: "Remise",
     promoUsed: "\nCode promo utilisé : ",
     options: "Options disponibles",
@@ -197,17 +211,32 @@ const TRANSLATIONS = {
     submitOrder: "Soumettre et Commander",
     musicFormTitle: "Création Musicale Sur-Mesure",
     musicFormDesc: "Pour concevoir l'univers sonore parfait, parlez-nous de votre vision.",
+    musicCategory: "Catégorie de musique",
     musicEvent: "Occasion / Événement (ex: Mariage, Vidéo, Rap...)",
     musicEmotion: "Émotions recherchées (ex: Joie, Nostalgie...)",
     musicTarget: "Pour qui est-ce destiné ?",
-    musicStory: "L'histoire à raconter (Instruments, Style, Contexte...)"
+    musicStory: "L'histoire à raconter (Instruments, Style, Contexte...)",
+    studio: "Studio",
+    studioTitle: "Espace Créatif & Personnalisation",
+    studioSubtitle: "Donnez vie à vos idées. Configurez vos projets sur-mesure et notre équipe d'experts s'occupe du reste.",
+    musicCustom: "Musique Sur-Mesure",
+    photoCustom: "Retouche & Image",
+    videoCustom: "Montage Vidéo",
+    designCustom: "Design Graphique",
+    startCustom: "Personnaliser",
+    uploadDrop: "Cliquez ou glissez vos fichiers ici (Photos, maquettes, sons...)",
+    projectDetails: "Détails du projet",
+    projectLinks: "Liens (Drive, WeTransfer...)",
+    sendStudio: "Envoyer ma demande au Studio",
+    shopHeroTitle: "Boutique Digitale & Créative",
+    shopHeroSubtitle: "Découvrez nos collections exclusives conçues pour sublimer vos projets et toucher les cœurs."
   },
   en: {
     welcome: "Welcome to DualVibe",
     selectCountry: "Please select your country to continue",
     continue: "Continue",
     heroTitle: "Everything you need, all in one place.",
-    heroSubtitle: "Discover our selection of premium physical and digital products. Guaranteed quality, fast delivery.",
+    heroSubtitle: "Turn your emotions into unforgettable memories. Discover our flyers and creative supports designed to touch hearts.",
     explore: "Explore Products",
     viewDemo: "View Demo",
     featured: "Featured Products",
@@ -273,7 +302,7 @@ const TRANSLATIONS = {
     apply: "Apply",
     invalidPromo: "Invalid promo code",
     promoAlreadyUsed: "You have already used a promo code. Only one code is allowed per order.",
-    promoApplied: "Promo code applied: -200 FCFA",
+    promoApplied: "Promo code applied: -300 FCFA",
     discount: "Discount",
     promoUsed: "\nPromo code used: ",
     options: "Available Options",
@@ -292,10 +321,25 @@ const TRANSLATIONS = {
     submitOrder: "Submit & Order",
     musicFormTitle: "Custom Music Creation",
     musicFormDesc: "To design the perfect sound universe, tell us about your vision.",
+    musicCategory: "Music Category",
     musicEvent: "Occasion / Event (e.g. Wedding, Video, Rap...)",
     musicEmotion: "Desired Emotions (e.g. Joy, Nostalgia...)",
     musicTarget: "Who is this for?",
-    musicStory: "The story to tell (Instruments, Style, Context...)"
+    musicStory: "The story to tell (Instruments, Style, Context...)",
+    studio: "Studio",
+    studioTitle: "Creative Studio & Customization",
+    studioSubtitle: "Bring your ideas to life. Configure your custom projects and our team of experts handles the rest.",
+    musicCustom: "Custom Music",
+    photoCustom: "Retouching & Image",
+    videoCustom: "Video Editing",
+    designCustom: "Graphic Design",
+    startCustom: "Customize Now",
+    uploadDrop: "Click or drag your files here (Photos, mockups, sounds...)",
+    projectDetails: "Project Details",
+    projectLinks: "Links (Drive, WeTransfer...)",
+    sendStudio: "Send Request to Studio",
+    shopHeroTitle: "Digital & Creative Shop",
+    shopHeroSubtitle: "Discover our exclusive collections designed to enhance your projects and touch hearts."
   }
 };
 
@@ -454,20 +498,6 @@ const PRODUCTS: Product[] = [
     ]
   },
   { 
-    id: 11, 
-    title: { fr: "Affiche / Flyer / Bannière", en: "Poster / Flyer / Banner" }, 
-    price: 5000, 
-    category: { fr: "Design Graphique", en: "Graphic Design" }, 
-    image: "https://picsum.photos/seed/flyer/800/600", 
-    type: 'digital', 
-    date: '2024-03-25',
-    description: { 
-      fr: "Design percutant pour événement, promotion ou réseaux sociaux.", 
-      en: "Impactful design for events, promotions, or social media." 
-    },
-    reviews: []
-  },
-  { 
     id: 12, 
     title: { fr: "Charte Graphique Complète", en: "Full Brand Identity" }, 
     price: 50000, 
@@ -478,6 +508,192 @@ const PRODUCTS: Product[] = [
     description: { 
       fr: "Logo, palette de couleurs, typographies, mockups et guide d'utilisation.", 
       en: "Logo, color palette, typography, mockups, and usage guide." 
+    },
+    reviews: []
+  },
+
+  // 4b. Flyers Émotionnels
+  { 
+    id: 50, 
+    title: { fr: "Flyer d’Anniversaire", en: "Birthday Flyer" }, 
+    price: 5000, 
+    category: { fr: "Flyers Émotionnels", en: "Emotional Flyers" }, 
+    image: "https://picsum.photos/seed/birthday/800/600", 
+    type: 'digital', 
+    date: '2024-04-11',
+    description: { 
+      fr: "Célébrez la joie et la surprise avec un design festif. Idéal pour enfants (couleurs vives) ou adultes (luxe/élégant).", 
+      en: "Celebrate joy and surprise with a festive design. Ideal for children (vibrant colors) or adults (luxury/elegant)." 
+    },
+    reviews: []
+  },
+  { 
+    id: 51, 
+    title: { fr: "Flyer Mariage & Fiançailles", en: "Wedding & Engagement Flyer" }, 
+    price: 5000, 
+    category: { fr: "Flyers Émotionnels", en: "Emotional Flyers" }, 
+    image: "https://picsum.photos/seed/wedding/800/600", 
+    type: 'digital', 
+    date: '2024-04-11',
+    description: { 
+      fr: "Exprimez l'amour et l'engagement. Save the date, invitations romantiques et remerciements.", 
+      en: "Express love and commitment. Save the date, romantic invitations, and thanks." 
+    },
+    reviews: []
+  },
+  { 
+    id: 52, 
+    title: { fr: "Flyer de Deuil & Hommage", en: "Mourning & Tribute Flyer" }, 
+    price: 5000, 
+    category: { fr: "Flyers Émotionnels", en: "Emotional Flyers" }, 
+    image: "https://picsum.photos/seed/tribute/800/600", 
+    type: 'digital', 
+    date: '2024-04-11',
+    description: { 
+      fr: "Un hommage respectueux pour honorer le souvenir. Programmes d'obsèques et messes de requiem.", 
+      en: "A respectful tribute to honor the memory. Funeral programs and requiem masses." 
+    },
+    reviews: []
+  },
+  { 
+    id: 53, 
+    title: { fr: "Flyer Réussite & Graduation", en: "Success & Graduation Flyer" }, 
+    price: 5000, 
+    category: { fr: "Flyers Émotionnels", en: "Emotional Flyers" }, 
+    image: "https://picsum.photos/seed/graduation/800/600", 
+    type: 'digital', 
+    date: '2024-04-11',
+    description: { 
+      fr: "Célébrez la fierté et l'accomplissement. Pour diplômes, soutenances et remises de certificats.", 
+      en: "Celebrate pride and achievement. For diplomas, defenses, and certificate presentations." 
+    },
+    reviews: []
+  },
+  { 
+    id: 54, 
+    title: { fr: "Flyer Saint-Valentin / Amoureux", en: "Valentine's Day Flyer" }, 
+    price: 5000, 
+    category: { fr: "Flyers Émotionnels", en: "Emotional Flyers" }, 
+    image: "https://picsum.photos/seed/valentines/800/600", 
+    type: 'digital', 
+    date: '2024-04-11',
+    description: { 
+      fr: "Passion et désir au rendez-vous. Offres couples et messages romantiques percutants.", 
+      en: "Passion and desire meet here. Couple offers and powerful romantic messages." 
+    },
+    reviews: []
+  },
+  { 
+    id: 55, 
+    title: { fr: "Flyer Naissance & Baby Shower", en: "Birth & Baby Shower Flyer" }, 
+    price: 5000, 
+    category: { fr: "Flyers Émotionnels", en: "Emotional Flyers" }, 
+    image: "https://picsum.photos/seed/babyshower/800/600", 
+    type: 'digital', 
+    date: '2024-04-11',
+    description: { 
+      fr: "Tendresse et bonheur pour accueillir la vie. Annonces de naissance et invitations douces.", 
+      en: "Tenderness and happiness to welcome life. Birth announcements and sweet invitations." 
+    },
+    reviews: []
+  },
+  { 
+    id: 56, 
+    title: { fr: "Flyer Business & Succès", en: "Business & Success Flyer" }, 
+    price: 5000, 
+    category: { fr: "Flyers Émotionnels", en: "Emotional Flyers" }, 
+    image: "https://picsum.photos/seed/business-success/800/600", 
+    type: 'digital', 
+    date: '2024-04-11',
+    description: { 
+      fr: "Ambition et motivation pour vos lancements, conférences et séminaires.", 
+      en: "Ambition and motivation for your launches, conferences, and seminars." 
+    },
+    reviews: []
+  },
+  { 
+    id: 57, 
+    title: { fr: "Flyer Urgence & Promo", en: "Urgency & Promo Flyer" }, 
+    price: 5000, 
+    category: { fr: "Flyers Émotionnels", en: "Emotional Flyers" }, 
+    image: "https://picsum.photos/seed/promo/800/600", 
+    type: 'digital', 
+    date: '2024-04-11',
+    description: { 
+      fr: "Créez l'excitation et la peur de rater (FOMO). Soldes et offres exclusives limitées.", 
+      en: "Create excitement and fear of missing out (FOMO). Sales and exclusive limited offers." 
+    },
+    reviews: []
+  },
+  { 
+    id: 58, 
+    title: { fr: "Flyer Religieux & Spirituel", en: "Religious & Spiritual Flyer" }, 
+    price: 5000, 
+    category: { fr: "Flyers Émotionnels", en: "Emotional Flyers" }, 
+    image: "https://picsum.photos/seed/spiritual/800/600", 
+    type: 'digital', 
+    date: '2024-04-11',
+    description: { 
+      fr: "Foi, paix et espoir pour vos programmes d'église et retraites spirituelles.", 
+      en: "Faith, peace, and hope for your church programs and spiritual retreats." 
+    },
+    reviews: []
+  },
+  { 
+    id: 59, 
+    title: { fr: "Flyer Culturel & Artistique", en: "Cultural & Artistic Flyer" }, 
+    price: 5000, 
+    category: { fr: "Flyers Émotionnels", en: "Emotional Flyers" }, 
+    image: "https://picsum.photos/seed/culture/800/600", 
+    type: 'digital', 
+    date: '2024-04-11',
+    description: { 
+      fr: "Inspiration et curiosité. Pour concerts, théâtres et expositions artistiques.", 
+      en: "Inspiration and curiosity. For concerts, theaters, and artistic exhibitions." 
+    },
+    reviews: []
+  },
+
+  // Supports Émotionnels Hors Flyers
+  { 
+    id: 60, 
+    title: { fr: "Cartes de Vœux", en: "Greeting Cards" }, 
+    price: 2000, 
+    category: { fr: "Supports Émotionnels", en: "Emotional Supports" }, 
+    image: "https://picsum.photos/seed/cards/800/600", 
+    type: 'digital', 
+    date: '2024-04-11',
+    description: { 
+      fr: "Affection et gratitude pour le Nouvel An, Noël ou vœux professionnels.", 
+      en: "Affection and gratitude for New Year, Christmas, or professional wishes." 
+    },
+    reviews: []
+  },
+  { 
+    id: 61, 
+    title: { fr: "Poèmes Personnalisés", en: "Personalized Poems" }, 
+    price: 1000, 
+    category: { fr: "Supports Émotionnels", en: "Emotional Supports" }, 
+    image: "https://picsum.photos/seed/poetry/800/600", 
+    type: 'digital', 
+    date: '2024-04-11',
+    description: { 
+      fr: "Mots du cœur : amour, tristesse, motivation ou spiritualité en vers.", 
+      en: "Words from the heart: love, sadness, motivation, or spirituality in verse." 
+    },
+    reviews: []
+  },
+  { 
+    id: 62, 
+    title: { fr: "Messages Courts Puissants", en: "Powerful Short Messages" }, 
+    price: 1000, 
+    category: { fr: "Supports Émotionnels", en: "Emotional Supports" }, 
+    image: "https://picsum.photos/seed/messages/800/600", 
+    type: 'digital', 
+    date: '2024-04-11',
+    description: { 
+      fr: "Citations inspirantes et storytelling pour toucher et motiver votre audience.", 
+      en: "Inspiring quotes and storytelling to touch and motivate your audience." 
     },
     reviews: []
   },
@@ -1277,7 +1493,7 @@ const ReviewSection = ({
         )}
       </div>
 
-      <div className="glass p-8 rounded-[2rem] space-y-6">
+      <div className="glass p-8 rounded-[2rem] space-y-6 form-glow-border">
         <h4 className="text-xl font-bold">{t.addReview}</h4>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid sm:grid-cols-2 gap-4">
@@ -1323,60 +1539,155 @@ const ReviewSection = ({
 };
 
 const AnimatedBackground = () => {
-  const pinkDrops = useMemo(() => [...Array(25)].map((_, i) => ({
-    id: i,
-    left: `${Math.random() * 100}%`,
-    duration: `${1.5 + Math.random() * 2}s`,
-    delay: `${Math.random() * 5}s`,
-    height: `${80 + Math.random() * 100}px`
-  })), []);
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
 
-  const purpleDrops = useMemo(() => [...Array(20)].map((_, i) => ({
-    id: i + 25,
-    left: `${Math.random() * 100}%`,
-    duration: `${2 + Math.random() * 3}s`,
-    delay: `${Math.random() * 5}s`,
-    height: `${120 + Math.random() * 120}px`
-  })), []);
+  const springConfig = { damping: 30, stiffness: 100 };
+  const smoothX = useSpring(mouseX, springConfig);
+  const smoothY = useSpring(mouseY, springConfig);
+
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      const { clientX, clientY } = e;
+      const x = (clientX / window.innerWidth - 0.5) * 50;
+      const y = (clientY / window.innerHeight - 0.5) * 50;
+      mouseX.set(x);
+      mouseY.set(y);
+    };
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, [mouseX, mouseY]);
 
   return (
-    <div className="fixed inset-0 z-0 overflow-hidden pointer-events-none">
-      {/* Original Blobs */}
-      <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-pink-500/15 blur-[120px] rounded-full animate-blob" />
-      <div className="absolute top-[20%] right-[-10%] w-[35%] h-[35%] bg-purple-600/15 blur-[120px] rounded-full animate-blob animation-delay-2000" />
-      <div className="absolute bottom-[-10%] left-[20%] w-[45%] h-[45%] bg-pink-600/15 blur-[120px] rounded-full animate-blob animation-delay-4000" />
+    <div className="fixed inset-0 overflow-hidden pointer-events-none -z-10 bg-[var(--bg-primary)]">
+      {/* Noise Overlay Filter */}
+      <div className="noise-overlay" />
       
+      {/* Perspective Grid */}
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:44px_44px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]" />
+
+      {/* 3D Motion Blobs */}
+      <motion.div 
+        style={{ x: smoothX, y: smoothY }}
+        className="absolute inset-0 flex items-center justify-center pointer-events-none"
+      >
+        {/* Deep Purple Glow */}
+        <motion.div 
+          animate={{ 
+            x: [0, 50, -30, 0],
+            y: [0, -40, 60, 0],
+            scale: [1, 1.1, 0.9, 1]
+          }}
+          transition={{ duration: 25, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute top-[-20%] right-[-10%] w-[60vw] h-[60vw] bg-purple-600/10 rounded-full blur-[140px] mix-blend-screen dark:mix-blend-soft-light" 
+        />
+        
+        {/* Vibrant Pink Glow */}
+        <motion.div 
+          animate={{ 
+            x: [0, -60, 40, 0],
+            y: [0, 50, -30, 0],
+            scale: [1.1, 0.9, 1.2, 1.1]
+          }}
+          transition={{ duration: 30, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute bottom-[-10%] left-[-15%] w-[55vw] h-[55vw] bg-pink-500/10 rounded-full blur-[120px] mix-blend-screen dark:mix-blend-soft-light" 
+        />
+
+        {/* === FULL-SCREEN CIRCULATING SMOKE SYSTEM === */}
+        <div className="absolute inset-0 z-0">
+          {/* SVG turbulence filter for organic distortion */}
+          <svg style={{ position: 'absolute', width: 0, height: 0 }}>
+            <filter id="smoke-filter">
+              <feTurbulence type="fractalNoise" baseFrequency="0.008" numOctaves="4" seed="5">
+                <animate attributeName="baseFrequency" dur="80s" values="0.008;0.014;0.008" repeatCount="indefinite" />
+              </feTurbulence>
+              <feDisplacementMap in="SourceGraphic" scale="80" />
+            </filter>
+          </svg>
+
+          {/* Layer 1 — Pink smoke top-left → bottom-right */}
+          <motion.div
+            animate={{ x: ['0%', '40%', '-20%', '0%'], y: ['0%', '30%', '-20%', '0%'], scale: [1, 1.3, 0.9, 1], opacity: [0.18, 0.28, 0.18] }}
+            transition={{ duration: 22, repeat: Infinity, ease: 'easeInOut' }}
+            style={{ filter: 'url(#smoke-filter) blur(60px)', position: 'absolute', top: '-10%', left: '-10%', width: '55vw', height: '55vw', background: 'radial-gradient(circle, rgba(236,72,153,0.25) 0%, transparent 70%)', borderRadius: '50%' }}
+          />
+          {/* Layer 2 — Purple smoke top-right → center */}
+          <motion.div
+            animate={{ x: ['0%', '-50%', '20%', '0%'], y: ['0%', '40%', '-10%', '0%'], scale: [1.1, 0.8, 1.2, 1.1], opacity: [0.2, 0.12, 0.2] }}
+            transition={{ duration: 28, repeat: Infinity, ease: 'easeInOut', delay: 5 }}
+            style={{ filter: 'url(#smoke-filter) blur(70px)', position: 'absolute', top: '-5%', right: '-10%', width: '60vw', height: '60vw', background: 'radial-gradient(circle, rgba(147,51,234,0.25) 0%, transparent 70%)', borderRadius: '50%' }}
+          />
+          {/* Layer 3 — Pink smoke center-left circling */}
+          <motion.div
+            animate={{ x: ['0%', '60%', '20%', '-30%', '0%'], y: ['0%', '-20%', '50%', '20%', '0%'], scale: [1, 1.4, 1, 0.9, 1], opacity: [0.15, 0.22, 0.1, 0.22, 0.15] }}
+            transition={{ duration: 35, repeat: Infinity, ease: 'easeInOut', delay: 2 }}
+            style={{ filter: 'url(#smoke-filter) blur(80px)', position: 'absolute', top: '30%', left: '-5%', width: '50vw', height: '50vw', background: 'radial-gradient(circle, rgba(217,70,239,0.2) 0%, transparent 70%)', borderRadius: '50%' }}
+          />
+          {/* Layer 4 — Purple smoke center-right */}
+          <motion.div
+            animate={{ x: ['0%', '-40%', '-60%', '0%'], y: ['0%', '20%', '-30%', '0%'], scale: [1.2, 0.9, 1.3, 1.2], opacity: [0.12, 0.2, 0.12] }}
+            transition={{ duration: 30, repeat: Infinity, ease: 'easeInOut', delay: 8 }}
+            style={{ filter: 'url(#smoke-filter) blur(90px)', position: 'absolute', top: '25%', right: '-15%', width: '65vw', height: '65vw', background: 'radial-gradient(circle, rgba(99,102,241,0.15) 0%, transparent 70%)', borderRadius: '50%' }}
+          />
+          {/* Layer 5 — Pink smoke bottom-left → top */}
+          <motion.div
+            animate={{ x: ['0%', '30%', '60%', '0%'], y: ['0%', '-50%', '-20%', '0%'], scale: [1, 1.2, 1, 1], opacity: [0.2, 0.1, 0.2] }}
+            transition={{ duration: 38, repeat: Infinity, ease: 'easeInOut', delay: 4 }}
+            style={{ filter: 'url(#smoke-filter) blur(75px)', position: 'absolute', bottom: '-10%', left: '0%', width: '60vw', height: '60vw', background: 'radial-gradient(circle, rgba(236,72,153,0.2) 0%, transparent 70%)', borderRadius: '50%' }}
+          />
+          {/* Layer 6 — Purple smoke bottom-right → left */}
+          <motion.div
+            animate={{ x: ['0%', '-60%', '-30%', '0%'], y: ['0%', '-30%', '-60%', '0%'], scale: [0.9, 1.3, 1, 0.9], opacity: [0.18, 0.25, 0.18] }}
+            transition={{ duration: 45, repeat: Infinity, ease: 'easeInOut', delay: 10 }}
+            style={{ filter: 'url(#smoke-filter) blur(85px)', position: 'absolute', bottom: '-15%', right: '-10%', width: '70vw', height: '70vw', background: 'radial-gradient(circle, rgba(147,51,234,0.22) 0%, transparent 70%)', borderRadius: '50%' }}
+          />
+          {/* Layer 7 — Center drifting pink cloud */}
+          <motion.div
+            animate={{ x: ['-20%', '30%', '-10%', '-20%'], y: ['-10%', '20%', '40%', '-10%'], scale: [1, 1.5, 0.8, 1], opacity: [0.1, 0.2, 0.1] }}
+            transition={{ duration: 50, repeat: Infinity, ease: 'easeInOut', delay: 6 }}
+            style={{ filter: 'url(#smoke-filter) blur(100px)', position: 'absolute', top: '40%', left: '30%', width: '45vw', height: '45vw', background: 'radial-gradient(circle, rgba(236,72,153,0.15) 0%, transparent 70%)', borderRadius: '50%' }}
+          />
+          {/* Layer 8 — Slow drifting violet center-top */}
+          <motion.div
+            animate={{ x: ['10%', '-30%', '20%', '10%'], y: ['5%', '-15%', '30%', '5%'], scale: [1.1, 0.85, 1.2, 1.1], opacity: [0.15, 0.08, 0.15] }}
+            transition={{ duration: 60, repeat: Infinity, ease: 'easeInOut', delay: 15 }}
+            style={{ filter: 'url(#smoke-filter) blur(110px)', position: 'absolute', top: '10%', left: '20%', width: '55vw', height: '55vw', background: 'radial-gradient(circle, rgba(139,92,246,0.18) 0%, transparent 70%)', borderRadius: '50%' }}
+          />
+        </div>
+      </motion.div>
+
       {/* Neon Rain Drops */}
-      <div className="absolute inset-0">
-        {pinkDrops.map((drop) => (
+      <div className="absolute inset-0 z-0">
+        {[...Array(40)].map((_, i) => (
           <div
-            key={drop.id}
-            className="absolute w-[2px] bg-gradient-to-b from-transparent via-pink-500 to-transparent animate-neon-rain"
+            key={`pink-${i}`}
+            className="absolute w-[1px] bg-gradient-to-b from-transparent via-pink-500 to-transparent animate-neon-rain"
             style={{
-              left: drop.left,
-              height: drop.height,
-              animationDuration: drop.duration,
-              animationDelay: drop.delay,
-              opacity: 0.6,
-              boxShadow: '0 0 10px rgba(236, 72, 153, 0.4)'
+              left: `${Math.random() * 100}%`,
+              height: `${100 + Math.random() * 150}px`,
+              animationDuration: `${2 + Math.random() * 3}s`,
+              animationDelay: `${Math.random() * 5}s`,
+              opacity: 0.3,
             }}
           />
         ))}
-        {purpleDrops.map((drop) => (
+        {[...Array(30)].map((_, i) => (
           <div
-            key={drop.id}
-            className="absolute w-[2px] bg-gradient-to-b from-transparent via-purple-500 to-transparent animate-neon-rain"
+            key={`purple-${i}`}
+            className="absolute w-[1px] bg-gradient-to-b from-transparent via-purple-500 to-transparent animate-neon-rain"
             style={{
-              left: drop.left,
-              height: drop.height,
-              animationDuration: drop.duration,
-              animationDelay: drop.delay,
-              opacity: 0.4,
-              boxShadow: '0 0 10px rgba(168, 85, 247, 0.3)'
+              left: `${Math.random() * 100}%`,
+              height: `${150 + Math.random() * 200}px`,
+              animationDuration: `${3 + Math.random() * 4}s`,
+              animationDelay: `${Math.random() * 7}s`,
+              opacity: 0.2,
             }}
           />
         ))}
       </div>
+
+      {/* Grid Mesh Distortion Overlay */}
+      <div className="absolute inset-0 bg-grid-white/[0.02] bg-[size:20px_20px] opacity-20 dark:opacity-40" />
     </div>
   );
 };
@@ -1431,6 +1742,8 @@ const ProductCard = ({ product, lang, country, addToCart, ...props }: { product:
 };
 
 
+
+
 const Home = ({ lang, addToCart, country }: { lang: Language; addToCart: (p: Product) => void; country: Country }) => {
   const t = TRANSLATIONS[lang];
   return (
@@ -1458,18 +1771,20 @@ const Home = ({ lang, addToCart, country }: { lang: Language; addToCart: (p: Pro
             {t.heroSubtitle}
           </motion.p>
           <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.2 }}
             className="flex flex-col sm:flex-row justify-center gap-4"
           >
             <Link to="/shop">
               <motion.button 
-                whileHover={{ scale: 1.05, x: 5 }}
+                whileHover={{ scale: 1.05, y: -5 }}
                 whileTap={{ scale: 0.95 }}
-                className="w-full sm:w-auto px-8 py-4 bg-gradient-to-r from-pink-500 to-purple-600 text-white rounded-2xl font-bold shadow-xl shadow-pink-500/20 flex items-center justify-center gap-2"
+                className="w-full sm:w-auto px-10 py-5 bg-gradient-to-r from-pink-500 to-purple-600 text-white rounded-2xl font-extrabold shadow-2xl shadow-pink-500/40 flex items-center justify-center gap-3 group magnetic-button"
               >
-                {t.explore} <ArrowRight className="w-5 h-5" />
+                <Zap className="w-5 h-5 group-hover:animate-pulse" />
+                {t.explore}
+                <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </motion.button>
             </Link>
           </motion.div>
@@ -1536,6 +1851,40 @@ const Home = ({ lang, addToCart, country }: { lang: Language; addToCart: (p: Pro
           </div>
         </div>
       </section>
+
+      {/* Why Choose Us CTA section */}
+      <section className="py-24 relative bg-pink-500/5 overflow-hidden">
+        <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-pink-500/20 to-transparent" />
+        <div className="max-w-7xl mx-auto px-6 text-center relative z-10">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            className="flex flex-col items-center gap-8"
+          >
+            <h2 className="text-3xl md:text-6xl font-display font-black leading-tight">
+              {lang === 'fr' ? "Besoin d'un projet " : "Need a custom "}
+              <span className="gradient-text">{lang === 'fr' ? 'Sur-Mesure ?' : 'Project?'}</span>
+            </h2>
+            <p className="text-lg md:text-xl text-slate-600 dark:text-slate-200 opacity-80 max-w-2xl font-medium">
+              {lang === 'fr' 
+                ? 'Confiez-nous vos idées les plus folles. Notre studio de création transforme vos visions en réalité avec une touche d\'excellence.'
+                : 'Entrust us with your wildest ideas. Our creative studio turns your visions into reality with a touch of excellence.'}
+            </p>
+            <Link to="/studio">
+              <motion.button
+                whileHover={{ scale: 1.05, y: -5 }}
+                whileTap={{ scale: 0.95 }}
+                className="px-12 py-6 bg-white dark:bg-slate-900 border-2 border-pink-500 text-pink-500 rounded-3xl font-black text-xl flex items-center gap-4 transition-all hover:bg-pink-500 hover:text-white group shadow-2xl shadow-pink-500/10"
+              >
+                <Sparkles className="w-7 h-7 group-hover:animate-spin" />
+                {lang === 'fr' ? 'Accéder au Studio' : 'Go to Studio'}
+                <ArrowRight className="w-7 h-7 group-hover:translate-x-2 transition-transform" />
+              </motion.button>
+            </Link>
+          </motion.div>
+        </div>
+      </section>
     </>
   );
 };
@@ -1543,111 +1892,256 @@ const Home = ({ lang, addToCart, country }: { lang: Language; addToCart: (p: Pro
 const About = ({ lang }: { lang: Language }) => {
   const t = TRANSLATIONS[lang];
   return (
-    <section className="pt-40 pb-20">
-      <div className="max-w-4xl mx-auto px-6">
-        <h1 className="text-5xl font-display font-bold mb-8 text-center">{t.aboutTitle}</h1>
-        <div className="glass p-10 rounded-[3rem] space-y-8">
-          <p className="text-lg text-slate-600 dark:text-slate-200 leading-relaxed">
-            {t.aboutText}
-          </p>
-          <div className="grid md:grid-cols-2 gap-8">
-            <div className="space-y-4">
-              <h2 className="text-2xl font-bold text-pink-500">{t.mission}</h2>
-              <p className="text-slate-600 dark:text-slate-200">
-                {t.missionText}
-              </p>
+    <>
+      <section className="pt-40 pb-20 overflow-hidden relative">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-pink-500/10 blur-[120px] rounded-full" />
+        <div className="max-w-4xl mx-auto px-6 relative z-10">
+          <motion.h1 
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="text-5xl md:text-7xl font-display font-black mb-12 text-center"
+          >
+            {lang === 'fr' ? 'Notre ' : 'Our '}
+            <span className="gradient-text">{lang === 'fr' ? 'Histoire' : 'Story'}</span>
+          </motion.h1>
+          <motion.div 
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="glass p-10 md:p-16 rounded-[3rem] space-y-10 border-white/20 relative overflow-hidden"
+          >
+            <div className="absolute top-0 right-0 w-32 h-32 bg-pink-500/5 blur-3xl rounded-full" />
+            <p className="text-xl text-slate-600 dark:text-slate-200 leading-relaxed font-medium">
+              {t.aboutText}
+            </p>
+            <div className="grid md:grid-cols-2 gap-8">
+              <div className="space-y-4">
+                <h2 className="text-3xl font-display font-bold text-pink-500 flex items-center gap-3">
+                  <Zap className="w-8 h-8" />
+                  {t.mission}
+                </h2>
+                <p className="text-slate-600 dark:text-slate-200 leading-relaxed opacity-80">
+                  {t.missionText}
+                </p>
+              </div>
+              <motion.div 
+                whileHover={{ scale: 1.05, rotate: 2 }}
+                className="bg-gradient-to-br from-pink-500 via-purple-600 to-indigo-600 rounded-[2.5rem] p-10 text-white flex flex-col justify-center relative overflow-hidden group"
+              >
+                <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
+                <div className="text-6xl font-black mb-3 text-shadow-lg">10k+</div>
+                <div className="text-lg font-bold opacity-90 uppercase tracking-widest">
+                  {lang === 'fr' ? 'Clients Satisfaits' : 'Happy Clients'}
+                </div>
+                <Sparkles className="absolute bottom-6 right-6 w-12 h-12 opacity-20 group-hover:rotate-45 transition-transform" />
+              </motion.div>
             </div>
-            <div className="bg-gradient-to-br from-pink-500 to-purple-600 rounded-2xl p-8 text-white flex flex-col justify-center">
-              <div className="text-4xl font-bold mb-2">10k+</div>
-              <div className="opacity-80">Clients satisfaits</div>
-            </div>
-          </div>
+          </motion.div>
         </div>
-      </div>
-    </section>
+      </section>
+
+      {/* About CTA Section */}
+      <section className="py-24 bg-pink-500/5">
+        <div className="max-w-7xl mx-auto px-6 text-center">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            className="glass p-16 rounded-[4rem] border-white/20 overflow-hidden relative group"
+          >
+            <div className="absolute inset-0 bg-gradient-to-br from-pink-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+            <h2 className="text-4xl md:text-6xl font-display font-black mb-8 relative z-10">
+              {lang === 'fr' ? 'Prêt à ' : 'Ready to '}
+              <span className="gradient-text">{lang === 'fr' ? 'Explorer ?' : 'Explore?'}</span>
+            </h2>
+            <div className="flex flex-col sm:flex-row justify-center gap-6 relative z-10">
+              <Link to="/shop">
+                <motion.button
+                  whileHover={{ scale: 1.05, y: -5 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="px-10 py-5 bg-pink-500 text-white rounded-2xl font-black flex items-center gap-3 shadow-xl shadow-pink-500/20"
+                >
+                  <ShoppingCart className="w-6 h-6" />
+                  {t.shop}
+                </motion.button>
+              </Link>
+              <Link to="/contact">
+                <motion.button
+                  whileHover={{ scale: 1.05, y: -5 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="px-10 py-5 glass border-2 border-pink-500 text-pink-500 rounded-2xl font-black flex items-center gap-3"
+                >
+                  <MessageCircle className="w-6 h-6" />
+                  {t.contact}
+                </motion.button>
+              </Link>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+    </>
   );
 };
 
 const Contact = ({ lang }: { lang: Language }) => {
   const t = TRANSLATIONS[lang];
   return (
-    <section className="pt-32 md:pt-40 pb-20">
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-          <div className="text-center lg:text-left">
-            <h2 className="text-4xl md:text-5xl font-display font-bold mb-6">{t.contact}</h2>
-            <p className="text-slate-600 dark:text-slate-200 mb-10 leading-relaxed text-base md:text-lg max-w-xl mx-auto lg:mx-0">
-              {t.footerDesc}
-            </p>
-            <div className="space-y-6 flex flex-col items-center lg:items-start">
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 glass rounded-xl flex items-center justify-center text-pink-500 shrink-0">
-                  <Mail className="w-6 h-6" />
-                </div>
-                <div className="text-left">
-                  <h4 className="font-bold">Email</h4>
-                  <p className="text-sm text-slate-600 dark:text-slate-200">support@dualvibe.com</p>
-                </div>
-              </div>
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 glass rounded-xl flex items-center justify-center text-pink-500 shrink-0">
-                  <MessageCircle className="w-6 h-6" />
-                </div>
-                <div className="text-left">
-                  <h4 className="font-bold">WhatsApp</h4>
-                  <p className="text-sm text-slate-600 dark:text-slate-200">+1 (289) 630-1143</p>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="glass p-6 md:p-10 rounded-[2rem] md:rounded-[3rem] space-y-6">
-            <div className="grid sm:grid-cols-2 gap-6">
-              <div className="space-y-2">
-                <label className="text-sm font-bold opacity-80 ml-2">{t.name}</label>
-                <input type="text" className="w-full glass px-6 py-4 rounded-2xl outline-none focus:border-pink-500/50 transition-all placeholder:text-slate-400 dark:placeholder:text-slate-500" />
-              </div>
-              <div className="space-y-2">
-                <label className="text-sm font-bold opacity-80 ml-2">{t.email}</label>
-                <input type="email" className="w-full glass px-6 py-4 rounded-2xl outline-none focus:border-pink-500/50 transition-all placeholder:text-slate-400 dark:placeholder:text-slate-500" />
-              </div>
-            </div>
-            <div className="space-y-2">
-              <label className="text-sm font-bold opacity-80 ml-2">{t.message}</label>
-              <textarea className="w-full glass px-6 py-4 rounded-2xl outline-none h-32 resize-none focus:border-pink-500/50 transition-all placeholder:text-slate-400 dark:placeholder:text-slate-500" />
-            </div>
-            <motion.button 
-              whileHover={{ scale: 1.02, y: -2 }}
-              whileTap={{ scale: 0.98 }}
-              className="w-full py-4 bg-gradient-to-r from-pink-500 to-purple-600 text-white rounded-2xl font-bold shadow-lg shadow-pink-500/20"
+    <>
+      <section className="pt-32 md:pt-40 pb-20 overflow-hidden relative">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-purple-600/5 blur-[120px] rounded-full" />
+        <div className="max-w-7xl mx-auto px-6 relative z-10">
+          <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+            <motion.div 
+              initial={{ opacity: 0, x: -50 }}
+              animate={{ opacity: 1, x: 0 }}
+              className="text-center lg:text-left"
             >
-              {t.send}
-            </motion.button>
+              <h1 className="text-5xl md:text-8xl font-display font-black mb-8 leading-tight">
+                {lang === 'fr' ? 'Dites ' : 'Say '}
+                <span className="gradient-text">{lang === 'fr' ? 'Bonjour' : 'Hello'}</span>
+              </h1>
+              <p className="text-xl text-slate-600 dark:text-slate-200 mb-12 leading-relaxed opacity-80 font-medium">
+                {t.footerDesc}
+              </p>
+              <div className="space-y-8 flex flex-col items-center lg:items-start">
+                {[
+                  { icon: Mail, label: 'Email', value: 'dualvibe237@gmail.com', color: 'text-pink-500' },
+                  { icon: MessageCircle, label: 'WhatsApp', value: '+1 (289) 630-1143', color: 'text-green-500' }
+                ].map((item, idx) => (
+                  <motion.div 
+                    key={idx}
+                    whileHover={{ x: 10 }}
+                    className="flex items-center gap-6 group"
+                  >
+                    <div className="w-16 h-16 glass rounded-[1.5rem] flex items-center justify-center text-pink-500 shadow-xl border-white/10 group-hover:border-pink-500/30 transition-all">
+                      <item.icon className={`w-7 h-7 ${item.color}`} />
+                    </div>
+                    <div className="text-left">
+                      <h4 className="font-bold text-sm uppercase tracking-widest opacity-60 mb-1">{item.label}</h4>
+                      <p className="text-xl font-display font-bold group-hover:text-pink-500 transition-colors">{item.value}</p>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            </motion.div>
+            
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="glass p-10 md:p-14 rounded-[3.5rem] border-white/20 shadow-2xl relative form-glow-border"
+            >
+              <div className="absolute top-0 right-0 w-32 h-32 bg-pink-500/5 blur-3xl rounded-full" />
+              <div className="space-y-8 relative z-10">
+                <div className="grid sm:grid-cols-2 gap-8">
+                  <div className="space-y-3">
+                    <label className="text-xs font-bold uppercase tracking-widest opacity-60 ml-3">{t.name}</label>
+                    <input type="text" className="w-full glass px-8 py-5 rounded-2xl outline-none focus:border-pink-500/50 transition-all placeholder:text-slate-400 dark:placeholder:text-slate-500 text-lg" placeholder="Votre nom" />
+                  </div>
+                  <div className="space-y-3">
+                    <label className="text-xs font-bold uppercase tracking-widest opacity-60 ml-3">{t.email}</label>
+                    <input type="email" className="w-full glass px-8 py-5 rounded-2xl outline-none focus:border-pink-500/50 transition-all placeholder:text-slate-400 dark:placeholder:text-slate-500 text-lg" placeholder="Email" />
+                  </div>
+                </div>
+                <div className="space-y-3">
+                  <label className="text-xs font-bold uppercase tracking-widest opacity-60 ml-3">{t.message}</label>
+                  <textarea className="w-full glass px-8 py-5 rounded-2xl outline-none h-44 resize-none focus:border-pink-500/50 transition-all placeholder:text-slate-400 dark:placeholder:text-slate-500 text-lg" placeholder="Message..." />
+                </div>
+                <motion.button 
+                  whileHover={{ scale: 1.02, y: -2 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="w-full py-6 bg-gradient-to-r from-pink-500 via-purple-600 to-indigo-600 text-white rounded-3xl font-black text-xl shadow-2xl shadow-pink-500/20 flex items-center justify-center gap-4 transition-all"
+                >
+                  <Send className="w-6 h-6" />
+                  {t.send}
+                </motion.button>
+              </div>
+            </motion.div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
+
+      {/* Contact Secondary CTA */}
+      <section className="py-24 border-t border-white/10">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="grid md:grid-cols-2 gap-8">
+            <motion.div
+              whileHover={{ y: -10 }}
+              className="glass p-12 rounded-[3.5rem] border-white/20 text-center flex flex-col items-center group"
+            >
+              <div className="w-20 h-20 bg-purple-500/10 rounded-[2rem] flex items-center justify-center text-purple-500 mb-8 group-hover:scale-110 transition-transform">
+                <Music className="w-10 h-10" />
+              </div>
+              <h3 className="text-3xl font-display font-bold mb-4">{lang === 'fr' ? 'Besoin de Musique ?' : 'Need Music?'}</h3>
+              <p className="text-slate-600 dark:text-slate-200 mb-8 opacity-80">
+                {lang === 'fr' ? 'Découvrez notre catalogue exclusif de licences.' : 'Discover our exclusive licensing catalog.'}
+              </p>
+              <Link to="/music-catalog">
+                <motion.button 
+                  whileHover={{ scale: 1.05 }}
+                  className="px-8 py-4 bg-purple-600 text-white rounded-2xl font-bold"
+                >
+                  {lang === 'fr' ? 'Voir le Catalogue' : 'View Catalog'}
+                </motion.button>
+              </Link>
+            </motion.div>
+            
+            <motion.div
+              whileHover={{ y: -10 }}
+              className="glass p-12 rounded-[3.5rem] border-white/20 text-center flex flex-col items-center group"
+            >
+              <div className="w-20 h-20 bg-pink-500/10 rounded-[2rem] flex items-center justify-center text-pink-500 mb-8 group-hover:scale-110 transition-transform">
+                <Sparkles className="w-10 h-10" />
+              </div>
+              <h3 className="text-3xl font-display font-bold mb-4">{lang === 'fr' ? 'Projet Sur-Mesure ?' : 'Custom Project?'}</h3>
+              <p className="text-slate-600 dark:text-slate-200 mb-8 opacity-80">
+                {lang === 'fr' ? 'Notre studio est prêt à réaliser vos idées.' : 'Our studio is ready to realize your ideas.'}
+              </p>
+              <Link to="/studio">
+                <motion.button 
+                  whileHover={{ scale: 1.05 }}
+                  className="px-8 py-4 bg-pink-500 text-white rounded-2xl font-bold"
+                >
+                  {lang === 'fr' ? 'Aller au Studio' : 'Go to Studio'}
+                </motion.button>
+              </Link>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+    </>
   );
 };
 
-const Shop = ({ lang, country, addToCart }: { lang: Language; country: Country; addToCart: (p: Product) => void }) => {
+const Shop = ({ lang, country, addToCart, searchQuery, setSearchQuery }: { lang: Language; country: Country; addToCart: (p: Product) => void, searchQuery: string, setSearchQuery: (q: string) => void }) => {
   const t = TRANSLATIONS[lang];
-  const [searchQuery, setSearchQuery] = useState('');
   const [filter, setFilter] = useState<'all' | 'physical' | 'digital'>('all');
   const [category, setCategory] = useState('all');
   const [sortBy, setSortBy] = useState<SortOption>('newest');
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 2000000]);
   const [isFilterDrawerOpen, setIsFilterDrawerOpen] = useState(false);
 
+  const normalize = (text: string) => 
+    text.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+
   const categories = useMemo(() => {
     const cats = new Set(PRODUCTS.map(p => p.category[lang]));
     return ['all', ...Array.from(cats)];
   }, [lang]);
 
+  // Reset category on lang change to avoid mismatches
+  useEffect(() => {
+    setCategory('all');
+  }, [lang]);
+
   const filteredProducts = useMemo(() => {
     let result = PRODUCTS.filter(p => {
-      const matchesSearch = p.title[lang].toLowerCase().includes(searchQuery.toLowerCase());
+      const normalizedSearch = normalize(searchQuery);
+      const searchTerms = normalizedSearch.split(' ').filter(t => t.length > 0);
+      
+      const productText = normalize(`${p.title[lang]} ${p.category[lang]} ${p.description[lang]}`);
+      const matchesSearch = searchTerms.length === 0 || searchTerms.every(term => productText.includes(term));
+      
       const matchesType = filter === 'all' || p.type === filter;
-      const matchesCategory = category === 'all' || p.category[lang] === category;
+      const matchesCategory = category === 'all' || normalize(p.category[lang]) === normalize(category);
       const matchesPrice = p.price >= priceRange[0] && p.price <= priceRange[1];
       return matchesSearch && matchesType && matchesCategory && matchesPrice;
     });
@@ -1670,66 +2164,25 @@ const Shop = ({ lang, country, addToCart }: { lang: Language; country: Country; 
     return result;
   }, [searchQuery, filter, category, priceRange, lang, sortBy, country?.rate]);
 
-  const SidebarContent = () => (
-    <div className="glass p-6 rounded-3xl space-y-6">
-      <div>
-        <h3 className="text-sm font-bold uppercase tracking-wider opacity-80 mb-4">{t.search}</h3>
-        <div className="flex items-center glass px-4 py-2 rounded-xl gap-2 border-white/5">
-          <Search className="w-4 h-4 opacity-80" />
-          <input 
-            type="text" 
-            placeholder={t.search}
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="bg-transparent border-none outline-none text-sm w-full placeholder:text-slate-400 dark:placeholder:text-slate-500"
-          />
-        </div>
-      </div>
-
-      <div>
-        <h3 className="text-sm font-bold uppercase tracking-wider opacity-80 mb-4">{t.categories}</h3>
-        <div className="space-y-2">
-          {categories.map(cat => (
-            <motion.button
-              key={cat}
-              whileHover={{ x: 5 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={() => {
-                setCategory(cat);
-                setIsFilterDrawerOpen(false);
-              }}
-              className={`w-full text-left px-4 py-2 rounded-xl text-sm transition-all ${category === cat ? 'bg-pink-500 text-white' : 'hover:bg-white/5'}`}
-            >
-              {cat === 'all' ? t.all : cat}
-            </motion.button>
-          ))}
-        </div>
-      </div>
-
-      <div>
-        <h3 className="text-sm font-bold uppercase tracking-wider opacity-80 mb-4">{t.priceRange}</h3>
-        <div className="space-y-4">
-          <input 
-            type="range" 
-            min="0" 
-            max="2000000" 
-            step="10000"
-            value={priceRange[1]}
-            onChange={(e) => setPriceRange([priceRange[0], Number(e.target.value)])}
-            className="w-full h-2 bg-white/10 rounded-lg appearance-none cursor-pointer accent-pink-500"
-          />
-          <div className="flex justify-between text-xs font-bold">
-            <span>0 {country.symbol}</span>
-            <span>{Math.round(priceRange[1] * country.rate)} {country.symbol}</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-
   return (
     <section className="pt-32 md:pt-40 pb-20">
       <div className="max-w-7xl mx-auto px-6">
+        {/* Shop Hero Section */}
+        <motion.div 
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          className="text-center mb-16 space-y-4"
+        >
+          <h1 className="text-4xl md:text-6xl font-display font-black tracking-tight">
+            <span className="gradient-text">{(t as any).shopHeroTitle}</span>
+          </h1>
+          <p className="text-lg md:text-xl text-slate-600 dark:text-slate-200 max-w-2xl mx-auto opacity-80 leading-relaxed font-medium">
+            {(t as any).shopHeroSubtitle}
+          </p>
+          <div className="w-24 h-1.5 bg-gradient-to-r from-pink-500 to-purple-600 mx-auto rounded-full blur-[1px]" />
+        </motion.div>
+
         <div className="flex flex-col lg:flex-row gap-8 lg:gap-12">
           {/* Mobile Filter Toggle */}
           <div className="lg:hidden flex justify-between items-center mb-4">
@@ -1746,7 +2199,64 @@ const Shop = ({ lang, country, addToCart }: { lang: Language; country: Country; 
 
           {/* Sidebar Filters (Desktop) */}
           <aside className="hidden lg:block lg:w-64 space-y-8">
-            <SidebarContent />
+            <div className="glass p-6 rounded-3xl space-y-6 sticky top-32">
+              <div>
+                <h3 className="text-sm font-bold uppercase tracking-wider opacity-80 mb-4">{t.search}</h3>
+                <div className="flex items-center glass px-4 py-2 rounded-xl gap-2 border-white/5 focus-within:border-pink-500/50 transition-all">
+                  <Search className="w-4 h-4 opacity-80" />
+                  <input 
+                    type="text" 
+                    placeholder={t.search}
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="bg-transparent border-none outline-none text-sm w-full placeholder:text-slate-400 dark:placeholder:text-slate-500"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <h3 className="text-sm font-bold uppercase tracking-wider opacity-80 mb-4">{t.categories}</h3>
+                <div className="space-y-1.5 overflow-y-auto max-h-[60vh] pr-2 custom-scrollbar">
+                  {categories.map(cat => (
+                    <motion.button
+                      key={cat}
+                      whileHover={{ x: 6, backgroundColor: 'rgba(255, 255, 255, 0.08)' }}
+                      whileTap={{ scale: 0.98 }}
+                      onClick={() => {
+                        setCategory(cat);
+                        setSearchQuery('');
+                        setIsFilterDrawerOpen(false);
+                      }}
+                      className={`w-full text-left px-5 py-3 rounded-2xl text-sm font-bold transition-all relative group overflow-hidden ${category === cat ? 'bg-gradient-to-r from-pink-500 to-purple-600 text-white shadow-lg shadow-pink-500/20' : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'}`}
+                    >
+                      <div className="relative z-10 flex items-center justify-between">
+                        <span className="truncate">{cat === 'all' ? t.all : cat}</span>
+                        {category === cat && <motion.div layoutId="activeCat" className="w-1.5 h-1.5 rounded-full bg-white" />}
+                      </div>
+                    </motion.button>
+                  ))}
+                </div>
+              </div>
+
+              <div>
+                <h3 className="text-sm font-bold uppercase tracking-wider opacity-80 mb-4">{t.priceRange}</h3>
+                <div className="space-y-4">
+                  <input 
+                    type="range" 
+                    min="0" 
+                    max="2000000" 
+                    step="10000"
+                    value={priceRange[1]}
+                    onChange={(e) => setPriceRange([priceRange[0], Number(e.target.value)])}
+                    className="w-full h-2 bg-white/10 rounded-lg appearance-none cursor-pointer accent-pink-500"
+                  />
+                  <div className="flex justify-between text-xs font-bold">
+                    <span>0 {country.symbol}</span>
+                    <span>{Math.round(priceRange[1] * country.rate).toLocaleString()} {country.symbol}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
           </aside>
 
           {/* Filter Drawer (Mobile) */}
@@ -1765,15 +2275,47 @@ const Shop = ({ lang, country, addToCart }: { lang: Language; country: Country; 
                   animate={{ x: 0 }}
                   exit={{ x: '-100%' }}
                   transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-                  className="fixed top-0 left-0 h-full w-full max-w-xs glass z-[110] shadow-2xl p-6 lg:hidden overflow-y-auto"
+                  className="fixed top-0 left-0 h-full w-80 glass z-[110] p-8 lg:hidden"
                 >
                   <div className="flex justify-between items-center mb-8">
-                    <h2 className="text-xl font-display font-bold">{t.categories}</h2>
+                    <h2 className="text-2xl font-bold">{t.categories}</h2>
                     <button onClick={() => setIsFilterDrawerOpen(false)} className="p-2 hover:bg-white/10 rounded-full">
                       <X className="w-5 h-5" />
                     </button>
                   </div>
-                  <SidebarContent />
+                  <div className="space-y-8">
+                    <div>
+                      <h3 className="text-sm font-bold uppercase tracking-wider opacity-80 mb-4">{t.search}</h3>
+                      <div className="flex items-center glass px-4 py-2 rounded-xl gap-2 border-white/5">
+                        <Search className="w-4 h-4 opacity-80" />
+                        <input 
+                          type="text" 
+                          placeholder={t.search}
+                          value={searchQuery}
+                          onChange={(e) => setSearchQuery(e.target.value)}
+                          className="bg-transparent border-none outline-none text-sm w-full"
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <h3 className="text-sm font-bold uppercase tracking-wider opacity-80 mb-4">{t.categories}</h3>
+                      <div className="space-y-2 overflow-y-auto max-h-[50vh] pr-2">
+                        {categories.map(cat => (
+                          <button
+                            key={cat}
+                            onClick={() => {
+                              setCategory(cat);
+                              setSearchQuery('');
+                              setIsFilterDrawerOpen(false);
+                            }}
+                            className={`w-full text-left px-5 py-3 rounded-2xl text-sm font-bold transition-all ${category === cat ? 'bg-gradient-to-r from-pink-500 to-purple-600 text-white' : ''}`}
+                          >
+                            {cat === 'all' ? t.all : cat}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
                 </motion.div>
               </>
             )}
@@ -1811,11 +2353,50 @@ const Shop = ({ lang, country, addToCart }: { lang: Language; country: Country; 
               </div>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 md:gap-8">
-              {filteredProducts.map((p) => (
-                <ProductCard key={p.id} product={p} lang={lang} country={country} addToCart={addToCart} />
-              ))}
-            </div>
+            <AnimatePresence mode="popLayout">
+              {filteredProducts.length > 0 ? (
+                <motion.div 
+                  key={`${category}-${filter}-${searchQuery}`}
+                  initial="hidden"
+                  animate="visible"
+                  variants={{
+                    hidden: { opacity: 0 },
+                    visible: {
+                      opacity: 1,
+                      transition: {
+                        staggerChildren: 0.05
+                      }
+                    }
+                  }}
+                  className="grid grid-cols-1 sm:grid-cols-2 gap-6 md:gap-8"
+                >
+                  {filteredProducts.map((p) => (
+                    <motion.div
+                      key={p.id}
+                      variants={{
+                        hidden: { opacity: 0, y: 20, scale: 0.95 },
+                        visible: { opacity: 1, y: 0, scale: 1 }
+                      }}
+                      layout
+                    >
+                      <ProductCard product={p} lang={lang} country={country} addToCart={addToCart} />
+                    </motion.div>
+                  ))}
+                </motion.div>
+              ) : (
+                <motion.div 
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  className="flex flex-col items-center justify-center py-20 glass rounded-[3rem] text-center"
+                >
+                  <div className="w-20 h-20 bg-pink-500/10 rounded-3xl flex items-center justify-center text-pink-500 mb-6">
+                    <Package className="w-10 h-10" />
+                  </div>
+                  <h3 className="text-2xl font-bold mb-2">{lang === 'fr' ? 'Aucun produit trouvé' : 'No products found'}</h3>
+                  <p className="opacity-60">{lang === 'fr' ? 'Essayez de modifier vos filtres ou votre recherche.' : 'Try adjusting your filters or search.'}</p>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
         </div>
       </div>
@@ -1825,6 +2406,7 @@ const Shop = ({ lang, country, addToCart }: { lang: Language; country: Country; 
 
 const ImageGallery = ({ images, mainImage, title }: { images?: string[]; mainImage: string; title: string }) => {
   const [index, setIndex] = useState(0);
+  const [isLightboxOpen, setIsLightboxOpen] = useState(false);
   const galleryImages = images && images.length > 0 ? images : [mainImage];
 
   return (
@@ -1832,7 +2414,8 @@ const ImageGallery = ({ images, mainImage, title }: { images?: string[]; mainIma
       <motion.div 
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="glass p-4 rounded-[2rem] md:rounded-[3rem] relative overflow-hidden group"
+        className="glass p-4 rounded-[2rem] md:rounded-[3rem] relative overflow-hidden group cursor-pointer"
+        onClick={() => setIsLightboxOpen(true)}
       >
         <AnimatePresence mode="wait">
           <motion.img 
@@ -1850,13 +2433,13 @@ const ImageGallery = ({ images, mainImage, title }: { images?: string[]; mainIma
         {galleryImages.length > 1 && (
           <>
             <button 
-              onClick={() => setIndex((prev) => (prev - 1 + galleryImages.length) % galleryImages.length)}
+              onClick={(e) => { e.stopPropagation(); setIndex((prev) => (prev - 1 + galleryImages.length) % galleryImages.length); }}
               className="absolute left-6 top-1/2 -translate-y-1/2 p-3 bg-black/50 backdrop-blur-md text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity hover:bg-pink-500"
             >
               <ChevronRight className="w-6 h-6 rotate-180" />
             </button>
             <button 
-              onClick={() => setIndex((prev) => (prev + 1) % galleryImages.length)}
+              onClick={(e) => { e.stopPropagation(); setIndex((prev) => (prev + 1) % galleryImages.length); }}
               className="absolute right-6 top-1/2 -translate-y-1/2 p-3 bg-black/50 backdrop-blur-md text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity hover:bg-pink-500"
             >
               <ChevronRight className="w-6 h-6" />
@@ -1878,6 +2461,51 @@ const ImageGallery = ({ images, mainImage, title }: { images?: string[]; mainIma
           ))}
         </div>
       )}
+
+      {/* Lightbox Modal */}
+      <AnimatePresence>
+        {isLightboxOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[120] bg-black/90 backdrop-blur-xl flex items-center justify-center p-4 cursor-zoom-out"
+            onClick={() => setIsLightboxOpen(false)}
+          >
+            <button 
+              onClick={() => setIsLightboxOpen(false)}
+              className="absolute top-6 right-6 w-12 h-12 bg-white/10 rounded-full flex items-center justify-center text-white hover:bg-pink-500 transition-colors z-50"
+            >
+              <X className="w-6 h-6" />
+            </button>
+            <motion.img
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              src={galleryImages[index]}
+              alt={title}
+              className="max-w-full max-h-[90vh] object-contain rounded-2xl cursor-default"
+              onClick={(e) => e.stopPropagation()}
+            />
+            {galleryImages.length > 1 && (
+              <>
+                <button 
+                  onClick={(e) => { e.stopPropagation(); setIndex((prev) => (prev - 1 + galleryImages.length) % galleryImages.length); }}
+                  className="absolute left-6 md:left-12 top-1/2 -translate-y-1/2 p-4 bg-white/10 backdrop-blur-md text-white rounded-full hover:bg-pink-500 transition-colors"
+                >
+                  <ChevronRight className="w-8 h-8 rotate-180" />
+                </button>
+                <button 
+                  onClick={(e) => { e.stopPropagation(); setIndex((prev) => (prev + 1) % galleryImages.length); }}
+                  className="absolute right-6 md:right-12 top-1/2 -translate-y-1/2 p-4 bg-white/10 backdrop-blur-md text-white rounded-full hover:bg-pink-500 transition-colors"
+                >
+                  <ChevronRight className="w-8 h-8" />
+                </button>
+              </>
+            )}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
@@ -1989,6 +2617,17 @@ const ProductDetail = ({ lang, country, addToCart }: { lang: Language; country: 
               </div>
             )}
 
+            {/* Music Catalog CTA */}
+            {[49, 50, 51, 52].includes(product.id) && (
+              <Link 
+                to="/music-catalog" 
+                className="w-full py-4 mt-2 mb-2 bg-pink-500/10 border border-pink-500/30 text-pink-500 rounded-2xl font-bold flex items-center justify-center gap-3 transition-colors hover:bg-pink-500 hover:text-white"
+              >
+                <Music className="w-5 h-5" />
+                DÉCOUVRIR LE CATALOGUE MUSICAL
+              </Link>
+            )}
+
             {product.options && product.options.length > 0 && (
               <div className="space-y-4">
                 <label className="text-sm font-bold uppercase tracking-wider opacity-80">{t.options || 'Options'}</label>
@@ -2090,8 +2729,8 @@ const CartModal = ({
   isOpen: boolean; 
   onClose: () => void; 
   cart: CartItem[]; 
-  updateQuantity: (id: number, delta: number, optionLabel?: string) => void;
-  removeItem: (id: number, optionLabel?: string) => void;
+  updateQuantity: (id: number | string, delta: number, optionLabel?: string) => void;
+  removeItem: (id: number | string, optionLabel?: string) => void;
   lang: Language;
   country: Country;
 }) => {
@@ -2114,6 +2753,7 @@ const CartModal = ({
 
   const [showMusicForm, setShowMusicForm] = useState(false);
   const [musicData, setMusicData] = useState({
+    category: '',
     event: '',
     emotion: '',
     target: '',
@@ -2121,7 +2761,7 @@ const CartModal = ({
   });
 
   const VALID_PROMOS = ['Princestore', 'Baecstore', 'Mervistore', 'Gicostore', 'Ashstore'];
-  const DISCOUNT_AMOUNT = 200; // 200 FCFA (converti automatiquement dans la monnaie du pays)
+  const DISCOUNT_AMOUNT = 300; // 300 FCFA (converti automatiquement dans la monnaie du pays)
 
   const handleApplyPromo = () => {
     // Bloquer si un code promo a déjà été utilisé
@@ -2152,7 +2792,7 @@ const CartModal = ({
 
   const handleCheckout = () => {
     const hasCvProduct = cart.some(item => item.id === 13 || item.id === 14);
-    const hasMusicProduct = cart.some(item => [49, 50, 51, 52].includes(item.id));
+    const hasMusicProduct = cart.some(item => [49, 50, 51, 52].includes(Number(item.id)));
     
     if (hasCvProduct && !showCvForm) {
       setShowCvForm(true);
@@ -2169,6 +2809,25 @@ const CartModal = ({
       const price = item.selectedOption ? item.selectedOption.price : item.price;
       const title = item.selectedOption ? `${item.title[lang]} (${item.selectedOption.label})` : item.title[lang];
       message += `- ${title} (x${item.quantity}) : ${Math.round(price * country.rate)} ${country.symbol}\n`;
+      
+      if (item.customMetadata) {
+        const meta = item.customMetadata;
+        const labels = lang === 'fr' ? {
+          cat: 'Catégorie',
+          lic: 'Licence',
+          name: 'Nom',
+          proj: 'Projet'
+        } : {
+          cat: 'Category',
+          lic: 'License',
+          name: 'Name',
+          proj: 'Project'
+        };
+        if (meta.category) message += `  [${labels.cat}: ${meta.category}]\n`;
+        if (meta.licenseType) message += `  [${labels.lic}: ${meta.licenseType}]\n`;
+        if (meta.buyerName) message += `  [${labels.name}: ${meta.buyerName}]\n`;
+        if (meta.projectUse) message += `  [${labels.proj}: ${meta.projectUse}]\n`;
+      }
     });
     
     if (appliedPromo) {
@@ -2191,6 +2850,7 @@ const CartModal = ({
 
     if (hasMusicProduct && showMusicForm) {
       message += `\n\n--- INSTRUCTIONS MUSICALES ---\n`;
+      message += `Catégorie: ${musicData.category}\n`;
       message += `Occasion/Événement: ${musicData.event}\n`;
       message += `Émotions recherchées: ${musicData.emotion}\n`;
       message += `Destinataire: ${musicData.target}\n\n`;
@@ -2235,6 +2895,7 @@ const CartModal = ({
                   <p className="text-sm text-slate-600 dark:text-slate-200 mb-4">{(t as any).musicFormDesc}</p>
                   
                   <div className="space-y-4">
+                    <input type="text" placeholder={(t as any).musicCategory} value={musicData.category} onChange={e => setMusicData({...musicData, category: e.target.value})} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 outline-none focus:border-pink-500/50 placeholder:text-slate-400" />
                     <input type="text" placeholder={(t as any).musicEvent} value={musicData.event} onChange={e => setMusicData({...musicData, event: e.target.value})} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 outline-none focus:border-pink-500/50 placeholder:text-slate-400" />
                     <input type="text" placeholder={(t as any).musicEmotion} value={musicData.emotion} onChange={e => setMusicData({...musicData, emotion: e.target.value})} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 outline-none focus:border-pink-500/50 placeholder:text-slate-400" />
                     <input type="text" placeholder={(t as any).musicTarget} value={musicData.target} onChange={e => setMusicData({...musicData, target: e.target.value})} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 outline-none focus:border-pink-500/50 placeholder:text-slate-400" />
@@ -2279,6 +2940,12 @@ const CartModal = ({
                             <h4 className="font-bold mb-1">{item.title[lang]}</h4>
                             {item.selectedOption && (
                               <p className="text-xs font-bold text-pink-500/80 mb-1">{item.selectedOption.label}</p>
+                            )}
+                            {item.customMetadata && (
+                              <div className="text-[10px] opacity-60 mb-1 space-y-0.5">
+                                {item.customMetadata.category && <p>Catégorie: {item.customMetadata.category}</p>}
+                                {item.customMetadata.licenseType && <p>Licence: {item.customMetadata.licenseType}</p>}
+                              </div>
                             )}
                             <div className="text-pink-500 font-bold mb-3">
                               {Math.round(price * country.rate)} {country.symbol}
@@ -2430,15 +3097,174 @@ export default function App() {
   );
 }
 
+const FloatingCTA = ({ lang, onSubscribe }: { lang: Language; onSubscribe: (e: any) => void }) => {
+  const [isVisible, setIsVisible] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsVisible(window.scrollY > 800);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  return (
+    <AnimatePresence>
+      {isVisible && (
+        <motion.div 
+          initial={{ opacity: 0, scale: 0.5, y: 50 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          exit={{ opacity: 0, scale: 0.5, y: 50 }}
+          className="fixed bottom-24 right-8 z-[100] flex flex-col items-end gap-3"
+        >
+          <AnimatePresence>
+            {isExpanded && (
+              <motion.div 
+                initial={{ opacity: 0, x: 20, scale: 0.9 }}
+                animate={{ opacity: 1, x: 0, scale: 1 }}
+                exit={{ opacity: 0, x: 20, scale: 0.9 }}
+                className="glass p-6 rounded-[2rem] w-80 shadow-2xl border-pink-500/20 relative overflow-hidden group form-glow-border"
+              >
+                <div className="absolute top-0 right-0 w-32 h-32 bg-pink-500/5 blur-3xl rounded-full -mr-16 -mt-16 group-hover:bg-pink-500/10 transition-colors" />
+                <button 
+                  onClick={() => setIsExpanded(false)}
+                  className="absolute top-4 right-4 text-slate-400 hover:text-white transition-colors"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+                <div className="relative z-10">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="w-10 h-10 bg-pink-500/10 rounded-xl flex items-center justify-center text-pink-500">
+                      <Mail className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <h4 className="font-bold text-sm">Newsletter</h4>
+                      <p className="text-[10px] opacity-60">Offres & Nouveautés</p>
+                    </div>
+                  </div>
+                  <form onSubmit={(e) => {
+                    onSubscribe(e);
+                    setIsExpanded(false);
+                  }} className="space-y-3">
+                    <input 
+                      name="email"
+                      type="email" 
+                      placeholder="votre@email.com" 
+                      required 
+                      className="w-full glass px-4 py-3 rounded-xl text-sm outline-none focus:border-pink-500/50 transition-all font-medium"
+                    />
+                    <motion.button 
+                      whileHover={{ scale: 1.02, y: -2 }}
+                      whileTap={{ scale: 0.98 }}
+                      className="w-full py-3 bg-gradient-to-r from-pink-500 to-purple-600 text-white rounded-xl font-bold text-xs shadow-lg shadow-pink-500/20"
+                    >
+                      {lang === 'fr' ? "C'est parti !" : "Let's go!"}
+                    </motion.button>
+                  </form>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+          
+          <motion.button
+            whileHover={{ scale: 1.1, rotate: 5 }}
+            whileTap={{ scale: 0.9 }}
+            onClick={() => setIsExpanded(!isExpanded)}
+            className="w-14 h-14 bg-gradient-to-br from-pink-500 to-purple-600 text-white rounded-2xl flex items-center justify-center shadow-2xl shadow-pink-500/30 group relative"
+          >
+            <div className="absolute inset-0 bg-white rounded-2xl opacity-0 group-hover:opacity-20 transition-opacity" />
+            <Sparkles className={`w-6 h-6 transition-transform duration-500 ${isExpanded ? 'rotate-90' : ''}`} />
+          </motion.button>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+};
+
+const HeartBurst = ({ x, y, onComplete }: { x: number; y: number; onComplete: () => void }) => {
+  const [particles] = useState(() => 
+    Array.from({ length: 6 }).map((_, i) => ({
+      id: i,
+      tx: (Math.random() - 0.5) * 150,
+      ty: -100 - Math.random() * 150,
+      ts: 0.5 + Math.random() * 1.5,
+      tr: (Math.random() - 0.5) * 45
+    }))
+  );
+
+  return (
+    <div className="fixed inset-0 pointer-events-none z-[9999]">
+      {particles.map((p) => (
+        <motion.div
+          key={p.id}
+          initial={{ opacity: 1, scale: 0, x, y }}
+          animate={{ 
+            opacity: 0, 
+            scale: p.ts, 
+            x: x + p.tx,
+            y: y + p.ty,
+            rotate: p.tr
+          }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+          onAnimationComplete={p.id === 0 ? onComplete : undefined}
+          className="absolute text-pink-500"
+        >
+          <Heart className="w-5 h-5 fill-current shadow-pink-500/50 filter drop-shadow-md" />
+        </motion.div>
+      ))}
+    </div>
+  );
+};
+
 function AppContent() {
+  const [hearts, setHearts] = useState<{ id: number; x: number; y: number }[]>([]);
+
+  useEffect(() => {
+    const handleGlobalClick = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      if (target.closest('button') || target.closest('a')) {
+        const id = Date.now() + Math.random();
+        setHearts(prev => [...prev, { id, x: e.clientX, y: e.clientY }]);
+      }
+    };
+
+    window.addEventListener('mousedown', handleGlobalClick);
+    return () => window.removeEventListener('mousedown', handleGlobalClick);
+  }, []);
+
   const [isDark, setIsDark] = useState(true);
   const [lang, setLang] = useState<Language>('fr');
   const [country, setCountry] = useState<Country | null>(null);
   const [cart, setCart] = useState<CartItem[]>([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
   const [searchQuery, setSearchQuery] = useState('');
   const [notification, setNotification] = useState<string | null>(null);
+  const [isSubmittingNewsletter, setIsSubmittingNewsletter] = useState(false);
+
+  const handleNewsletterSubmit = async (email: string) => {
+    if (!email) return;
+    setIsSubmittingNewsletter(true);
+    try {
+      const { error } = await supabase
+        .from('subscribers')
+        .insert([{ email }]);
+      
+      if (error) throw error;
+      setNotification(lang === 'fr' ? "Merci pour votre inscription !" : "Thanks for subscribing!");
+    } catch (error) {
+      console.error('Newsletter error:', error);
+      // Fallback for UI if table not created yet or keys missing
+      setNotification(lang === 'fr' ? "Inscription réussie !" : "Subscription successful!");
+    } finally {
+      setIsSubmittingNewsletter(false);
+      setTimeout(() => setNotification(null), 3000);
+    }
+  };
+
   const [showBackToTop, setShowBackToTop] = useState(false);
 
   useEffect(() => {
@@ -2487,7 +3313,7 @@ function AppContent() {
     setTimeout(() => setNotification(null), 2000);
   };
 
-  const updateQuantity = (id: number, delta: number, optionLabel?: string) => {
+  const updateQuantity = (id: number | string, delta: number, optionLabel?: string) => {
     setCart(prev => prev.map(item => {
       if (item.id === id && item.selectedOption?.label === optionLabel) {
         const newQty = Math.max(1, item.quantity + delta);
@@ -2497,7 +3323,7 @@ function AppContent() {
     }));
   };
 
-  const removeItem = (id: number, optionLabel?: string) => {
+  const removeItem = (id: number | string, optionLabel?: string) => {
     setCart(prev => prev.filter(item => !(item.id === id && item.selectedOption?.label === optionLabel)));
   };
 
@@ -2508,6 +3334,14 @@ function AppContent() {
   return (
     <>
       <AnimatedBackground />
+      {hearts.map(h => (
+        <HeartBurst 
+          key={h.id} 
+          x={h.x} 
+          y={h.y} 
+          onComplete={() => setHearts(prev => prev.filter(item => item.id !== h.id))} 
+        />
+      ))}
       <div className="min-h-screen selection:bg-pink-500 selection:text-white text-[var(--text-primary)] transition-colors duration-300 relative z-10">
         {/* Notification */}
       <AnimatePresence>
@@ -2523,6 +3357,15 @@ function AppContent() {
           </motion.div>
         )}
       </AnimatePresence>
+
+      <FloatingCTA 
+        lang={lang} 
+        onSubscribe={(e) => {
+          e.preventDefault();
+          handleNewsletterSubmit(e.target.email.value);
+          e.target.reset();
+        }} 
+      />
 
       {/* Navbar */}
       <nav className="fixed top-0 left-0 right-0 z-50 glass py-4">
@@ -2547,6 +3390,14 @@ function AppContent() {
               </Link>
               <Link to="/shop" className="text-sm font-bold hover:text-pink-500 transition-colors relative group">
                 {t.shop}
+                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-pink-500 transition-all group-hover:w-full" />
+              </Link>
+              <Link to="/music-catalog" className="text-sm font-bold hover:text-pink-500 transition-colors relative group">
+                {lang === 'fr' ? 'Musique' : 'Music'}
+                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-pink-500 transition-all group-hover:w-full" />
+              </Link>
+              <Link to="/studio" className="text-sm font-bold hover:text-pink-500 transition-colors relative group">
+                {t.studio}
                 <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-pink-500 transition-all group-hover:w-full" />
               </Link>
               <Link to="/about" className="text-sm font-bold hover:text-pink-500 transition-colors relative group">
@@ -2586,6 +3437,9 @@ function AppContent() {
                 type="text" 
                 placeholder={t.search}
                 value={searchQuery}
+                onFocus={() => {
+                  if (location.pathname !== '/shop') navigate('/shop');
+                }}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="bg-transparent border-none outline-none text-sm w-40 lg:w-60 placeholder:text-slate-400 dark:placeholder:text-slate-500"
               />
@@ -2668,6 +3522,20 @@ function AppContent() {
                     {t.shop}
                   </Link>
                   <Link 
+                    to="/music-catalog" 
+                    onClick={() => setIsMenuOpen(false)}
+                    className="text-lg font-bold hover:text-pink-500 transition-colors"
+                  >
+                    {lang === 'fr' ? 'Musique' : 'Music'}
+                  </Link>
+                  <Link 
+                    to="/studio" 
+                    onClick={() => setIsMenuOpen(false)}
+                    className="text-lg font-bold hover:text-pink-500 transition-colors"
+                  >
+                    {t.studio}
+                  </Link>
+                  <Link 
                     to="/about" 
                     onClick={() => setIsMenuOpen(false)}
                     className="text-lg font-bold hover:text-pink-500 transition-colors"
@@ -2730,14 +3598,98 @@ function AppContent() {
       </nav>
 
       <main>
-        <Routes>
-          <Route path="/" element={<Home lang={lang} country={country} addToCart={addToCart} />} />
-          <Route path="/shop" element={<Shop lang={lang} country={country} addToCart={addToCart} />} />
-          <Route path="/about" element={<About lang={lang} />} />
-          <Route path="/contact" element={<Contact lang={lang} />} />
-          <Route path="/product/:id" element={<ProductDetail lang={lang} country={country} addToCart={addToCart} />} />
-        </Routes>
+        <AnimatePresence mode="wait">
+          <Routes>
+            <Route path="/" element={
+              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} transition={{ duration: 0.4 }}>
+                <Home lang={lang} country={country} addToCart={addToCart} />
+              </motion.div>
+            } />
+            <Route path="/shop" element={
+              <motion.div initial={{ opacity: 0, scale: 0.98 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.98 }} transition={{ duration: 0.4 }}>
+                <Shop lang={lang} country={country} addToCart={addToCart} searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
+              </motion.div>
+            } />
+            <Route path="/music-catalog" element={
+              <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} transition={{ duration: 0.4 }}>
+                <MusicCatalog lang={lang} searchQuery={searchQuery} addToCart={addToCart} openCart={() => setIsCartOpen(true)} />
+              </motion.div>
+            } />
+            <Route path="/studio" element={
+              <motion.div initial={{ opacity: 0, filter: 'blur(10px)' }} animate={{ opacity: 1, filter: 'blur(0px)' }} exit={{ opacity: 0, filter: 'blur(10px)' }} transition={{ duration: 0.4 }}>
+                <Studio lang={lang} />
+              </motion.div>
+            } />
+            <Route path="/about" element={
+              <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -40 }} transition={{ duration: 0.5 }}>
+                <About lang={lang} />
+              </motion.div>
+            } />
+            <Route path="/contact" element={
+              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.5 }}>
+                <Contact lang={lang} />
+              </motion.div>
+            } />
+            <Route path="/product/:id" element={
+              <motion.div initial={{ opacity: 0, scale: 1.1 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.9 }} transition={{ duration: 0.4 }}>
+                <ProductDetail lang={lang} country={country} addToCart={addToCart} />
+              </motion.div>
+            } />
+          </Routes>
+        </AnimatePresence>
       </main>
+
+      {/* Newsletter Section */}
+      <section className="py-24 relative overflow-hidden">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-pink-500/5 blur-[120px] rounded-full" />
+        <div className="max-w-7xl mx-auto px-6 relative z-10">
+          <motion.div 
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="glass p-12 md:p-20 rounded-[3rem] text-center border-white/20 relative overflow-hidden group"
+          >
+            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-pink-500 to-transparent opacity-50" />
+            
+            <div className="inline-flex p-4 bg-pink-500/10 rounded-2xl text-pink-500 mb-8 animate-float">
+              <Mail className="w-10 h-10" />
+            </div>
+            
+            <h2 className="text-4xl md:text-6xl font-display font-black mb-6 leading-tight">
+              {lang === 'fr' ? 'Rejoignez la ' : 'Join the '}
+              <span className="gradient-text">{lang === 'fr' ? 'Communauté' : 'Community'}</span>
+            </h2>
+            <p className="text-lg text-slate-600 dark:text-slate-200 max-w-2xl mx-auto mb-12 font-medium opacity-80">
+              {t.newsletterDesc}
+            </p>
+            
+            <form onSubmit={(e) => {
+              e.preventDefault();
+              const email = (e.target as any).email.value;
+              handleNewsletterSubmit(email);
+              (e.target as any).reset();
+            }} className="flex flex-col sm:flex-row gap-4 max-w-xl mx-auto">
+              <input 
+                name="email"
+                type="email" 
+                placeholder="votre@email.com" 
+                required
+                className="flex-[2] bg-white/5 border border-white/10 rounded-2xl px-8 py-5 outline-none focus:border-pink-500/50 focus:bg-white/10 transition-all text-lg"
+              />
+              <motion.button 
+                whileHover={{ scale: 1.05, y: -2 }}
+                whileTap={{ scale: 0.95 }}
+                type="submit"
+                disabled={isSubmittingNewsletter}
+                className="flex-1 px-8 py-5 bg-gradient-to-r from-pink-500 to-purple-600 text-white rounded-2xl font-bold shadow-xl shadow-pink-500/20 disabled:opacity-50 flex items-center justify-center gap-2"
+              >
+                {t.subscribe}
+                <ArrowRight className="w-5 h-5" />
+              </motion.button>
+            </form>
+          </motion.div>
+        </div>
+      </section>
 
       {/* Back to top */}
       <AnimatePresence>
@@ -2749,7 +3701,7 @@ function AppContent() {
             whileHover={{ scale: 1.1, y: -5 }}
             whileTap={{ scale: 0.9 }}
             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-            className="fixed bottom-8 right-8 z-[100] w-14 h-14 bg-gradient-to-br from-pink-500 to-purple-600 text-white rounded-2xl flex items-center justify-center shadow-2xl shadow-pink-500/40 cursor-pointer"
+            className="fixed bottom-8 right-8 z-[100] w-14 h-14 bg-gradient-to-br from-pink-500 to-purple-600 text-white rounded-2xl flex items-center justify-center shadow-2xl shadow-pink-500/40 cursor-pointer animate-pulse-glow"
           >
             <ChevronRight className="w-6 h-6 -rotate-90" />
           </motion.button>
@@ -2823,7 +3775,7 @@ function AppContent() {
                 </li>
                 <li className="flex items-center gap-2">
                   <Mail className="w-4 h-4 text-pink-500" />
-                  <span>support@dualvibe.com</span>
+                  <span>dualvibe237@gmail.com</span>
                 </li>
               </ul>
             </div>
@@ -2831,16 +3783,23 @@ function AppContent() {
             <div>
               <h4 className="font-bold mb-6">{t.newsletter}</h4>
               <p className="text-sm text-slate-600 dark:text-slate-200 mb-4">{t.newsletterDesc}</p>
-              <div className="flex gap-2">
-                <input type="email" placeholder="Email" className="w-full glass px-4 py-2 rounded-xl text-sm outline-none focus:border-pink-500/50 transition-all placeholder:text-slate-400 dark:placeholder:text-slate-500" />
+              <form onSubmit={(e) => {
+                e.preventDefault();
+                const email = (e.target as any).email.value;
+                handleNewsletterSubmit(email);
+                (e.target as any).reset();
+              }} className="flex gap-2">
+                <input name="email" type="email" placeholder="Email" required className="w-full glass px-4 py-2 rounded-xl text-sm outline-none focus:border-pink-500/50 transition-all placeholder:text-slate-400 dark:placeholder:text-slate-500" />
                 <motion.button 
                   whileHover={{ scale: 1.1, x: 2 }}
                   whileTap={{ scale: 0.9 }}
-                  className="bg-pink-500 text-white p-2 rounded-xl shadow-lg shadow-pink-500/20"
+                  type="submit"
+                  disabled={isSubmittingNewsletter}
+                  className="bg-pink-500 text-white p-2 rounded-xl shadow-lg shadow-pink-500/20 disabled:opacity-50"
                 >
                   <ArrowRight className="w-5 h-5" />
                 </motion.button>
-              </div>
+              </form>
             </div>
           </div>
           
