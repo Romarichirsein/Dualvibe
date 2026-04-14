@@ -1593,65 +1593,55 @@ const AnimatedBackground = () => {
           className="absolute bottom-[-10%] left-[-15%] w-[55vw] h-[55vw] bg-pink-500/10 rounded-full blur-[120px] mix-blend-screen dark:mix-blend-soft-light" 
         />
 
-        {/* === FULL-SCREEN CIRCULATING SMOKE SYSTEM === */}
-        <div className="absolute inset-0 z-0">
-          {/* SVG turbulence filter for organic distortion */}
-          <svg style={{ position: 'absolute', width: 0, height: 0 }}>
-            <filter id="smoke-filter">
-              <feTurbulence type="fractalNoise" baseFrequency="0.008" numOctaves="4" seed="5">
-                <animate attributeName="baseFrequency" dur="80s" values="0.008;0.014;0.008" repeatCount="indefinite" />
-              </feTurbulence>
-              <feDisplacementMap in="SourceGraphic" scale="80" />
-            </filter>
-          </svg>
-
+        {/* === FULL-SCREEN CIRCULATING SMOKE SYSTEM (OPTIMIZED) === */}
+        <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
           {/* Layer 1 — Pink smoke top-left → bottom-right */}
           <motion.div
             animate={{ x: ['0%', '40%', '-20%', '0%'], y: ['0%', '30%', '-20%', '0%'], scale: [1, 1.3, 0.9, 1], opacity: [0.18, 0.28, 0.18] }}
             transition={{ duration: 22, repeat: Infinity, ease: 'easeInOut' }}
-            style={{ filter: 'url(#smoke-filter) blur(60px)', position: 'absolute', top: '-10%', left: '-10%', width: '55vw', height: '55vw', background: 'radial-gradient(circle, rgba(236,72,153,0.25) 0%, transparent 70%)', borderRadius: '50%' }}
+            style={{ filter: 'blur(80px)', willChange: 'transform', position: 'absolute', top: '-10%', left: '-10%', width: '55vw', height: '55vw', background: 'radial-gradient(circle, rgba(236,72,153,0.25) 0%, transparent 70%)', borderRadius: '50%' }}
           />
           {/* Layer 2 — Purple smoke top-right → center */}
           <motion.div
             animate={{ x: ['0%', '-50%', '20%', '0%'], y: ['0%', '40%', '-10%', '0%'], scale: [1.1, 0.8, 1.2, 1.1], opacity: [0.2, 0.12, 0.2] }}
             transition={{ duration: 28, repeat: Infinity, ease: 'easeInOut', delay: 5 }}
-            style={{ filter: 'url(#smoke-filter) blur(70px)', position: 'absolute', top: '-5%', right: '-10%', width: '60vw', height: '60vw', background: 'radial-gradient(circle, rgba(147,51,234,0.25) 0%, transparent 70%)', borderRadius: '50%' }}
+            style={{ filter: 'blur(90px)', willChange: 'transform', position: 'absolute', top: '-5%', right: '-10%', width: '60vw', height: '60vw', background: 'radial-gradient(circle, rgba(147,51,234,0.25) 0%, transparent 70%)', borderRadius: '50%' }}
           />
           {/* Layer 3 — Pink smoke center-left circling */}
           <motion.div
             animate={{ x: ['0%', '60%', '20%', '-30%', '0%'], y: ['0%', '-20%', '50%', '20%', '0%'], scale: [1, 1.4, 1, 0.9, 1], opacity: [0.15, 0.22, 0.1, 0.22, 0.15] }}
             transition={{ duration: 35, repeat: Infinity, ease: 'easeInOut', delay: 2 }}
-            style={{ filter: 'url(#smoke-filter) blur(80px)', position: 'absolute', top: '30%', left: '-5%', width: '50vw', height: '50vw', background: 'radial-gradient(circle, rgba(217,70,239,0.2) 0%, transparent 70%)', borderRadius: '50%' }}
+            style={{ filter: 'blur(100px)', willChange: 'transform', position: 'absolute', top: '30%', left: '-5%', width: '50vw', height: '50vw', background: 'radial-gradient(circle, rgba(217,70,239,0.2) 0%, transparent 70%)', borderRadius: '50%' }}
           />
           {/* Layer 4 — Purple smoke center-right */}
           <motion.div
             animate={{ x: ['0%', '-40%', '-60%', '0%'], y: ['0%', '20%', '-30%', '0%'], scale: [1.2, 0.9, 1.3, 1.2], opacity: [0.12, 0.2, 0.12] }}
             transition={{ duration: 30, repeat: Infinity, ease: 'easeInOut', delay: 8 }}
-            style={{ filter: 'url(#smoke-filter) blur(90px)', position: 'absolute', top: '25%', right: '-15%', width: '65vw', height: '65vw', background: 'radial-gradient(circle, rgba(99,102,241,0.15) 0%, transparent 70%)', borderRadius: '50%' }}
+            style={{ filter: 'blur(110px)', willChange: 'transform', position: 'absolute', top: '25%', right: '-15%', width: '65vw', height: '65vw', background: 'radial-gradient(circle, rgba(99,102,241,0.15) 0%, transparent 70%)', borderRadius: '50%' }}
           />
           {/* Layer 5 — Pink smoke bottom-left → top */}
           <motion.div
             animate={{ x: ['0%', '30%', '60%', '0%'], y: ['0%', '-50%', '-20%', '0%'], scale: [1, 1.2, 1, 1], opacity: [0.2, 0.1, 0.2] }}
             transition={{ duration: 38, repeat: Infinity, ease: 'easeInOut', delay: 4 }}
-            style={{ filter: 'url(#smoke-filter) blur(75px)', position: 'absolute', bottom: '-10%', left: '0%', width: '60vw', height: '60vw', background: 'radial-gradient(circle, rgba(236,72,153,0.2) 0%, transparent 70%)', borderRadius: '50%' }}
+            style={{ filter: 'blur(90px)', willChange: 'transform', position: 'absolute', bottom: '-10%', left: '0%', width: '60vw', height: '60vw', background: 'radial-gradient(circle, rgba(236,72,153,0.2) 0%, transparent 70%)', borderRadius: '50%' }}
           />
           {/* Layer 6 — Purple smoke bottom-right → left */}
           <motion.div
             animate={{ x: ['0%', '-60%', '-30%', '0%'], y: ['0%', '-30%', '-60%', '0%'], scale: [0.9, 1.3, 1, 0.9], opacity: [0.18, 0.25, 0.18] }}
             transition={{ duration: 45, repeat: Infinity, ease: 'easeInOut', delay: 10 }}
-            style={{ filter: 'url(#smoke-filter) blur(85px)', position: 'absolute', bottom: '-15%', right: '-10%', width: '70vw', height: '70vw', background: 'radial-gradient(circle, rgba(147,51,234,0.22) 0%, transparent 70%)', borderRadius: '50%' }}
+            style={{ filter: 'blur(100px)', willChange: 'transform', position: 'absolute', bottom: '-15%', right: '-10%', width: '70vw', height: '70vw', background: 'radial-gradient(circle, rgba(147,51,234,0.22) 0%, transparent 70%)', borderRadius: '50%' }}
           />
           {/* Layer 7 — Center drifting pink cloud */}
           <motion.div
             animate={{ x: ['-20%', '30%', '-10%', '-20%'], y: ['-10%', '20%', '40%', '-10%'], scale: [1, 1.5, 0.8, 1], opacity: [0.1, 0.2, 0.1] }}
             transition={{ duration: 50, repeat: Infinity, ease: 'easeInOut', delay: 6 }}
-            style={{ filter: 'url(#smoke-filter) blur(100px)', position: 'absolute', top: '40%', left: '30%', width: '45vw', height: '45vw', background: 'radial-gradient(circle, rgba(236,72,153,0.15) 0%, transparent 70%)', borderRadius: '50%' }}
+            style={{ filter: 'blur(120px)', willChange: 'transform', position: 'absolute', top: '40%', left: '30%', width: '45vw', height: '45vw', background: 'radial-gradient(circle, rgba(236,72,153,0.15) 0%, transparent 70%)', borderRadius: '50%' }}
           />
           {/* Layer 8 — Slow drifting violet center-top */}
           <motion.div
             animate={{ x: ['10%', '-30%', '20%', '10%'], y: ['5%', '-15%', '30%', '5%'], scale: [1.1, 0.85, 1.2, 1.1], opacity: [0.15, 0.08, 0.15] }}
             transition={{ duration: 60, repeat: Infinity, ease: 'easeInOut', delay: 15 }}
-            style={{ filter: 'url(#smoke-filter) blur(110px)', position: 'absolute', top: '10%', left: '20%', width: '55vw', height: '55vw', background: 'radial-gradient(circle, rgba(139,92,246,0.18) 0%, transparent 70%)', borderRadius: '50%' }}
+            style={{ filter: 'blur(130px)', willChange: 'transform', position: 'absolute', top: '10%', left: '20%', width: '55vw', height: '55vw', background: 'radial-gradient(circle, rgba(139,92,246,0.18) 0%, transparent 70%)', borderRadius: '50%' }}
           />
         </div>
       </motion.div>
