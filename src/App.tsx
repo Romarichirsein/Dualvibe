@@ -38,11 +38,13 @@ import {
   Send
 } from 'lucide-react';
 import { supabase } from './lib/supabase';
-import { supabase } from './lib/supabase';
+
 
 // --- Lazy Load Pages for Performance ---
 const MusicCatalog = React.lazy(() => import('./pages/MusicCatalog'));
 const Studio = React.lazy(() => import('./pages/Studio'));
+const GabNails = React.lazy(() => import('./pages/GabNails'));
+
 
 // --- Types & Constants ---
 
@@ -133,6 +135,18 @@ const CyberpunkGlitchText = React.memo(({ children, className = "" }: { children
     </div>
   );
 });
+
+// Helper for SEO URLs
+const slugify = (text: string) => {
+  return text
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^\w\s-]/g, '')
+    .trim()
+    .replace(/\s+/g, '-');
+};
+
 
 const ParticleNetwork = React.memo(() => {
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
@@ -230,7 +244,8 @@ const ParticleNetwork = React.memo(() => {
   }, []);
 
   return <canvas ref={canvasRef} className="absolute inset-0 pointer-events-none opacity-60" />;
-};
+});
+
 
 const TRANSLATIONS = {
   fr: {
@@ -1785,6 +1800,43 @@ const Services = ({ lang }: { lang: Language }) => {
         ))}
       </div>
 
+      {/* Gab's Nails Promotional Section */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+        className="glass p-8 md:p-12 rounded-[3rem] mb-20 border-pink-500/30 relative overflow-hidden flex flex-col md:flex-row items-center gap-10"
+      >
+        <div className="absolute inset-0 bg-gradient-to-br from-purple-600/10 via-pink-500/5 to-transparent pointer-events-none" />
+        
+        <div className="w-40 h-40 md:w-64 md:h-64 shrink-0 rounded-full bg-gradient-to-tr from-pink-500 to-purple-600 p-1 shadow-2xl shadow-pink-500/20 relative z-10">
+          <img 
+            src="/products/gabs-nails/logo Gab's nails.png" 
+            alt="Gab's Nails Logo" 
+            className="w-full h-full object-cover rounded-full bg-white"
+          />
+        </div>
+
+        <div className="flex-1 text-center md:text-left relative z-10">
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-pink-500/20 text-pink-500 rounded-full font-bold text-sm mb-4">
+            <Sparkles className="w-4 h-4" /> Partenaire Recommandé
+          </div>
+          <h2 className="text-3xl md:text-5xl font-display font-black mb-4">
+            Gab's <span className="gradient-text">Nails</span>
+          </h2>
+          <p className="text-lg opacity-80 mb-6 leading-relaxed">
+            {lang === 'fr' 
+              ? "L'expertise en onglerie pour tous vos événements : Mariages, dot, cérémonies professionnelles ou simple moment de beauté. Profitez de poses en capsule, vernis gel et construction polygel d'une durabilité exceptionnelle." 
+              : "Expert nail artistry for all your events: Weddings, traditional ceremonies, or simply treating yourself. Enjoy high-quality capsules, gel polish, and durable polygel constructions."}
+          </p>
+          <Link to="/gabs-nails" className="inline-flex px-8 py-4 bg-gradient-to-r from-pink-500 to-purple-600 text-white rounded-2xl font-bold text-lg shadow-xl shadow-pink-500/30 hover:scale-105 transition-transform items-center gap-2">
+            {lang === 'fr' ? "Visiter le catalogue Gab's Nails" : "Visit Gab's Nails Catalog"}
+            <ArrowRight className="w-5 h-5" />
+          </Link>
+        </div>
+      </motion.div>
+
+
       <motion.div
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
@@ -1973,7 +2025,7 @@ const AnimatedBackground = React.memo(() => {
       <div className="absolute inset-0 bg-grid-white/[0.02] bg-[size:20px_20px] opacity-20 dark:opacity-40" />
     </div>
   );
-};
+});
 
 const ProductCard = ({ product, lang, country, addToCart, ...props }: { product: Product, lang: Language, country: Country, addToCart: (p: Product, o?: ProductOption) => void, [key: string]: any }) => {
   const t = TRANSLATIONS[lang];
@@ -2409,6 +2461,8 @@ const Contact = ({ lang }: { lang: Language }) => {
 };
 
 const Shop = ({ lang, country, addToCart, searchQuery, setSearchQuery }: { lang: Language; country: Country; addToCart: (p: Product) => void, searchQuery: string, setSearchQuery: (q: string) => void }) => {
+  const location = useLocation();
+  const navigate = useNavigate();
   const t = TRANSLATIONS[lang];
   const [filter, setFilter] = useState<'all' | 'physical' | 'digital'>('all');
   const [category, setCategory] = useState('all');
@@ -2424,10 +2478,28 @@ const Shop = ({ lang, country, addToCart, searchQuery, setSearchQuery }: { lang:
     return ['all', ...Array.from(cats)];
   }, [lang]);
 
-  // Reset category on lang change to avoid mismatches
+  // Sync category with URL slug
   useEffect(() => {
-    setCategory('all');
-  }, [lang]);
+    let extractedSlug = '';
+    if (location.pathname.startsWith('/shop-')) {
+      extractedSlug = location.pathname.substring(6);
+    } else if (location.pathname.startsWith('/shop/')) {
+      extractedSlug = location.pathname.substring(6);
+    }
+    
+    if (extractedSlug) {
+      const match = categories.find(cat => slugify(cat) === extractedSlug);
+      if (match) {
+        setCategory(match);
+      } else {
+        setCategory('all');
+      }
+    } else {
+      setCategory('all');
+    }
+  }, [location.pathname, categories]);
+
+
 
   const filteredProducts = useMemo(() => {
     let result = PRODUCTS.filter(p => {
@@ -2522,10 +2594,17 @@ const Shop = ({ lang, country, addToCart, searchQuery, setSearchQuery }: { lang:
                       whileHover={{ x: 6, backgroundColor: 'rgba(255, 255, 255, 0.08)' }}
                       whileTap={{ scale: 0.98 }}
                       onClick={() => {
-                        setCategory(cat);
+                        const slug = cat === 'all' ? '' : slugify(cat);
+                        if (slug) {
+                          navigate(`/shop-${slug}`);
+                        } else {
+                          navigate('/shop');
+                        }
                         setSearchQuery('');
                         setIsFilterDrawerOpen(false);
+
                       }}
+
                       className={`w-full text-left px-5 py-3 rounded-2xl text-sm font-bold transition-all relative group overflow-hidden ${category === cat ? 'bg-gradient-to-r from-pink-500 to-purple-600 text-white shadow-lg shadow-pink-500/20' : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'}`}
                     >
                       <div className="relative z-10 flex items-center justify-between">
@@ -2603,10 +2682,17 @@ const Shop = ({ lang, country, addToCart, searchQuery, setSearchQuery }: { lang:
                           <button
                             key={cat}
                             onClick={() => {
-                              setCategory(cat);
+                              const slug = cat === 'all' ? '' : slugify(cat);
+                              if (slug) {
+                                navigate(`/shop-${slug}`);
+                              } else {
+                                navigate('/shop');
+                              }
                               setSearchQuery('');
                               setIsFilterDrawerOpen(false);
                             }}
+
+
                             className={`w-full text-left px-5 py-3 rounded-2xl text-sm font-bold transition-all ${category === cat ? 'bg-gradient-to-r from-pink-500 to-purple-600 text-white' : ''}`}
                           >
                             {cat === 'all' ? t.all : cat}
@@ -3481,7 +3567,7 @@ const FloatingCTA = ({ lang, onSubscribe }: { lang: Language; onSubscribe: (e: a
   );
 };
 
-const HeartBurst = ({ x, y, onComplete }: { x: number; y: number; onComplete: () => void }) => {
+const HeartBurst: React.FC<{ x: number; y: number; onComplete: () => void }> = ({ x, y, onComplete }) => {
   const [particles] = useState(() => 
     Array.from({ length: 6 }).map((_, i) => ({
       id: i,
@@ -3512,6 +3598,38 @@ const HeartBurst = ({ x, y, onComplete }: { x: number; y: number; onComplete: ()
           <Heart className="w-5 h-5 fill-current shadow-pink-500/50 filter drop-shadow-md" />
         </motion.div>
       ))}
+    </div>
+  );
+};
+
+// --- Dynamic Route Handler for /shop-slug and /gabs-nails ---
+const DynamicRouteHandler = (props: any) => {
+  const location = useLocation();
+  
+  if (location.pathname.startsWith('/shop-')) {
+    return (
+      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.3 }}>
+        <Shop {...props} />
+      </motion.div>
+    );
+  }
+  
+  if (location.pathname === '/gabs-nails') {
+    return (
+      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.3 }}>
+        <React.Suspense fallback={<div className="min-h-screen flex items-center justify-center"><div className="w-12 h-12 border-4 border-pink-500 border-t-transparent rounded-full animate-spin" /></div>}>
+          <GabNails lang={props.lang} />
+        </React.Suspense>
+      </motion.div>
+    );
+  }
+
+  // 404 fallback
+  return (
+    <div className="min-h-screen flex flex-col items-center justify-center pt-32 pb-20 text-center px-6">
+      <h1 className="text-6xl md:text-8xl font-black gradient-text mb-6">404</h1>
+      <p className="text-xl md:text-2xl font-bold opacity-80 mb-8">Page non trouvée / Page not found</p>
+      <Link to="/" className="px-8 py-4 bg-pink-500 text-white rounded-xl font-bold">Retour à l'accueil</Link>
     </div>
   );
 };
@@ -3945,6 +4063,12 @@ function AppContent() {
                   <Shop lang={lang} country={country} addToCart={addToCart} searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
                 </motion.div>
               } />
+              <Route path="/shop/*" element={
+                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.3 }}>
+                  <Shop lang={lang} country={country} addToCart={addToCart} searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
+                </motion.div>
+              } />
+
               <Route path="/music-catalog" element={
                 <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.3 }}>
                   <MusicCatalog lang={lang} searchQuery={searchQuery} addToCart={addToCart} openCart={() => setIsCartOpen(true)} />
@@ -3975,6 +4099,8 @@ function AppContent() {
                   <ProductDetail lang={lang} country={country} addToCart={addToCart} />
                 </motion.div>
               } />
+              <Route path="*" element={<DynamicRouteHandler lang={lang} country={country} addToCart={addToCart} searchQuery={searchQuery} setSearchQuery={setSearchQuery} setIsCartOpen={setIsCartOpen} />} />
+
             </Routes>
           </AnimatePresence>
         </React.Suspense>
