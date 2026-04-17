@@ -38,8 +38,11 @@ import {
   Send
 } from 'lucide-react';
 import { supabase } from './lib/supabase';
-import MusicCatalog from './pages/MusicCatalog';
-import Studio from './pages/Studio';
+import { supabase } from './lib/supabase';
+
+// --- Lazy Load Pages for Performance ---
+const MusicCatalog = React.lazy(() => import('./pages/MusicCatalog'));
+const Studio = React.lazy(() => import('./pages/Studio'));
 
 // --- Types & Constants ---
 
@@ -120,7 +123,7 @@ const COUNTRIES: Country[] = [
   { code: 'IT', name: { fr: 'Italie', en: 'Italy' }, currency: 'EUR', symbol: '€', rate: 0.0015 },
 ];
 
-const CyberpunkGlitchText = ({ children, className = "" }: { children: React.ReactNode, className?: string }) => {
+const CyberpunkGlitchText = React.memo(({ children, className = "" }: { children: React.ReactNode, className?: string }) => {
   return (
     <div className={`glitch-text-container ${className}`}>
       <span className="relative z-10">{children}</span>
@@ -129,9 +132,9 @@ const CyberpunkGlitchText = ({ children, className = "" }: { children: React.Rea
       <div className="cyber-scanline" />
     </div>
   );
-};
+});
 
-const ParticleNetwork = () => {
+const ParticleNetwork = React.memo(() => {
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
   const mouse = React.useRef({ x: -100, y: -100 });
 
@@ -1810,7 +1813,7 @@ const Services = ({ lang }: { lang: Language }) => {
   );
 };
 
-const AnimatedBackground = () => {
+const AnimatedBackground = React.memo(() => {
   const { scrollYProgress } = useScroll();
   const gridRotateX = useTransform(scrollYProgress, [0, 1], [45, 65]);
   const gridSkewY = useTransform(scrollYProgress, [0, 0.5, 1], [0, 5, 0]);
@@ -1988,6 +1991,8 @@ const ProductCard = ({ product, lang, country, addToCart, ...props }: { product:
           alt={product.title[lang]} 
           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
           referrerPolicy="no-referrer"
+          loading="lazy"
+          decoding="async"
         />
         <div className="absolute top-4 left-4 glass px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider flex items-center gap-2">
           {product.type === 'digital' ? <FileDigit className="w-3 h-3" /> : <Package className="w-3 h-3" />}
@@ -3621,6 +3626,21 @@ function AppContent() {
     setCart(prev => prev.filter(item => !(item.id === id && item.selectedOption?.label === optionLabel)));
   };
 
+  // --- PERFORMANCE: Cache Management & Reset ---
+  useEffect(() => {
+    const CURRENT_VERSION = '2.2.0'; // Increment this to force cache clear
+    const savedVersion = localStorage.getItem('dualvibe_version');
+    
+    if (savedVersion !== CURRENT_VERSION) {
+      console.log('DualVibe: New version detected. Clearing old cache...');
+      // Preserve essential user data if any, or clear all for fresh start
+      const country = localStorage.getItem('dualvibe_country');
+      localStorage.clear();
+      if (country) localStorage.setItem('dualvibe_country', country);
+      localStorage.setItem('dualvibe_version', CURRENT_VERSION);
+    }
+  }, []);
+
   if (!country) {
     return <CountrySelector onSelect={handleCountrySelect} isDark={isDark} />;
   }
@@ -3674,6 +3694,7 @@ function AppContent() {
                 src={isDark ? '/logo-dark.png' : '/logo-light.png'} 
                 alt="DualVibe Logo" 
                 className="h-10 w-auto"
+                loading="eager" // Logo should load fast
               />
             </Link>
 
@@ -3903,51 +3924,62 @@ function AppContent() {
       </nav>
 
       <main>
-        <AnimatePresence mode="wait">
-          <Routes>
-            <Route path="/" element={
-              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} transition={{ duration: 0.4 }}>
-                <Home lang={lang} country={country} addToCart={addToCart} />
-              </motion.div>
-            } />
-            <Route path="/shop" element={
-              <motion.div initial={{ opacity: 0, scale: 0.98 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.98 }} transition={{ duration: 0.4 }}>
-                <Shop lang={lang} country={country} addToCart={addToCart} searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
-              </motion.div>
-            } />
-            <Route path="/music-catalog" element={
-              <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} transition={{ duration: 0.4 }}>
-                <MusicCatalog lang={lang} searchQuery={searchQuery} addToCart={addToCart} openCart={() => setIsCartOpen(true)} />
-              </motion.div>
-            } />
-            <Route path="/studio" element={
-              <motion.div initial={{ opacity: 0, filter: 'blur(10px)' }} animate={{ opacity: 1, filter: 'blur(0px)' }} exit={{ opacity: 0, filter: 'blur(10px)' }} transition={{ duration: 0.4 }}>
-                <Studio lang={lang} />
-              </motion.div>
-            } />
-            <Route path="/services" element={
-              <motion.div initial={{ opacity: 0, scale: 1.1 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 1.1 }} transition={{ duration: 0.4 }}>
-                <Services lang={lang} />
-              </motion.div>
-            } />
-            <Route path="/about" element={
-              <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -40 }} transition={{ duration: 0.5 }}>
-                <About lang={lang} />
-              </motion.div>
-            } />
-            <Route path="/contact" element={
-              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.5 }}>
-                <Contact lang={lang} />
-              </motion.div>
-            } />
-            <Route path="/product/:id" element={
-              <motion.div initial={{ opacity: 0, scale: 1.1 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.9 }} transition={{ duration: 0.4 }}>
-                <ProductDetail lang={lang} country={country} addToCart={addToCart} />
-              </motion.div>
-            } />
-          </Routes>
-        </AnimatePresence>
+        <React.Suspense fallback={
+          <div className="min-h-screen flex items-center justify-center">
+            <motion.div 
+              animate={{ rotate: 360 }}
+              transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+              className="w-12 h-12 border-4 border-pink-500 border-t-transparent rounded-full"
+            />
+          </div>
+        }>
+          <AnimatePresence mode="wait">
+            <Routes>
+              <Route path="/" element={
+                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.3 }}>
+                  <Home lang={lang} country={country} addToCart={addToCart} />
+                </motion.div>
+              } />
+              <Route path="/shop" element={
+                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.3 }}>
+                  <Shop lang={lang} country={country} addToCart={addToCart} searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
+                </motion.div>
+              } />
+              <Route path="/music-catalog" element={
+                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.3 }}>
+                  <MusicCatalog lang={lang} searchQuery={searchQuery} addToCart={addToCart} openCart={() => setIsCartOpen(true)} />
+                </motion.div>
+              } />
+              <Route path="/studio" element={
+                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.3 }}>
+                  <Studio lang={lang} />
+                </motion.div>
+              } />
+              <Route path="/services" element={
+                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.3 }}>
+                  <Services lang={lang} />
+                </motion.div>
+              } />
+              <Route path="/about" element={
+                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.3 }}>
+                  <About lang={lang} />
+                </motion.div>
+              } />
+              <Route path="/contact" element={
+                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.3 }}>
+                  <Contact lang={lang} />
+                </motion.div>
+              } />
+              <Route path="/product/:id" element={
+                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.3 }}>
+                  <ProductDetail lang={lang} country={country} addToCart={addToCart} />
+                </motion.div>
+              } />
+            </Routes>
+          </AnimatePresence>
+        </React.Suspense>
       </main>
+
 
       {/* Newsletter Section */}
       <section className="py-24 relative overflow-hidden">
@@ -4030,6 +4062,8 @@ function AppContent() {
                   src={isDark ? '/logo-dark.png' : '/logo-light.png'} 
                   alt="DualVibe Logo" 
                   className="h-8 w-auto"
+                  loading="lazy"
+                  decoding="async"
                 />
               </div>
               <p className="text-sm text-slate-600 dark:text-slate-200 leading-relaxed">

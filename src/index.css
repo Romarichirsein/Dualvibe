@@ -127,6 +127,7 @@
     animation: glitch-anim-1 2s infinite linear alternate-reverse;
     left: 2px;
     text-shadow: -2px 0 #ff00c1;
+    will-change: transform, clip;
   }
 
   .glitch-layer-2 {
@@ -134,6 +135,7 @@
     animation: glitch-anim-2 3s infinite linear alternate-reverse;
     left: -2px;
     text-shadow: 2px 0 #00fff9;
+    will-change: transform, clip;
   }
 
   .cyber-scanline {
@@ -152,6 +154,7 @@
     pointer-events: none;
     z-index: 2;
     animation: scanline 8s linear infinite;
+    will-change: transform;
   }
 }
 
