@@ -20,6 +20,17 @@ interface StudioProps {
   lang: 'fr' | 'en';
 }
 
+const CyberpunkGlitchText = ({ children, className = "" }: { children: React.ReactNode, className?: string }) => {
+  return (
+    <div className={`glitch-text-container ${className}`}>
+      <span className="relative z-10">{children}</span>
+      <span className="glitch-layer glitch-layer-1" aria-hidden="true">{children}</span>
+      <span className="glitch-layer glitch-layer-2" aria-hidden="true">{children}</span>
+      <div className="cyber-scanline" />
+    </div>
+  );
+};
+
 const TRANSLATIONS = {
   fr: {
     studioTitle: "Espace Créatif & Personnalisation",
@@ -119,21 +130,18 @@ export default function Studio({ lang }: StudioProps) {
             <Sparkles className="w-4 h-4" />
             DualVibe Studio
           </motion.div>
-          <motion.h1 
+          <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="text-4xl md:text-6xl font-display font-extrabold mb-6"
+            className="text-center mb-16"
           >
-            {t.studioTitle}
-          </motion.h1>
-          <motion.p 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-            className="text-lg text-slate-600 dark:text-slate-200 max-w-2xl mx-auto"
-          >
-            {t.studioSubtitle}
-          </motion.p>
+            <CyberpunkGlitchText className="text-4xl md:text-7xl font-display font-black mb-6">
+              {t.studioTitle}
+            </CyberpunkGlitchText>
+            <p className="text-lg md:text-xl opacity-80 max-w-2xl mx-auto font-medium lead-relaxed">
+              {t.studioSubtitle}
+            </p>
+          </motion.div>
         </div>
 
         <div className="grid lg:grid-cols-12 gap-8 items-start">

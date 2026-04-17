@@ -23,6 +23,7 @@ export const MUSIC_CATEGORIES = [
   "Pardon",
   "Réconciliation",
   "Demandes de couples",
+  "Business & Affaires",
   "Autres"
 ];
 
@@ -83,5 +84,7 @@ export const MUSIC_CATALOG: MusicTrack[] = [
   { id: '50', title: 'Untitled (3)', url: '/products/musique/Untitled (3).mp3', category: 'Autres' },
   { id: '51', title: 'Untitled', url: '/products/musique/Untitled.mp3', category: 'Autres' },
   { id: '52', title: 'Déjà Payé (1)', url: '/products/musique/_Déjà Payé_ (1).mp3', category: 'Autres' },
-  { id: '53', title: 'Déjà Payé', url: '/products/musique/_Déjà Payé_.mp3', category: 'Autres' }
+  { id: '53', title: 'Déjà Payé', url: '/products/musique/_Déjà Payé_.mp3', category: 'Autres' },
+  { id: '54', title: 'Musique Corporate & Business', url: '/products/musique/Business_Corporate.mp3', category: 'Business & Affaires' },
+  { id: '55', title: 'Motivation & Affaires', url: '/products/musique/Motivation_Affaires.mp3', category: 'Business & Affaires' }
 ];

@@ -120,6 +120,115 @@ const COUNTRIES: Country[] = [
   { code: 'IT', name: { fr: 'Italie', en: 'Italy' }, currency: 'EUR', symbol: '€', rate: 0.0015 },
 ];
 
+const CyberpunkGlitchText = ({ children, className = "" }: { children: React.ReactNode, className?: string }) => {
+  return (
+    <div className={`glitch-text-container ${className}`}>
+      <span className="relative z-10">{children}</span>
+      <span className="glitch-layer glitch-layer-1" aria-hidden="true">{children}</span>
+      <span className="glitch-layer glitch-layer-2" aria-hidden="true">{children}</span>
+      <div className="cyber-scanline" />
+    </div>
+  );
+};
+
+const ParticleNetwork = () => {
+  const canvasRef = React.useRef<HTMLCanvasElement>(null);
+  const mouse = React.useRef({ x: -100, y: -100 });
+
+  React.useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    let particles: any[] = [];
+    let animationFrameId: number;
+
+    class Particle {
+      x: number; y: number; vx: number; vy: number; radius: number;
+      constructor(w: number, h: number) {
+        this.x = Math.random() * w;
+        this.y = Math.random() * h;
+        this.vx = (Math.random() - 0.5) * 0.3;
+        this.vy = (Math.random() - 0.5) * 0.3;
+        this.radius = Math.random() * 1.5 + 0.5;
+      }
+      update(w: number, h: number) {
+        this.x += this.vx;
+        this.y += this.vy;
+        if (this.x < 0 || this.x > w) this.vx *= -1;
+        if (this.y < 0 || this.y > h) this.vy *= -1;
+
+        const dx = mouse.current.x - this.x;
+        const dy = mouse.current.y - this.y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < 150) {
+          const force = (150 - dist) / 150;
+          this.x -= dx * force * 0.02;
+          this.y -= dy * force * 0.02;
+        }
+      }
+      draw(context: CanvasRenderingContext2D) {
+        context.beginPath();
+        context.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        context.fillStyle = 'rgba(255, 0, 204, 0.4)';
+        context.fill();
+      }
+    }
+
+    const init = () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      particles = [];
+      const density = (canvas.width * canvas.height) / 10000;
+      const count = Math.min(Math.floor(density), 150);
+      for (let i = 0; i < count; i++) {
+        particles.push(new Particle(canvas.width, canvas.height));
+      }
+    };
+
+    const animate = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      particles.forEach((p, i) => {
+        p.update(canvas.width, canvas.height);
+        p.draw(ctx);
+        for (let j = i + 1; j < particles.length; j++) {
+          const dx = p.x - particles[j].x;
+          const dy = p.y - particles[j].y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < 120) {
+            ctx.beginPath();
+            ctx.strokeStyle = `rgba(255, 0, 204, ${0.15 * (1 - dist / 120)})`;
+            ctx.lineWidth = 0.5;
+            ctx.moveTo(p.x, p.y);
+            ctx.lineTo(particles[j].x, particles[j].y);
+            ctx.stroke();
+          }
+        }
+      });
+      animationFrameId = requestAnimationFrame(animate);
+    };
+
+    const handleMouseMove = (e: MouseEvent) => {
+      mouse.current.x = e.clientX;
+      mouse.current.y = e.clientY;
+    };
+
+    window.addEventListener('resize', init);
+    window.addEventListener('mousemove', handleMouseMove);
+    init();
+    animate();
+
+    return () => {
+      window.removeEventListener('resize', init);
+      window.removeEventListener('mousemove', handleMouseMove);
+      cancelAnimationFrame(animationFrameId);
+    };
+  }, []);
+
+  return <canvas ref={canvasRef} className="absolute inset-0 pointer-events-none opacity-60" />;
+};
+
 const TRANSLATIONS = {
   fr: {
     welcome: "Bienvenue sur DualVibe",
@@ -229,7 +338,10 @@ const TRANSLATIONS = {
     projectLinks: "Liens (Drive, WeTransfer...)",
     sendStudio: "Envoyer ma demande au Studio",
     shopHeroTitle: "Boutique Digitale & Créative",
-    shopHeroSubtitle: "Découvrez nos collections exclusives conçues pour sublimer vos projets et toucher les cœurs."
+    shopHeroSubtitle: "Découvrez nos collections exclusives conçues pour sublimer vos projets et toucher les cœurs.",
+    services: "Services",
+    servicesTitle: "Espace Services & Opportunités",
+    servicesSubtitle: "Découvrez les talents de notre communauté ou proposez vos propres services."
   },
   en: {
     welcome: "Welcome to DualVibe",
@@ -339,7 +451,10 @@ const TRANSLATIONS = {
     projectLinks: "Links (Drive, WeTransfer...)",
     sendStudio: "Send Request to Studio",
     shopHeroTitle: "Digital & Creative Shop",
-    shopHeroSubtitle: "Discover our exclusive collections designed to enhance your projects and touch hearts."
+    shopHeroSubtitle: "Discover our exclusive collections designed to enhance your projects and touch hearts.",
+    services: "Services",
+    servicesTitle: "Services & Opportunities Space",
+    servicesSubtitle: "Discover the talents of our community or offer your own services."
   }
 };
 
@@ -694,6 +809,64 @@ const PRODUCTS: Product[] = [
     description: { 
       fr: "Citations inspirantes et storytelling pour toucher et motiver votre audience.", 
       en: "Inspiring quotes and storytelling to touch and motivate your audience." 
+    },
+    reviews: []
+  },
+
+  // 4c. Billets d'Invitations
+  { 
+    id: 80, 
+    title: { fr: "Billet d'Invitation (Fiançailles)", en: "Invitation Ticket (Engagement)" }, 
+    price: 3000, 
+    category: { fr: "Billets d'Invitations", en: "Invitation Tickets" }, 
+    image: "https://picsum.photos/seed/inv-engagement/800/600", 
+    type: 'digital', 
+    date: '2024-04-14',
+    description: { 
+      fr: "Un design romantique et élégant pour annoncer officiellement vos fiançailles à vos proches.", 
+      en: "A romantic and elegant design to officially announce your engagement to your loved ones." 
+    },
+    reviews: []
+  },
+  { 
+    id: 81, 
+    title: { fr: "Billet d'Invitation (Mariage)", en: "Invitation Ticket (Wedding)" }, 
+    price: 3500, 
+    category: { fr: "Billets d'Invitations", en: "Invitation Tickets" }, 
+    image: "https://picsum.photos/seed/inv-wedding/800/600", 
+    type: 'digital', 
+    date: '2024-04-14',
+    description: { 
+      fr: "Invitations de mariage premium personnalisées, avec différents thèmes (classique, moderne, chic).", 
+      en: "Premium personalized wedding invitations with various themes (classic, modern, chic)." 
+    },
+    reviews: []
+  },
+  { 
+    id: 82, 
+    title: { fr: "Billet d'Invitation (Anniversaire)", en: "Invitation Ticket (Birthday)" }, 
+    price: 2500, 
+    category: { fr: "Billets d'Invitations", en: "Invitation Tickets" }, 
+    image: "https://picsum.photos/seed/inv-birthday/800/600", 
+    type: 'digital', 
+    date: '2024-04-14',
+    description: { 
+      fr: "Invitations festives et colorées pour marquer le coup et surprendre vos invités.", 
+      en: "Festive and colorful invitations to make a splash and surprise your guests." 
+    },
+    reviews: []
+  },
+  { 
+    id: 83, 
+    title: { fr: "Billet d'Invitation (Autres Événements)", en: "Invitation Ticket (Other Events)" }, 
+    price: 2500, 
+    category: { fr: "Billets d'Invitations", en: "Invitation Tickets" }, 
+    image: "https://picsum.photos/seed/inv-others/800/600", 
+    type: 'digital', 
+    date: '2024-04-14',
+    description: { 
+      fr: "Création sur-mesure pour baptêmes, soirées, lancements de produits ou conférences.", 
+      en: "Tailor-made creation for baptisms, parties, product launches, or conferences." 
     },
     reviews: []
   },
@@ -1538,7 +1711,111 @@ const ReviewSection = ({
   );
 };
 
+const Services = ({ lang }: { lang: Language }) => {
+  const t = TRANSLATIONS[lang];
+  const serviceCategories = [
+    { 
+      id: 'engagement', 
+      title: { fr: 'Fiançailles', en: 'Engagement' }, 
+      icon: Heart, 
+      color: 'from-pink-500 to-rose-500',
+      desc: { fr: 'Organisation, décoration et cadeaux pour célébrer l\'engagement.', en: 'Organization, decoration, and gifts to celebrate commitment.' }
+    },
+    { 
+      id: 'wedding', 
+      title: { fr: 'Mariage', en: 'Wedding' }, 
+      icon: Moon, 
+      color: 'from-purple-600 to-indigo-600',
+      desc: { fr: 'Services premium pour le plus beau jour de votre vie.', en: 'Premium services for the most beautiful day of your life.' }
+    },
+    { 
+      id: 'birthday', 
+      title: { fr: 'Anniversaire', en: 'Birthday' }, 
+      icon: Sparkles, 
+      color: 'from-yellow-500 to-orange-500',
+      desc: { fr: 'Animation, gâteaux et planification pour des moments inoubliables.', en: 'Animation, cakes, and planning for unforgettable moments.' }
+    },
+    { 
+      id: 'others', 
+      title: { fr: 'Autres', en: 'Others' }, 
+      icon: Zap, 
+      color: 'from-slate-500 to-slate-700',
+      desc: { fr: 'Tout autre service créatif ou événementiel.', en: 'Any other creative or event services.' }
+    }
+  ];
+
+  return (
+    <div className="pt-32 pb-20 px-6 max-w-7xl mx-auto">
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="text-center mb-16"
+      >
+        <CyberpunkGlitchText className="text-4xl md:text-7xl font-display font-black mb-6">
+          {t.servicesTitle}
+        </CyberpunkGlitchText>
+        <p className="text-lg md:text-xl opacity-80 max-w-3xl mx-auto font-medium lead-relaxed">
+          {t.servicesSubtitle}
+        </p>
+      </motion.div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-20">
+        {serviceCategories.map((cat, idx) => (
+          <motion.div
+            key={cat.id}
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: idx * 0.1 }}
+            whileHover={{ y: -10 }}
+            className="glass p-8 rounded-[2.5rem] border-white/10 group relative overflow-hidden"
+          >
+            <div className={`absolute top-0 right-0 w-32 h-32 bg-gradient-to-br ${cat.color} opacity-10 blur-3xl -mr-16 -mt-16 group-hover:opacity-30 transition-opacity`} />
+            <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${cat.color} flex items-center justify-center text-white shadow-xl mb-6`}>
+              <cat.icon className="w-8 h-8" />
+            </div>
+            <h3 className="text-2xl font-bold mb-4">{cat.title[lang]}</h3>
+            <p className="text-sm opacity-70 leading-relaxed mb-6">{cat.desc[lang]}</p>
+            <button className="text-sm font-bold flex items-center gap-2 text-pink-500 group-hover:gap-3 transition-all">
+              {lang === 'fr' ? 'Explorer' : 'Explore'} <ArrowRight className="w-4 h-4" />
+            </button>
+          </motion.div>
+        ))}
+      </div>
+
+      <motion.div
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+        className="glass p-12 md:p-20 rounded-[3rem] text-center border-pink-500/20 relative overflow-hidden group"
+      >
+        <div className="absolute inset-0 bg-gradient-to-br from-pink-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+        <h2 className="text-3xl md:text-5xl font-display font-black mb-8">
+          {lang === 'fr' ? 'Envie de proposer votre ' : 'Want to offer your '}
+          <span className="gradient-text">{lang === 'fr' ? 'Propre Service ?' : 'Own Service?'}</span>
+        </h2>
+        <p className="text-lg opacity-80 max-w-2xl mx-auto mb-10 leading-relaxed">
+          {lang === 'fr' 
+            ? 'Rejoignez notre réseau de prestataires et gagnez en visibilité auprès de milliers de clients potentiels.' 
+            : 'Join our service provider network and gain visibility among thousands of potential clients.'}
+        </p>
+        <motion.button
+          whileHover={{ scale: 1.05, y: -5 }}
+          whileTap={{ scale: 0.95 }}
+          className="px-10 py-5 bg-pink-500 text-white rounded-2xl font-black text-lg shadow-xl shadow-pink-500/20"
+        >
+          {lang === 'fr' ? 'Soumettre mon service' : 'Submit my service'}
+        </motion.button>
+      </motion.div>
+    </div>
+  );
+};
+
 const AnimatedBackground = () => {
+  const { scrollYProgress } = useScroll();
+  const gridRotateX = useTransform(scrollYProgress, [0, 1], [45, 65]);
+  const gridSkewY = useTransform(scrollYProgress, [0, 0.5, 1], [0, 5, 0]);
+  const gridScale = useTransform(scrollYProgress, [0, 1], [1, 1.2]);
+  
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
 
@@ -1562,9 +1839,22 @@ const AnimatedBackground = () => {
     <div className="fixed inset-0 overflow-hidden pointer-events-none -z-10 bg-[var(--bg-primary)]">
       {/* Noise Overlay Filter */}
       <div className="noise-overlay" />
+
+      {/* Neural Particle Network */}
+      <ParticleNetwork />
       
-      {/* Perspective Grid */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:44px_44px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]" />
+      {/* Wavy Perspective Grid */}
+      <motion.div 
+        style={{ 
+          perspective: '1000px', 
+          rotateX: gridRotateX,
+          skewY: gridSkewY,
+          scale: gridScale
+        }}
+        className="absolute inset-0 origin-center transition-transform duration-700"
+      >
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:60px_60px] [mask-image:radial-gradient(ellipse_80%_80%_at_50%_50%,#000_70%,transparent_100%)]" />
+      </motion.div>
 
       {/* 3D Motion Blobs */}
       <motion.div 
@@ -1749,8 +2039,10 @@ const Home = ({ lang, addToCart, country }: { lang: Language; addToCart: (p: Pro
             animate={{ opacity: 1, y: 0 }}
             className="text-4xl sm:text-5xl md:text-8xl font-display font-extrabold leading-tight mb-6 md:mb-8"
           >
-            {lang === 'fr' ? 'Tout ce dont vous avez ' : 'Everything you '} 
-            <span className="gradient-text">{lang === 'fr' ? 'besoin' : 'need'}</span>
+            <CyberpunkGlitchText>
+              {lang === 'fr' ? 'Tout ce dont vous avez ' : 'Everything you '} 
+              <span className="gradient-text">{lang === 'fr' ? 'besoin' : 'need'}</span>
+            </CyberpunkGlitchText>
           </motion.h1>
           <motion.p 
             initial={{ opacity: 0, y: 20 }}
@@ -1817,7 +2109,9 @@ const Home = ({ lang, addToCart, country }: { lang: Language; addToCart: (p: Pro
       <section className="py-24">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-display font-bold mb-4">{t.testimonials}</h2>
+            <h2 className="text-4xl font-display font-bold mb-4">
+              <CyberpunkGlitchText>{t.testimonials}</CyberpunkGlitchText>
+            </h2>
           </div>
           <div className="grid md:grid-cols-3 gap-8">
             <TestimonialCard 
@@ -1853,8 +2147,10 @@ const Home = ({ lang, addToCart, country }: { lang: Language; addToCart: (p: Pro
             className="flex flex-col items-center gap-8"
           >
             <h2 className="text-3xl md:text-6xl font-display font-black leading-tight">
-              {lang === 'fr' ? "Besoin d'un projet " : "Need a custom "}
-              <span className="gradient-text">{lang === 'fr' ? 'Sur-Mesure ?' : 'Project?'}</span>
+              <CyberpunkGlitchText>
+                {lang === 'fr' ? "Besoin d'un projet " : "Need a custom "}
+                <span className="gradient-text">{lang === 'fr' ? 'Sur-Mesure ?' : 'Project?'}</span>
+              </CyberpunkGlitchText>
             </h2>
             <p className="text-lg md:text-xl text-slate-600 dark:text-slate-200 opacity-80 max-w-2xl font-medium">
               {lang === 'fr' 
@@ -1891,8 +2187,10 @@ const About = ({ lang }: { lang: Language }) => {
             animate={{ opacity: 1, scale: 1 }}
             className="text-5xl md:text-7xl font-display font-black mb-12 text-center"
           >
-            {lang === 'fr' ? 'Notre ' : 'Our '}
-            <span className="gradient-text">{lang === 'fr' ? 'Histoire' : 'Story'}</span>
+            <CyberpunkGlitchText>
+              {lang === 'fr' ? 'Notre ' : 'Our '}
+              <span className="gradient-text">{lang === 'fr' ? 'Histoire' : 'Story'}</span>
+            </CyberpunkGlitchText>
           </motion.h1>
           <motion.div 
             initial={{ opacity: 0, y: 30 }}
@@ -1940,8 +2238,10 @@ const About = ({ lang }: { lang: Language }) => {
           >
             <div className="absolute inset-0 bg-gradient-to-br from-pink-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
             <h2 className="text-4xl md:text-6xl font-display font-black mb-8 relative z-10">
-              {lang === 'fr' ? 'Prêt à ' : 'Ready to '}
-              <span className="gradient-text">{lang === 'fr' ? 'Explorer ?' : 'Explore?'}</span>
+              <CyberpunkGlitchText>
+                {lang === 'fr' ? 'Prêt à ' : 'Ready to '}
+                <span className="gradient-text">{lang === 'fr' ? 'Explorer ?' : 'Explore?'}</span>
+              </CyberpunkGlitchText>
             </h2>
             <div className="flex flex-col sm:flex-row justify-center gap-6 relative z-10">
               <Link to="/shop">
@@ -1986,8 +2286,10 @@ const Contact = ({ lang }: { lang: Language }) => {
               className="text-center lg:text-left"
             >
               <h1 className="text-5xl md:text-8xl font-display font-black mb-8 leading-tight">
-                {lang === 'fr' ? 'Dites ' : 'Say '}
-                <span className="gradient-text">{lang === 'fr' ? 'Bonjour' : 'Hello'}</span>
+                <CyberpunkGlitchText>
+                  {lang === 'fr' ? 'Dites ' : 'Say '}
+                  <span className="gradient-text">{lang === 'fr' ? 'Bonjour' : 'Hello'}</span>
+                </CyberpunkGlitchText>
               </h1>
               <p className="text-xl text-slate-600 dark:text-slate-200 mb-12 leading-relaxed opacity-80 font-medium">
                 {t.footerDesc}
@@ -2165,7 +2467,9 @@ const Shop = ({ lang, country, addToCart, searchQuery, setSearchQuery }: { lang:
           className="text-center mb-16 space-y-4"
         >
           <h1 className="text-4xl md:text-6xl font-display font-black tracking-tight">
-            <span className="gradient-text">{(t as any).shopHeroTitle}</span>
+            <CyberpunkGlitchText>
+              <span className="gradient-text">{(t as any).shopHeroTitle}</span>
+            </CyberpunkGlitchText>
           </h1>
           <p className="text-lg md:text-xl text-slate-600 dark:text-slate-200 max-w-2xl mx-auto opacity-80 leading-relaxed font-medium">
             {(t as any).shopHeroSubtitle}
@@ -3390,6 +3694,10 @@ function AppContent() {
                 {t.studio}
                 <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-pink-500 transition-all group-hover:w-full" />
               </Link>
+              <Link to="/services" className="text-sm font-bold hover:text-pink-500 transition-colors relative group">
+                {t.services}
+                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-pink-500 transition-all group-hover:w-full" />
+              </Link>
               <Link to="/about" className="text-sm font-bold hover:text-pink-500 transition-colors relative group">
                 {t.about}
                 <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-pink-500 transition-all group-hover:w-full" />
@@ -3526,6 +3834,13 @@ function AppContent() {
                     {t.studio}
                   </Link>
                   <Link 
+                    to="/services" 
+                    onClick={() => setIsMenuOpen(false)}
+                    className="text-lg font-bold hover:text-pink-500 transition-colors"
+                  >
+                    {t.services}
+                  </Link>
+                  <Link 
                     to="/about" 
                     onClick={() => setIsMenuOpen(false)}
                     className="text-lg font-bold hover:text-pink-500 transition-colors"
@@ -3610,6 +3925,11 @@ function AppContent() {
                 <Studio lang={lang} />
               </motion.div>
             } />
+            <Route path="/services" element={
+              <motion.div initial={{ opacity: 0, scale: 1.1 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 1.1 }} transition={{ duration: 0.4 }}>
+                <Services lang={lang} />
+              </motion.div>
+            } />
             <Route path="/about" element={
               <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -40 }} transition={{ duration: 0.5 }}>
                 <About lang={lang} />
@@ -3646,8 +3966,10 @@ function AppContent() {
             </div>
             
             <h2 className="text-4xl md:text-6xl font-display font-black mb-6 leading-tight">
-              {lang === 'fr' ? 'Rejoignez la ' : 'Join the '}
-              <span className="gradient-text">{lang === 'fr' ? 'Communauté' : 'Community'}</span>
+              <CyberpunkGlitchText>
+                {lang === 'fr' ? 'Rejoignez la ' : 'Join the '}
+                <span className="gradient-text">{lang === 'fr' ? 'Communauté' : 'Community'}</span>
+              </CyberpunkGlitchText>
             </h2>
             <p className="text-lg text-slate-600 dark:text-slate-200 max-w-2xl mx-auto mb-12 font-medium opacity-80">
               {t.newsletterDesc}

@@ -14,6 +14,17 @@ interface MusicCatalogProps {
   openCart: () => void;
 }
 
+const CyberpunkGlitchText = ({ children, className = "" }: { children: React.ReactNode, className?: string }) => {
+  return (
+    <div className={`glitch-text-container ${className}`}>
+      <span className="relative z-10">{children}</span>
+      <span className="glitch-layer glitch-layer-1" aria-hidden="true">{children}</span>
+      <span className="glitch-layer glitch-layer-2" aria-hidden="true">{children}</span>
+      <div className="cyber-scanline" />
+    </div>
+  );
+};
+
 export default function MusicCatalog({ lang, searchQuery = "", addToCart, openCart }: MusicCatalogProps) {
   const [activeCategory, setActiveCategory] = useState("Tout");
   const [playingTrack, setPlayingTrack] = useState<string | null>(null);
@@ -175,7 +186,7 @@ export default function MusicCatalog({ lang, searchQuery = "", addToCart, openCa
             animate={{ opacity: 1, y: 0 }}
             className="text-4xl md:text-6xl font-display font-extrabold mb-6 relative z-10"
           >
-            {t.title}
+            <CyberpunkGlitchText>{t.title}</CyberpunkGlitchText>
           </motion.h1>
           <motion.p 
             initial={{ opacity: 0, y: 20 }}
