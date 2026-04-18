@@ -41,6 +41,9 @@ const GABS_PRODUCTS = [
   { id: 32, name: "Construction Polygel", price: 7000, duration: "2h55", image: "/products/gabs-nails/polygel-32.jpeg", category: "polygel" },
 ];
 
+const VALID_PROMOS = ['Princestore', 'Baecstore', 'Mervistore', 'Gicostore', 'Ashstore'];
+const DISCOUNT_AMOUNT = 300;
+
 // WhatsApp SVG icon component
 const WhatsAppIcon = () => (
   <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
@@ -72,16 +75,19 @@ export default function GabNails({ lang }: { lang: 'fr' | 'en' }) {
 
   const handleWhatsAppOrder = async (product: typeof GABS_PRODUCTS[0], code: string = '') => {
     setIsSubmitting(true);
+    const isPromoValid = VALID_PROMOS.some(p => p.toLowerCase() === code.trim().toLowerCase());
+    const finalPrice = isPromoValid ? Math.max(0, product.price - DISCOUNT_AMOUNT) : product.price;
+
     const finalMessage = lang === 'fr'
-      ? `Bonjour Gab's Nails ! 💅\nJe viens depuis DualVibe et je suis intéressé(e) par :\n\n✨ ${product.name}\n💰 Prix : ${product.price} FCFA\n⏱ Durée : ${product.duration}\n🎟 Code Promo : ${code || 'Aucun'}\n\nMerci de me confirmer vos disponibilités ! 🙏`
-      : `Hello Gab's Nails! 💅\nI'm coming from DualVibe and I'm interested in:\n\n✨ ${product.name}\n💰 Price: ${product.price} FCFA\n⏱ Duration: ${product.duration}\n🎟 Promo Code: ${code || 'None'}\n\nPlease confirm your availability! 🙏`;
+      ? `Bonjour Gab's Nails ! 💅\nJe viens depuis DualVibe et je suis intéressé(e) par :\n\n✨ ${product.name}\n💰 Prix : ${finalPrice} FCFA ${isPromoValid ? `(Réduction -${DISCOUNT_AMOUNT} appliquée)` : ''}\n⏱ Durée : ${product.duration}\n🎟 Code Promo : ${code || 'Aucun'}${isPromoValid ? ' ✅' : ''}\n\nMerci de me confirmer vos disponibilités ! 🙏`
+      : `Hello Gab's Nails! 💅\nI'm coming from DualVibe and I'm interested in:\n\n✨ ${product.name}\n💰 Price: ${finalPrice} FCFA ${isPromoValid ? `(Discount -${DISCOUNT_AMOUNT} applied)` : ''}\n⏱ Duration: ${product.duration}\n🎟 Promo Code: ${code || 'None'}${isPromoValid ? ' ✅' : ''}\n\nPlease confirm your availability! 🙏`;
 
     try {
       // 1. Log to Supabase
       await supabase.from('partner_bookings').insert([{
         partner_name: "Gab's Nails",
         product_name: product.name,
-        price: product.price,
+        price: finalPrice,
         promo_code: code || null,
         customer_message: finalMessage
       }]);
@@ -93,8 +99,8 @@ export default function GabNails({ lang }: { lang: 'fr' | 'en' }) {
         body: JSON.stringify({
           partner: "Gab's Nails",
           product: product.name,
-          price: product.price,
-          promoCode: code,
+          price: finalPrice,
+          promoCode: code + (isPromoValid ? ' (VALID)' : ''),
           message: finalMessage
         })
       });
@@ -372,9 +378,29 @@ export default function GabNails({ lang }: { lang: 'fr' | 'en' }) {
                   type="text"
                   placeholder={lang === 'fr' ? "Entrez votre code (Optionnel)" : "Enter your code (Optional)"}
                   value={promoCode}
-                  onChange={(e) => setPromoCode(e.target.value.toUpperCase())}
-                  className="w-full px-6 py-4 bg-white/5 border border-white/10 rounded-2xl outline-none focus:border-pink-500/50 transition-colors text-center font-bold tracking-widest"
+                  onChange={(e) => setPromoCode(e.target.value)}
+                  className={`w-full px-6 py-4 bg-white/5 border rounded-2xl outline-none transition-all text-center font-bold tracking-widest ${
+                    promoCode && VALID_PROMOS.some(p => p.toLowerCase() === promoCode.trim().toLowerCase())
+                      ? 'border-green-500/50 text-green-400 bg-green-500/5'
+                      : 'border-white/10 focus:border-pink-500/50'
+                  }`}
                 />
+
+                {promoCode && (
+                  <motion.p 
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className={`text-center text-sm font-bold ${
+                      VALID_PROMOS.some(p => p.toLowerCase() === promoCode.trim().toLowerCase())
+                        ? 'text-green-500'
+                        : 'text-pink-500/60'
+                    }`}
+                  >
+                    {VALID_PROMOS.some(p => p.toLowerCase() === promoCode.trim().toLowerCase())
+                      ? (lang === 'fr' ? `✅ Code valide : -${DISCOUNT_AMOUNT} FCFA` : `✅ Valid code: -${DISCOUNT_AMOUNT} FCFA`)
+                      : (lang === 'fr' ? 'Code non reconnu' : 'Code not recognized')}
+                  </motion.p>
+                )}
                 
                 <button 
                   disabled={isSubmitting}
