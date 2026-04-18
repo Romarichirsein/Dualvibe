@@ -108,9 +108,11 @@ export default function GabNails({ lang }: { lang: 'fr' | 'en' }) {
       if (!response.ok) {
         const errorData = await response.json();
         console.error('Email API Error:', errorData);
+        alert(`Note: L'email de notification n'a pas pu être envoyé. Vérifiez votre clé RESEND_API_KEY sur Vercel. Erreur: ${JSON.stringify(errorData.error)}`);
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('Tracking/Notification error:', error);
+      alert(`Erreur technique lors de la réservation: ${error.message}`);
     } finally {
       setIsSubmitting(false);
       setSelectedProduct(null);
