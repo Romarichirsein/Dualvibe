@@ -93,7 +93,7 @@ export default function GabNails({ lang }: { lang: 'fr' | 'en' }) {
       }]);
 
       // 2. Notify DualVibe email
-      await fetch('/api/notify-order', {
+      const response = await fetch('/api/notify-order', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -104,6 +104,11 @@ export default function GabNails({ lang }: { lang: 'fr' | 'en' }) {
           message: finalMessage
         })
       });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.error('Email API Error:', errorData);
+      }
     } catch (error) {
       console.error('Tracking/Notification error:', error);
     } finally {
