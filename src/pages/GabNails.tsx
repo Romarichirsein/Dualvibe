@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowRight, Sparkles, MapPin, Clock, ExternalLink } from 'lucide-react';
+import { ArrowRight, Sparkles, MapPin, Clock, ExternalLink, X } from 'lucide-react';
+import { supabase } from '../lib/supabase';
 
 const GABS_PRODUCTS = [
   // Capsule + vernis gel
@@ -57,6 +58,10 @@ const TikTokIcon = () => (
 export default function GabNails({ lang }: { lang: 'fr' | 'en' }) {
   const [activeFilter, setActiveFilter] = useState<'all' | 'capsule' | 'polygel'>('all');
 
+  const [selectedProduct, setSelectedProduct] = useState<typeof GABS_PRODUCTS[0] | null>(null);
+  const [promoCode, setPromoCode] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -65,11 +70,42 @@ export default function GabNails({ lang }: { lang: 'fr' | 'en' }) {
     ? GABS_PRODUCTS 
     : GABS_PRODUCTS.filter(p => p.category === activeFilter);
 
-  const handleWhatsAppOrder = (product: typeof GABS_PRODUCTS[0]) => {
-    const message = lang === 'fr'
-      ? `Bonjour Gab's Nails ! 💅\nJe viens depuis DualVibe et je suis intéressé(e) par :\n\n✨ ${product.name}\n💰 Prix : ${product.price} FCFA\n⏱ Durée : ${product.duration}\n\nMerci de me confirmer vos disponibilités ! 🙏`
-      : `Hello Gab's Nails! 💅\nI'm coming from DualVibe and I'm interested in:\n\n✨ ${product.name}\n💰 Price: ${product.price} FCFA\n⏱ Duration: ${product.duration}\n\nPlease confirm your availability! 🙏`;
-    window.open(`https://wa.me/237695216458?text=${encodeURIComponent(message)}`, '_blank');
+  const handleWhatsAppOrder = async (product: typeof GABS_PRODUCTS[0], code: string = '') => {
+    setIsSubmitting(true);
+    const finalMessage = lang === 'fr'
+      ? `Bonjour Gab's Nails ! 💅\nJe viens depuis DualVibe et je suis intéressé(e) par :\n\n✨ ${product.name}\n💰 Prix : ${product.price} FCFA\n⏱ Durée : ${product.duration}\n🎟 Code Promo : ${code || 'Aucun'}\n\nMerci de me confirmer vos disponibilités ! 🙏`
+      : `Hello Gab's Nails! 💅\nI'm coming from DualVibe and I'm interested in:\n\n✨ ${product.name}\n💰 Price: ${product.price} FCFA\n⏱ Duration: ${product.duration}\n🎟 Promo Code: ${code || 'None'}\n\nPlease confirm your availability! 🙏`;
+
+    try {
+      // 1. Log to Supabase
+      await supabase.from('partner_bookings').insert([{
+        partner_name: "Gab's Nails",
+        product_name: product.name,
+        price: product.price,
+        promo_code: code || null,
+        customer_message: finalMessage
+      }]);
+
+      // 2. Notify DualVibe email
+      await fetch('/api/notify-order', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          partner: "Gab's Nails",
+          product: product.name,
+          price: product.price,
+          promoCode: code,
+          message: finalMessage
+        })
+      });
+    } catch (error) {
+      console.error('Tracking/Notification error:', error);
+    } finally {
+      setIsSubmitting(false);
+      setSelectedProduct(null);
+      setPromoCode('');
+      window.open(`https://wa.me/237695216458?text=${encodeURIComponent(finalMessage)}`, '_blank');
+    }
   };
 
   return (
@@ -245,7 +281,7 @@ export default function GabNails({ lang }: { lang: 'fr' | 'en' }) {
                 <p className="text-2xl font-black gradient-text mb-3">{prod.price.toLocaleString()} FCFA</p>
                 
                 <button 
-                  onClick={() => handleWhatsAppOrder(prod)}
+                  onClick={() => setSelectedProduct(prod)}
                   className="w-full flex items-center justify-center gap-2 px-4 py-3.5 bg-[#25D366] text-white rounded-xl font-bold hover:bg-[#128C7E] transition-all duration-300 hover:scale-[1.02] active:scale-95 shadow-lg shadow-green-500/20"
                 >
                   <WhatsAppIcon />
@@ -295,6 +331,74 @@ export default function GabNails({ lang }: { lang: 'fr' | 'en' }) {
           </a>
         </div>
       </motion.div>
+      {/* Promo Code Modal */}
+      <AnimatePresence>
+        {selectedProduct && (
+          <div className="fixed inset-0 z-[110] flex items-center justify-center px-6">
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setSelectedProduct(null)}
+              className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+            />
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.9, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: 20 }}
+              className="relative w-full max-w-md glass p-8 rounded-[2.5rem] border-white/10 shadow-2xl"
+            >
+              <button 
+                onClick={() => setSelectedProduct(null)}
+                className="absolute top-6 right-6 p-2 rounded-full hover:bg-white/10 transition-colors"
+              >
+                <X className="w-5 h-5" />
+              </button>
+
+              <div className="text-center mb-6">
+                <div className="w-16 h-16 bg-pink-500/20 text-pink-500 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                  <Star className="w-8 h-8" />
+                </div>
+                <h3 className="text-2xl font-bold mb-2">Code Promo ?</h3>
+                <p className="opacity-70">
+                  {lang === 'fr' 
+                    ? "Avez-vous un code de réduction pour cette prestation ?" 
+                    : "Do you have a discount code for this service?"}
+                </p>
+              </div>
+
+              <div className="space-y-4">
+                <input 
+                  type="text"
+                  placeholder={lang === 'fr' ? "Entrez votre code (Optionnel)" : "Enter your code (Optional)"}
+                  value={promoCode}
+                  onChange={(e) => setPromoCode(e.target.value.toUpperCase())}
+                  className="w-full px-6 py-4 bg-white/5 border border-white/10 rounded-2xl outline-none focus:border-pink-500/50 transition-colors text-center font-bold tracking-widest"
+                />
+                
+                <button 
+                  disabled={isSubmitting}
+                  onClick={() => handleWhatsAppOrder(selectedProduct, promoCode)}
+                  className="w-full py-4 bg-gradient-to-r from-pink-500 to-purple-600 text-white rounded-2xl font-bold shadow-xl shadow-pink-500/20 hover:scale-105 transition-transform disabled:opacity-50 flex items-center justify-center gap-2"
+                >
+                  {isSubmitting ? (
+                    <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                  ) : (
+                    <>
+                      {lang === 'fr' ? 'Continuer sur WhatsApp' : 'Continue to WhatsApp'}
+                      <ArrowRight className="w-5 h-5" />
+                    </>
+                  )}
+                </button>
+
+                <p className="text-[10px] text-center opacity-40 uppercase tracking-widest">
+                  Secure reservation via DualVibe Partner Link
+                </p>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
