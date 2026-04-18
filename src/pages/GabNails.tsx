@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { ArrowRight, Sparkles, MapPin, Clock, ExternalLink, X } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { ArrowRight, Sparkles, MapPin, Clock, ExternalLink, X, Star } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 
 const GABS_PRODUCTS = [
