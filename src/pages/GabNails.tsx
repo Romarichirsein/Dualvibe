@@ -69,7 +69,7 @@ export default function GabNails({ lang }: { lang: 'fr' | 'en' }) {
     const message = lang === 'fr'
       ? `Bonjour Gab's Nails ! 💅\nJe viens depuis DualVibe et je suis intéressé(e) par :\n\n✨ ${product.name}\n💰 Prix : ${product.price} FCFA\n⏱ Durée : ${product.duration}\n\nMerci de me confirmer vos disponibilités ! 🙏`
       : `Hello Gab's Nails! 💅\nI'm coming from DualVibe and I'm interested in:\n\n✨ ${product.name}\n💰 Price: ${product.price} FCFA\n⏱ Duration: ${product.duration}\n\nPlease confirm your availability! 🙏`;
-    window.open(`https://wa.me/237690000000?text=${encodeURIComponent(message)}`, '_blank');
+    window.open(`https://wa.me/237695216458?text=${encodeURIComponent(message)}`, '_blank');
   };
 
   return (
@@ -276,7 +276,7 @@ export default function GabNails({ lang }: { lang: 'fr' | 'en' }) {
         </p>
         <div className="flex flex-wrap justify-center gap-4 relative z-10">
           <a 
-            href="https://wa.me/237690000000" 
+            href="https://wa.me/237695216458" 
             target="_blank" 
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 px-8 py-4 bg-[#25D366] text-white rounded-2xl font-bold text-lg shadow-xl shadow-green-500/20 hover:scale-105 transition-transform"
