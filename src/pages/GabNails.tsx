@@ -109,6 +109,8 @@ export default function GabNails({ lang }: { lang: 'fr' | 'en' }) {
         const errorData = await response.json();
         console.error('Email API Error:', errorData);
         alert(`Note: L'email de notification n'a pas pu être envoyé. Vérifiez votre clé RESEND_API_KEY sur Vercel. Erreur: ${JSON.stringify(errorData.error)}`);
+      } else {
+        console.log('Notification email sent successfully');
       }
     } catch (error: any) {
       console.error('Tracking/Notification error:', error);
