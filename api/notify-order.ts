@@ -12,7 +12,7 @@ export default async function handler(req: any, res: any) {
 
   try {
     const { data, error } = await resend.emails.send({
-      from: 'DualVibe Alerts <notifications@dualvibe.com>', // Normalement vous devez valider votre domaine sur Resend
+      from: 'DualVibe <onboarding@resend.dev>', 
       to: ['Dualvibe237@gmail.com'],
       subject: `NOUVELLE COMMANDE PARTENAIRE - ${partner}`,
       html: `
