@@ -13,7 +13,7 @@ export default async function handler(req: any, res: any) {
   try {
     const { data, error } = await resend.emails.send({
       from: 'DualVibe <onboarding@resend.dev>', 
-      to: ['Dualvibe237@gmail.com'],
+      to: ['dualvibe237@gmail.com'],
       subject: `NOUVELLE COMMANDE PARTENAIRE - ${partner}`,
       html: `
         <div style="font-family: sans-serif; padding: 20px; color: #1a1a1a;">
