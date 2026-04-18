@@ -1811,7 +1811,7 @@ const Services = ({ lang }: { lang: Language }) => {
         
         <div className="w-40 h-40 md:w-64 md:h-64 shrink-0 rounded-full bg-gradient-to-tr from-pink-500 to-purple-600 p-1 shadow-2xl shadow-pink-500/20 relative z-10">
           <img 
-            src="/products/gabs-nails/logo Gab's nails.png" 
+            src="/products/gabs-nails/logo.png" 
             alt="Gab's Nails Logo" 
             className="w-full h-full object-cover rounded-full bg-white"
           />

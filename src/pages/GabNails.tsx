@@ -4,40 +4,40 @@ import { ArrowRight, Sparkles, MapPin, Clock, ExternalLink } from 'lucide-react'
 
 const GABS_PRODUCTS = [
   // Capsule + vernis gel
-  { id: 1, name: "Capsule + Vernis Gel", price: 2000, duration: "1h30", image: "/products/gabs-nails/Capsule + vernis gel - 2000frs —1h30min.jpeg", category: "capsule" },
-  { id: 2, name: "Capsule + Vernis Gel", price: 2500, duration: "1h30", image: "/products/gabs-nails/Capsule + vernis gel - 2500frs — 1h30mins.jpeg", category: "capsule" },
-  { id: 3, name: "Capsule + Vernis Gel", price: 2500, duration: "1h45", image: "/products/gabs-nails/Capsule + vernis gel - 2500frs —1h45min.jpeg", category: "capsule" },
-  { id: 4, name: "Capsule + Vernis Gel", price: 2500, duration: "1h45", image: "/products/gabs-nails/Capsule + vernis gel - 2500frs —1h45mins.jpeg", category: "capsule" },
-  { id: 5, name: "Capsule + Vernis Gel", price: 2000, duration: "1h30", image: "/products/gabs-nails/Capsule + vernis gel -2000frs —1h30mins.jpeg", category: "capsule" },
-  { id: 6, name: "Capsule + Vernis Gel", price: 2500, duration: "1h45", image: "/products/gabs-nails/Capsule + vernis gel -2500frs —1h45mins(photo2).jpeg", category: "capsule" },
-  { id: 7, name: "Capsule + Vernis Gel", price: 2500, duration: "1h45", image: "/products/gabs-nails/Capsule + vernis gel -2500frs —1h45mins.jpeg", category: "capsule" },
-  { id: 8, name: "Capsule + Vernis Gel", price: 2500, duration: "~1h45", image: "/products/gabs-nails/Capsule + vernis gel 2500frs.jpeg", category: "capsule" },
-  { id: 9, name: "Capsule + Vernis Gel", price: 2500, duration: "1h45", image: "/products/gabs-nails/Capsule + vernis gel— 2500frs —1h45mins.jpeg", category: "capsule" },
-  { id: 28, name: "Capsule + Vernis Gel", price: 2500, duration: "1h45", image: "/products/gabs-nails/capsule + vernis gel 2500 1h45.jpeg", category: "capsule" },
-  { id: 29, name: "Capsule + Vernis Gel", price: 2000, duration: "1h45", image: "/products/gabs-nails/capsule+vernisgel 2000fr1h45min.jpeg", category: "capsule" },
-  { id: 30, name: "Capsule + Vernis Gel", price: 2000, duration: "1h50", image: "/products/gabs-nails/capsule+vernisgel 2000frs1h50min.jpeg", category: "capsule" },
+  { id: 1, name: "Capsule + Vernis Gel", price: 2000, duration: "1h30", image: "/products/gabs-nails/capsule-1.jpeg", category: "capsule" },
+  { id: 2, name: "Capsule + Vernis Gel", price: 2500, duration: "1h30", image: "/products/gabs-nails/capsule-2.jpeg", category: "capsule" },
+  { id: 3, name: "Capsule + Vernis Gel", price: 2500, duration: "1h45", image: "/products/gabs-nails/capsule-3.jpeg", category: "capsule" },
+  { id: 4, name: "Capsule + Vernis Gel", price: 2500, duration: "1h45", image: "/products/gabs-nails/capsule-4.jpeg", category: "capsule" },
+  { id: 5, name: "Capsule + Vernis Gel", price: 2000, duration: "1h30", image: "/products/gabs-nails/capsule-5.jpeg", category: "capsule" },
+  { id: 6, name: "Capsule + Vernis Gel", price: 2500, duration: "1h45", image: "/products/gabs-nails/capsule-6.jpeg", category: "capsule" },
+  { id: 7, name: "Capsule + Vernis Gel", price: 2500, duration: "1h45", image: "/products/gabs-nails/capsule-7.jpeg", category: "capsule" },
+  { id: 8, name: "Capsule + Vernis Gel", price: 2500, duration: "1h45", image: "/products/gabs-nails/capsule-8.jpeg", category: "capsule" },
+  { id: 9, name: "Capsule + Vernis Gel", price: 2500, duration: "~1h45", image: "/products/gabs-nails/capsule-9.jpeg", category: "capsule" },
+  { id: 10, name: "Capsule + Vernis Gel", price: 2500, duration: "1h45", image: "/products/gabs-nails/capsule-10.jpeg", category: "capsule" },
+  { id: 11, name: "Capsule + Vernis Gel", price: 2000, duration: "1h45", image: "/products/gabs-nails/capsule-11.jpeg", category: "capsule" },
+  { id: 12, name: "Capsule + Vernis Gel", price: 2000, duration: "1h50", image: "/products/gabs-nails/capsule-12.jpeg", category: "capsule" },
 
   // Construction polygel
-  { id: 10, name: "Construction Polygel", price: 6500, duration: "3h", image: "/products/gabs-nails/Construction polygel  6500 3h.jpeg", category: "polygel" },
-  { id: 11, name: "Construction Polygel", price: 6000, duration: "2h50", image: "/products/gabs-nails/Construction polygel - 6000frs — 2h50mins.jpeg", category: "polygel" },
-  { id: 12, name: "Construction Polygel", price: 6000, duration: "2h50", image: "/products/gabs-nails/Construction polygel - 6000frs —2h50mins.jpeg", category: "polygel" },
-  { id: 13, name: "Construction Polygel", price: 6500, duration: "2h45", image: "/products/gabs-nails/Construction polygel - 6500frs — 2h45.jpeg", category: "polygel" },
-  { id: 14, name: "Construction Polygel", price: 6500, duration: "2h55", image: "/products/gabs-nails/Construction polygel - 6500frs —2h55mins.jpeg", category: "polygel" },
-  { id: 15, name: "Construction Polygel", price: 6000, duration: "2h45", image: "/products/gabs-nails/Construction polygel -6000frs — 2h45mins.jpeg", category: "polygel" },
-  { id: 16, name: "Construction Polygel", price: 6000, duration: "2h15", image: "/products/gabs-nails/Construction polygel -6000frs —2h15mins.jpeg", category: "polygel" },
-  { id: 17, name: "Construction Polygel", price: 7000, duration: "3h", image: "/products/gabs-nails/Construction polygel -7000frs — 3hrs.jpeg", category: "polygel" },
-  { id: 18, name: "Construction Polygel", price: 6000, duration: "2h15", image: "/products/gabs-nails/Construction polygel 6000 2h15.jpeg", category: "polygel" },
-  { id: 19, name: "Construction Polygel", price: 6000, duration: "2h15", image: "/products/gabs-nails/Construction polygel 6000 2h15min.jpeg", category: "polygel" },
-  { id: 20, name: "Construction Polygel", price: 6000, duration: "2h15", image: "/products/gabs-nails/Construction polygel 6000 2h15mins.jpeg", category: "polygel" },
-  { id: 21, name: "Construction Polygel", price: 7000, duration: "3h", image: "/products/gabs-nails/construction polygel 7000 3h.jpeg", category: "polygel" },
-  { id: 22, name: "Construction Polygel", price: 7000, duration: "3h", image: "/products/gabs-nails/Construction polygel 7000Fcfa  3h.jpeg", category: "polygel" },
-  { id: 23, name: "Construction Polygel", price: 7500, duration: "3h", image: "/products/gabs-nails/Construction polygel 7500 3h.jpeg", category: "polygel" },
-  { id: 24, name: "Construction Polygel", price: 5000, duration: "2h30", image: "/products/gabs-nails/Construction polygel- 5000 — 2h30mins.jpeg", category: "polygel" },
-  { id: 25, name: "Construction Polygel", price: 6000, duration: "2h30", image: "/products/gabs-nails/Construction polygel- 6000frs 2h30mins.jpeg", category: "polygel" },
-  { id: 26, name: "Construction Polygel", price: 7000, duration: "2h55", image: "/products/gabs-nails/Construction polygel- 7000frs — 2h55mins.jpeg", category: "polygel" },
-  { id: 27, name: "Construction Polygel", price: 7500, duration: "3h", image: "/products/gabs-nails/Construction polygel- 7500frs— 3hrs.jpeg", category: "polygel" },
-  { id: 31, name: "Construction Polygel", price: 6500, duration: "2h45", image: "/products/gabs-nails/construction polygel 6500 2h45min.jpeg", category: "polygel" },
-  { id: 32, name: "Construction Polygel", price: 7000, duration: "2h55", image: "/products/gabs-nails/Construction polygel— 7000frs — 2h55mins.jpeg", category: "polygel" },
+  { id: 13, name: "Construction Polygel", price: 6500, duration: "3h", image: "/products/gabs-nails/polygel-13.jpeg", category: "polygel" },
+  { id: 14, name: "Construction Polygel", price: 6000, duration: "2h50", image: "/products/gabs-nails/polygel-14.jpeg", category: "polygel" },
+  { id: 15, name: "Construction Polygel", price: 6000, duration: "2h50", image: "/products/gabs-nails/polygel-15.jpeg", category: "polygel" },
+  { id: 16, name: "Construction Polygel", price: 6500, duration: "2h45", image: "/products/gabs-nails/polygel-16.jpeg", category: "polygel" },
+  { id: 17, name: "Construction Polygel", price: 6500, duration: "2h55", image: "/products/gabs-nails/polygel-17.jpeg", category: "polygel" },
+  { id: 18, name: "Construction Polygel", price: 6000, duration: "2h45", image: "/products/gabs-nails/polygel-18.jpeg", category: "polygel" },
+  { id: 19, name: "Construction Polygel", price: 6000, duration: "2h15", image: "/products/gabs-nails/polygel-19.jpeg", category: "polygel" },
+  { id: 20, name: "Construction Polygel", price: 7000, duration: "3h", image: "/products/gabs-nails/polygel-20.jpeg", category: "polygel" },
+  { id: 21, name: "Construction Polygel", price: 6000, duration: "2h15", image: "/products/gabs-nails/polygel-21.jpeg", category: "polygel" },
+  { id: 22, name: "Construction Polygel", price: 6000, duration: "2h15", image: "/products/gabs-nails/polygel-22.jpeg", category: "polygel" },
+  { id: 23, name: "Construction Polygel", price: 6000, duration: "2h15", image: "/products/gabs-nails/polygel-23.jpeg", category: "polygel" },
+  { id: 24, name: "Construction Polygel", price: 6500, duration: "2h45", image: "/products/gabs-nails/polygel-24.jpeg", category: "polygel" },
+  { id: 25, name: "Construction Polygel", price: 7000, duration: "3h", image: "/products/gabs-nails/polygel-25.jpeg", category: "polygel" },
+  { id: 26, name: "Construction Polygel", price: 7000, duration: "3h", image: "/products/gabs-nails/polygel-26.jpeg", category: "polygel" },
+  { id: 27, name: "Construction Polygel", price: 7500, duration: "3h", image: "/products/gabs-nails/polygel-27.jpeg", category: "polygel" },
+  { id: 28, name: "Construction Polygel", price: 5000, duration: "2h30", image: "/products/gabs-nails/polygel-28.jpeg", category: "polygel" },
+  { id: 29, name: "Construction Polygel", price: 6000, duration: "2h30", image: "/products/gabs-nails/polygel-29.jpeg", category: "polygel" },
+  { id: 30, name: "Construction Polygel", price: 7000, duration: "2h55", image: "/products/gabs-nails/polygel-30.jpeg", category: "polygel" },
+  { id: 31, name: "Construction Polygel", price: 7500, duration: "3h", image: "/products/gabs-nails/polygel-31.jpeg", category: "polygel" },
+  { id: 32, name: "Construction Polygel", price: 7000, duration: "2h55", image: "/products/gabs-nails/polygel-32.jpeg", category: "polygel" },
 ];
 
 // WhatsApp SVG icon component
@@ -89,7 +89,7 @@ export default function GabNails({ lang }: { lang: 'fr' | 'en' }) {
           className="w-36 h-36 md:w-44 md:h-44 mx-auto rounded-full bg-gradient-to-tr from-pink-500 via-purple-500 to-fuchsia-500 p-1.5 shadow-2xl shadow-pink-500/40"
         >
           <img 
-            src="/products/gabs-nails/logo Gab's nails.png" 
+            src="/products/gabs-nails/logo.png" 
             alt="Gab's Nails Logo" 
             className="w-full h-full object-cover rounded-full bg-white" 
           />
