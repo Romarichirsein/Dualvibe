@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
   Music, 
@@ -82,9 +82,9 @@ export default function Studio({ lang }: StudioProps) {
   const [files, setFiles] = useState<File[]>([]);
 
   const categories = [
-    { id: 'music' as CategoryId, icon: Music, title: t.musicCustom, desc: t.musicDesc, color: 'from-lime-500 to-lime-600' },
+    { id: 'music' as CategoryId, icon: Music, title: t.musicCustom, desc: t.musicDesc, color: 'from-[#84CC16] to-[#84CC16]' },
     { id: 'photo' as CategoryId, icon: Camera, title: t.photoCustom, desc: t.photoDesc, color: 'from-blue-500 to-cyan-500' },
-    { id: 'video' as CategoryId, icon: Video, title: t.videoCustom, desc: t.videoDesc, color: 'from-sky-600 to-sky-800' },
+    { id: 'video' as CategoryId, icon: Video, title: t.videoCustom, desc: t.videoDesc, color: 'from-[#0EA5E9] to-[#0EA5E9]' },
     { id: 'design' as CategoryId, icon: Palette, title: t.designCustom, desc: t.designDesc, color: 'from-orange-500 to-yellow-500' },
   ];
 
@@ -125,7 +125,7 @@ export default function Studio({ lang }: StudioProps) {
           <motion.div 
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="inline-flex items-center gap-2 glass px-4 py-2 rounded-full text-lime-500 font-bold text-sm mb-6"
+            className="inline-flex items-center gap-2 glass px-4 py-2 rounded-full text-[#84CC16] font-bold text-sm mb-6"
           >
             <Sparkles className="w-4 h-4" />
             DualVibe Studio
@@ -155,7 +155,7 @@ export default function Studio({ lang }: StudioProps) {
                 onClick={() => setActiveCategory(cat.id)}
                 className={`w-full text-left p-6 rounded-[2rem] transition-all flex items-center gap-6 group relative overflow-hidden ${
                   activeCategory === cat.id 
-                    ? 'glass border-lime-500/50 shadow-xl' 
+                    ? 'glass border-[#84CC16]/50 shadow-xl' 
                     : 'glass border-transparent opacity-60 hover:opacity-100 hover:bg-white/5'
                 }`}
               >
@@ -175,7 +175,7 @@ export default function Studio({ lang }: StudioProps) {
                   <p className="text-xs opacity-70 leading-relaxed">{cat.desc}</p>
                 </div>
                 {activeCategory === cat.id && (
-                  <ChevronRight className="w-5 h-5 ml-auto text-lime-500" />
+                  <ChevronRight className="w-5 h-5 ml-auto text-[#84CC16]" />
                 )}
               </motion.button>
             ))}
@@ -196,7 +196,7 @@ export default function Studio({ lang }: StudioProps) {
                 <form onSubmit={handleSubmit} className="space-y-8 relative z-10">
                   <div className="space-y-4">
                     <label className="text-sm font-bold uppercase tracking-widest opacity-60 ml-2 flex items-center gap-2">
-                       <Sparkles className="w-4 h-4 text-lime-500" />
+                       <Sparkles className="w-4 h-4 text-[#84CC16]" />
                        {t.projectDetails}
                     </label>
                     <textarea 
@@ -204,14 +204,14 @@ export default function Studio({ lang }: StudioProps) {
                       value={details}
                       onChange={(e) => setDetails(e.target.value)}
                       placeholder={t.placeholderDetails}
-                      className="w-full glass bg-white/5 border border-white/10 rounded-[2rem] p-6 h-48 outline-none focus:border-lime-500/50 transition-all resize-none text-lg"
+                      className="w-full glass bg-white/5 border border-white/10 rounded-[2rem] p-6 h-48 outline-none focus:border-[#84CC16]/50 transition-all resize-none text-lg"
                     />
                   </div>
 
                   <div className="grid md:grid-cols-2 gap-8">
                     <div className="space-y-4">
                       <label className="text-sm font-bold uppercase tracking-widest opacity-60 ml-2 flex items-center gap-2">
-                         <LinkIcon className="w-4 h-4 text-lime-500" />
+                         <LinkIcon className="w-4 h-4 text-[#84CC16]" />
                          {t.projectLinks}
                       </label>
                       <input 
@@ -219,13 +219,13 @@ export default function Studio({ lang }: StudioProps) {
                         value={links}
                         onChange={(e) => setLinks(e.target.value)}
                         placeholder={t.placeholderLinks}
-                        className="w-full glass bg-white/5 border border-white/10 rounded-2xl px-6 py-4 outline-none focus:border-lime-500/50 transition-all"
+                        className="w-full glass bg-white/5 border border-white/10 rounded-2xl px-6 py-4 outline-none focus:border-[#84CC16]/50 transition-all"
                       />
                     </div>
                     
                     <div className="space-y-4">
                       <label className="text-sm font-bold uppercase tracking-widest opacity-60 ml-2 flex items-center gap-2">
-                         <Upload className="w-4 h-4 text-lime-500" />
+                         <Upload className="w-4 h-4 text-[#84CC16]" />
                          Fichiers (UI Only)
                       </label>
                       <div className="relative group/upload">
@@ -235,8 +235,8 @@ export default function Studio({ lang }: StudioProps) {
                           onChange={handleFileChange}
                           className="absolute inset-0 opacity-0 cursor-pointer z-20"
                         />
-                        <div className="glass bg-white/5 border-2 border-dashed border-white/10 rounded-2xl p-4 flex items-center justify-center gap-3 group-hover/upload:border-lime-500/50 transition-all">
-                          <Upload className="w-5 h-5 opacity-40 group-hover/upload:text-lime-500" />
+                        <div className="glass bg-white/5 border-2 border-dashed border-white/10 rounded-2xl p-4 flex items-center justify-center gap-3 group-hover/upload:border-[#84CC16]/50 transition-all">
+                          <Upload className="w-5 h-5 opacity-40 group-hover/upload:text-[#84CC16]" />
                           <span className="text-xs font-bold opacity-40 group-hover/upload:opacity-100">
                             {files.length > 0 ? `${files.length} fichiers sélectionnés` : t.uploadDrop}
                           </span>
@@ -249,7 +249,7 @@ export default function Studio({ lang }: StudioProps) {
                     whileHover={{ scale: 1.02, y: -2 }}
                     whileTap={{ scale: 0.98 }}
                     type="submit"
-                    className="w-full py-6 bg-gradient-to-r from-lime-500 via-sky-700 to-sky-900 text-white rounded-[2rem] font-extrabold text-xl shadow-xl shadow-lime-500/20 flex items-center justify-center gap-4 transition-all group"
+                    className="w-full py-6 bg-gradient-to-r from-[#84CC16] via-[#0EA5E9] to-[#0EA5E9] text-white rounded-[2rem] font-extrabold text-xl shadow-xl shadow-[#84CC16]/20 flex items-center justify-center gap-4 transition-all group"
                   >
                     <Send className="w-6 h-6 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
                     {t.sendStudio}
@@ -271,7 +271,7 @@ export default function Studio({ lang }: StudioProps) {
             viewport={{ once: true }}
             className="glass p-12 rounded-[3rem] border-white/20 relative overflow-hidden group"
           >
-            <div className="absolute inset-0 bg-gradient-to-br from-lime-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+            <div className="absolute inset-0 bg-gradient-to-br from-[#84CC16]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
             <h3 className="text-2xl md:text-4xl font-display font-bold mb-6 relative z-10">
               {lang === 'fr' ? 'Prêt à explorer notre ' : 'Ready to explore our '}
               <span className="gradient-text">{lang === 'fr' ? 'Boutique ?' : 'Shop?'}</span>
@@ -285,7 +285,7 @@ export default function Studio({ lang }: StudioProps) {
               <motion.button
                 whileHover={{ scale: 1.05, y: -5 }}
                 whileTap={{ scale: 0.95 }}
-                className="px-10 py-4 bg-lime-500 text-white rounded-2xl font-bold flex items-center gap-3 mx-auto relative z-10 shadow-xl shadow-lime-500/20"
+                className="px-10 py-4 bg-[#84CC16] text-white rounded-2xl font-bold flex items-center gap-3 mx-auto relative z-10 shadow-xl shadow-[#84CC16]/20"
               >
                 <ShoppingCart className="w-5 h-5" />
                 {lang === 'fr' ? 'Aller à la Boutique' : 'Go to Shop'}
