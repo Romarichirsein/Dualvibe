@@ -17,17 +17,17 @@ export default async function handler(req: any, res: any) {
       subject: `NOUVELLE COMMANDE PARTENAIRE - ${partner}`,
       html: `
         <div style="font-family: sans-serif; padding: 20px; color: #1a1a1a;">
-          <h1 style="color: #ec4899;">Nouvelle commande via DualVibe</h1>
+          <h1 style="color: #84cc16;">Nouvelle commande via DualVibe</h1>
           <p>Une commande vient d'être initiée pour votre partenaire <strong>${partner}</strong>.</p>
           <hr style="border: none; border-top: 1px solid #eee; margin: 20px 0;" />
           <p><strong>Détails :</strong></p>
           <ul>
             <li><strong>Produit :</strong> ${product}</li>
             <li><strong>Prix :</strong> ${price} FCFA</li>
-            <li><strong>Code Promo utilisé :</strong> <span style="background: #fdf2f8; color: #db2777; padding: 4px 8px; border-radius: 4px; font-weight: bold;">${promoCode || 'AUCUN'}</span></li>
+            <li><strong>Code Promo utilisé :</strong> <span style="background: #f7fee7; color: #65a30d; padding: 4px 8px; border-radius: 4px; font-weight: bold;">${promoCode || 'AUCUN'}</span></li>
           </ul>
           <p><strong>Message envoyé au partenaire :</strong></p>
-          <blockquote style="background: #f9fafb; padding: 15px; border-left: 4px solid #ec4899;">
+          <blockquote style="background: #f9fafb; padding: 15px; border-left: 4px solid #84cc16;">
             ${message.replace(/\n/g, '<br>')}
           </blockquote>
           <p style="font-size: 12px; color: #666; margin-top: 30px;">
