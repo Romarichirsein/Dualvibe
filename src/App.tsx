@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @license
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -188,7 +188,7 @@ const ParticleNetwork = React.memo(() => {
       draw(context: CanvasRenderingContext2D) {
         context.beginPath();
         context.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-        context.fillStyle = 'rgba(255, 0, 204, 0.4)';
+        context.fillStyle = 'rgba(132, 204, 22, 0.4)';
         context.fill();
       }
     }
@@ -215,7 +215,7 @@ const ParticleNetwork = React.memo(() => {
           const dist = Math.sqrt(dx * dx + dy * dy);
           if (dist < 120) {
             ctx.beginPath();
-            ctx.strokeStyle = `rgba(255, 0, 204, ${0.15 * (1 - dist / 120)})`;
+            ctx.strokeStyle = `rgba(132, 204, 22, ${0.15 * (1 - dist / 120)})`;
             ctx.lineWidth = 0.5;
             ctx.moveTo(p.x, p.y);
             ctx.lineTo(particles[j].x, particles[j].y);
@@ -1598,8 +1598,8 @@ const PRODUCTS: Product[] = [
 // --- Components ---
 
 const FeatureCard = ({ icon, title, desc }: { icon: React.ReactNode; title: string; desc: string }) => (
-  <div className="glass p-8 rounded-3xl hover:border-pink-500/30 transition-all group">
-    <div className="w-14 h-14 bg-pink-500/10 rounded-2xl flex items-center justify-center text-pink-500 mb-6 group-hover:bg-pink-500 group-hover:text-white transition-all">
+  <div className="glass p-8 rounded-3xl hover:border-lime-500/30 transition-all group">
+    <div className="w-14 h-14 bg-lime-500/10 rounded-2xl flex items-center justify-center text-lime-500 mb-6 group-hover:bg-lime-500 group-hover:text-white transition-all">
       {icon}
     </div>
     <h3 className="text-xl font-bold mb-3">{title}</h3>
@@ -1610,14 +1610,14 @@ const FeatureCard = ({ icon, title, desc }: { icon: React.ReactNode; title: stri
 const TestimonialCard = ({ name, role, text, avatar }: { name: string; role: string; text: string; avatar: string }) => (
   <div className="glass p-8 rounded-3xl relative overflow-hidden group">
     <div className="absolute top-0 right-0 p-4 opacity-10">
-      <Quote className="w-12 h-12 text-pink-500" />
+      <Quote className="w-12 h-12 text-lime-500" />
     </div>
     <p className="text-slate-600 dark:text-slate-200 mb-8 italic relative z-10">"{text}"</p>
     <div className="flex items-center gap-4">
-      <img src={avatar} alt={name} className="w-12 h-12 rounded-full object-cover border-2 border-pink-500/20" referrerPolicy="no-referrer" />
+      <img src={avatar} alt={name} className="w-12 h-12 rounded-full object-cover border-2 border-lime-500/20" referrerPolicy="no-referrer" />
       <div>
         <h4 className="font-bold text-sm">{name}</h4>
-        <p className="text-xs text-pink-500">{role}</p>
+        <p className="text-xs text-lime-500">{role}</p>
       </div>
     </div>
   </div>
@@ -1720,7 +1720,7 @@ const ReviewSection = ({
               required
             />
           </div>
-          <button type="submit" className="w-full py-4 bg-pink-500 text-white rounded-xl font-bold shadow-lg shadow-pink-500/20">
+          <button type="submit" className="w-full py-4 bg-lime-500 text-white rounded-xl font-bold shadow-lg shadow-lime-500/20">
             {t.submit}
           </button>
         </form>
@@ -1736,14 +1736,14 @@ const Services = ({ lang }: { lang: Language }) => {
       id: 'engagement', 
       title: { fr: 'Fiançailles', en: 'Engagement' }, 
       icon: Heart, 
-      color: 'from-pink-500 to-rose-500',
+      color: 'from-lime-500 to-lime-600',
       desc: { fr: 'Organisation, décoration et cadeaux pour célébrer l\'engagement.', en: 'Organization, decoration, and gifts to celebrate commitment.' }
     },
     { 
       id: 'wedding', 
       title: { fr: 'Mariage', en: 'Wedding' }, 
       icon: Moon, 
-      color: 'from-purple-600 to-indigo-600',
+      color: 'from-sky-700 to-sky-900',
       desc: { fr: 'Services premium pour le plus beau jour de votre vie.', en: 'Premium services for the most beautiful day of your life.' }
     },
     { 
@@ -1793,7 +1793,7 @@ const Services = ({ lang }: { lang: Language }) => {
             </div>
             <h3 className="text-2xl font-bold mb-4">{cat.title[lang]}</h3>
             <p className="text-sm opacity-70 leading-relaxed mb-6">{cat.desc[lang]}</p>
-            <button className="text-sm font-bold flex items-center gap-2 text-pink-500 group-hover:gap-3 transition-all">
+            <button className="text-sm font-bold flex items-center gap-2 text-lime-500 group-hover:gap-3 transition-all">
               {lang === 'fr' ? 'Explorer' : 'Explore'} <ArrowRight className="w-4 h-4" />
             </button>
           </motion.div>
@@ -1805,11 +1805,11 @@ const Services = ({ lang }: { lang: Language }) => {
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         viewport={{ once: true }}
-        className="glass p-8 md:p-12 rounded-[3rem] mb-20 border-pink-500/30 relative overflow-hidden flex flex-col md:flex-row items-center gap-10"
+        className="glass p-8 md:p-12 rounded-[3rem] mb-20 border-lime-500/30 relative overflow-hidden flex flex-col md:flex-row items-center gap-10"
       >
-        <div className="absolute inset-0 bg-gradient-to-br from-purple-600/10 via-pink-500/5 to-transparent pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-br from-sky-700/10 via-lime-500/5 to-transparent pointer-events-none" />
         
-        <div className="w-40 h-40 md:w-64 md:h-64 shrink-0 rounded-full bg-gradient-to-tr from-pink-500 to-purple-600 p-1 shadow-2xl shadow-pink-500/20 relative z-10">
+        <div className="w-40 h-40 md:w-64 md:h-64 shrink-0 rounded-full bg-gradient-to-tr from-lime-500 to-sky-700 p-1 shadow-2xl shadow-lime-500/20 relative z-10">
           <img 
             src="/products/gabs-nails/logo.png" 
             alt="Gab's Nails Logo" 
@@ -1818,7 +1818,7 @@ const Services = ({ lang }: { lang: Language }) => {
         </div>
 
         <div className="flex-1 text-center md:text-left relative z-10">
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-pink-500/20 text-pink-500 rounded-full font-bold text-sm mb-4">
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-lime-500/20 text-lime-500 rounded-full font-bold text-sm mb-4">
             <Sparkles className="w-4 h-4" /> Partenaire Recommandé
           </div>
           <h2 className="text-3xl md:text-5xl font-display font-black mb-4">
@@ -1829,7 +1829,7 @@ const Services = ({ lang }: { lang: Language }) => {
               ? "L'expertise en onglerie pour tous vos événements : Mariages, dot, cérémonies professionnelles ou simple moment de beauté. Profitez de poses en capsule, vernis gel et construction polygel d'une durabilité exceptionnelle." 
               : "Expert nail artistry for all your events: Weddings, traditional ceremonies, or simply treating yourself. Enjoy high-quality capsules, gel polish, and durable polygel constructions."}
           </p>
-          <Link to="/gabs-nails" className="inline-flex px-8 py-4 bg-gradient-to-r from-pink-500 to-purple-600 text-white rounded-2xl font-bold text-lg shadow-xl shadow-pink-500/30 hover:scale-105 transition-transform items-center gap-2">
+          <Link to="/gabs-nails" className="inline-flex px-8 py-4 bg-gradient-to-r from-lime-500 to-sky-700 text-white rounded-2xl font-bold text-lg shadow-xl shadow-lime-500/30 hover:scale-105 transition-transform items-center gap-2">
             {lang === 'fr' ? "Visiter le catalogue Gab's Nails" : "Visit Gab's Nails Catalog"}
             <ArrowRight className="w-5 h-5" />
           </Link>
@@ -1841,9 +1841,9 @@ const Services = ({ lang }: { lang: Language }) => {
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         viewport={{ once: true }}
-        className="glass p-12 md:p-20 rounded-[3rem] text-center border-pink-500/20 relative overflow-hidden group"
+        className="glass p-12 md:p-20 rounded-[3rem] text-center border-lime-500/20 relative overflow-hidden group"
       >
-        <div className="absolute inset-0 bg-gradient-to-br from-pink-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+        <div className="absolute inset-0 bg-gradient-to-br from-lime-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
         <h2 className="text-3xl md:text-5xl font-display font-black mb-8">
           {lang === 'fr' ? 'Envie de proposer votre ' : 'Want to offer your '}
           <span className="gradient-text">{lang === 'fr' ? 'Propre Service ?' : 'Own Service?'}</span>
@@ -1856,7 +1856,7 @@ const Services = ({ lang }: { lang: Language }) => {
         <motion.button
           whileHover={{ scale: 1.05, y: -5 }}
           whileTap={{ scale: 0.95 }}
-          className="px-10 py-5 bg-pink-500 text-white rounded-2xl font-black text-lg shadow-xl shadow-pink-500/20"
+          className="px-10 py-5 bg-lime-500 text-white rounded-2xl font-black text-lg shadow-xl shadow-lime-500/20"
         >
           {lang === 'fr' ? 'Soumettre mon service' : 'Submit my service'}
         </motion.button>
@@ -1916,7 +1916,7 @@ const AnimatedBackground = React.memo(() => {
         style={{ x: smoothX, y: smoothY }}
         className="absolute inset-0 flex items-center justify-center pointer-events-none"
       >
-        {/* Deep Purple Glow */}
+        {/* Deep Sky Blue Glow */}
         <motion.div 
           animate={{ 
             x: [0, 50, -30, 0],
@@ -1924,10 +1924,10 @@ const AnimatedBackground = React.memo(() => {
             scale: [1, 1.1, 0.9, 1]
           }}
           transition={{ duration: 25, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute top-[-20%] right-[-10%] w-[60vw] h-[60vw] bg-purple-600/10 rounded-full blur-[140px] mix-blend-screen dark:mix-blend-soft-light" 
+          className="absolute top-[-20%] right-[-10%] w-[60vw] h-[60vw] bg-sky-700/10 rounded-full blur-[140px] mix-blend-screen dark:mix-blend-soft-light" 
         />
         
-        {/* Vibrant Pink Glow */}
+        {/* Vibrant Lime Glow */}
         <motion.div 
           animate={{ 
             x: [0, -60, 40, 0],
@@ -1935,58 +1935,58 @@ const AnimatedBackground = React.memo(() => {
             scale: [1.1, 0.9, 1.2, 1.1]
           }}
           transition={{ duration: 30, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute bottom-[-10%] left-[-15%] w-[55vw] h-[55vw] bg-pink-500/10 rounded-full blur-[120px] mix-blend-screen dark:mix-blend-soft-light" 
+          className="absolute bottom-[-10%] left-[-15%] w-[55vw] h-[55vw] bg-lime-500/10 rounded-full blur-[120px] mix-blend-screen dark:mix-blend-soft-light" 
         />
 
         {/* === FULL-SCREEN CIRCULATING SMOKE SYSTEM (OPTIMIZED) === */}
         <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
-          {/* Layer 1 — Pink smoke top-left → bottom-right */}
+          {/* Layer 1 — Lime smoke top-left → bottom-right */}
           <motion.div
             animate={{ x: ['0%', '40%', '-20%', '0%'], y: ['0%', '30%', '-20%', '0%'], scale: [1, 1.3, 0.9, 1], opacity: [0.18, 0.28, 0.18] }}
             transition={{ duration: 22, repeat: Infinity, ease: 'easeInOut' }}
-            style={{ filter: 'blur(80px)', willChange: 'transform', position: 'absolute', top: '-10%', left: '-10%', width: '55vw', height: '55vw', background: 'radial-gradient(circle, rgba(236,72,153,0.25) 0%, transparent 70%)', borderRadius: '50%' }}
+            style={{ filter: 'blur(80px)', willChange: 'transform', position: 'absolute', top: '-10%', left: '-10%', width: '55vw', height: '55vw', background: 'radial-gradient(circle, rgba(132,204,22,0.25) 0%, transparent 70%)', borderRadius: '50%' }}
           />
-          {/* Layer 2 — Purple smoke top-right → center */}
+          {/* Layer 2 — Sky Blue smoke top-right → center */}
           <motion.div
             animate={{ x: ['0%', '-50%', '20%', '0%'], y: ['0%', '40%', '-10%', '0%'], scale: [1.1, 0.8, 1.2, 1.1], opacity: [0.2, 0.12, 0.2] }}
             transition={{ duration: 28, repeat: Infinity, ease: 'easeInOut', delay: 5 }}
-            style={{ filter: 'blur(90px)', willChange: 'transform', position: 'absolute', top: '-5%', right: '-10%', width: '60vw', height: '60vw', background: 'radial-gradient(circle, rgba(147,51,234,0.25) 0%, transparent 70%)', borderRadius: '50%' }}
+            style={{ filter: 'blur(90px)', willChange: 'transform', position: 'absolute', top: '-5%', right: '-10%', width: '60vw', height: '60vw', background: 'radial-gradient(circle, rgba(3,105,161,0.25) 0%, transparent 70%)', borderRadius: '50%' }}
           />
-          {/* Layer 3 — Pink smoke center-left circling */}
+          {/* Layer 3 — Lime smoke center-left circling */}
           <motion.div
             animate={{ x: ['0%', '60%', '20%', '-30%', '0%'], y: ['0%', '-20%', '50%', '20%', '0%'], scale: [1, 1.4, 1, 0.9, 1], opacity: [0.15, 0.22, 0.1, 0.22, 0.15] }}
             transition={{ duration: 35, repeat: Infinity, ease: 'easeInOut', delay: 2 }}
-            style={{ filter: 'blur(100px)', willChange: 'transform', position: 'absolute', top: '30%', left: '-5%', width: '50vw', height: '50vw', background: 'radial-gradient(circle, rgba(217,70,239,0.2) 0%, transparent 70%)', borderRadius: '50%' }}
+            style={{ filter: 'blur(100px)', willChange: 'transform', position: 'absolute', top: '30%', left: '-5%', width: '50vw', height: '50vw', background: 'radial-gradient(circle, rgba(132,204,22,0.2) 0%, transparent 70%)', borderRadius: '50%' }}
           />
-          {/* Layer 4 — Purple smoke center-right */}
+          {/* Layer 4 — Sky Blue smoke center-right */}
           <motion.div
             animate={{ x: ['0%', '-40%', '-60%', '0%'], y: ['0%', '20%', '-30%', '0%'], scale: [1.2, 0.9, 1.3, 1.2], opacity: [0.12, 0.2, 0.12] }}
             transition={{ duration: 30, repeat: Infinity, ease: 'easeInOut', delay: 8 }}
-            style={{ filter: 'blur(110px)', willChange: 'transform', position: 'absolute', top: '25%', right: '-15%', width: '65vw', height: '65vw', background: 'radial-gradient(circle, rgba(99,102,241,0.15) 0%, transparent 70%)', borderRadius: '50%' }}
+            style={{ filter: 'blur(110px)', willChange: 'transform', position: 'absolute', top: '25%', right: '-15%', width: '65vw', height: '65vw', background: 'radial-gradient(circle, rgba(3,105,161,0.15) 0%, transparent 70%)', borderRadius: '50%' }}
           />
-          {/* Layer 5 — Pink smoke bottom-left → top */}
+          {/* Layer 5 — Lime smoke bottom-left → top */}
           <motion.div
             animate={{ x: ['0%', '30%', '60%', '0%'], y: ['0%', '-50%', '-20%', '0%'], scale: [1, 1.2, 1, 1], opacity: [0.2, 0.1, 0.2] }}
             transition={{ duration: 38, repeat: Infinity, ease: 'easeInOut', delay: 4 }}
-            style={{ filter: 'blur(90px)', willChange: 'transform', position: 'absolute', bottom: '-10%', left: '0%', width: '60vw', height: '60vw', background: 'radial-gradient(circle, rgba(236,72,153,0.2) 0%, transparent 70%)', borderRadius: '50%' }}
+            style={{ filter: 'blur(90px)', willChange: 'transform', position: 'absolute', bottom: '-10%', left: '0%', width: '60vw', height: '60vw', background: 'radial-gradient(circle, rgba(132,204,22,0.2) 0%, transparent 70%)', borderRadius: '50%' }}
           />
-          {/* Layer 6 — Purple smoke bottom-right → left */}
+          {/* Layer 6 — Sky Blue smoke bottom-right → left */}
           <motion.div
             animate={{ x: ['0%', '-60%', '-30%', '0%'], y: ['0%', '-30%', '-60%', '0%'], scale: [0.9, 1.3, 1, 0.9], opacity: [0.18, 0.25, 0.18] }}
             transition={{ duration: 45, repeat: Infinity, ease: 'easeInOut', delay: 10 }}
-            style={{ filter: 'blur(100px)', willChange: 'transform', position: 'absolute', bottom: '-15%', right: '-10%', width: '70vw', height: '70vw', background: 'radial-gradient(circle, rgba(147,51,234,0.22) 0%, transparent 70%)', borderRadius: '50%' }}
+            style={{ filter: 'blur(100px)', willChange: 'transform', position: 'absolute', bottom: '-15%', right: '-10%', width: '70vw', height: '70vw', background: 'radial-gradient(circle, rgba(3,105,161,0.22) 0%, transparent 70%)', borderRadius: '50%' }}
           />
-          {/* Layer 7 — Center drifting pink cloud */}
+          {/* Layer 7 — Center drifting lime cloud */}
           <motion.div
             animate={{ x: ['-20%', '30%', '-10%', '-20%'], y: ['-10%', '20%', '40%', '-10%'], scale: [1, 1.5, 0.8, 1], opacity: [0.1, 0.2, 0.1] }}
             transition={{ duration: 50, repeat: Infinity, ease: 'easeInOut', delay: 6 }}
-            style={{ filter: 'blur(120px)', willChange: 'transform', position: 'absolute', top: '40%', left: '30%', width: '45vw', height: '45vw', background: 'radial-gradient(circle, rgba(236,72,153,0.15) 0%, transparent 70%)', borderRadius: '50%' }}
+            style={{ filter: 'blur(120px)', willChange: 'transform', position: 'absolute', top: '40%', left: '30%', width: '45vw', height: '45vw', background: 'radial-gradient(circle, rgba(132,204,22,0.15) 0%, transparent 70%)', borderRadius: '50%' }}
           />
-          {/* Layer 8 — Slow drifting violet center-top */}
+          {/* Layer 8 — Slow drifting sky blue center-top */}
           <motion.div
             animate={{ x: ['10%', '-30%', '20%', '10%'], y: ['5%', '-15%', '30%', '5%'], scale: [1.1, 0.85, 1.2, 1.1], opacity: [0.15, 0.08, 0.15] }}
             transition={{ duration: 60, repeat: Infinity, ease: 'easeInOut', delay: 15 }}
-            style={{ filter: 'blur(130px)', willChange: 'transform', position: 'absolute', top: '10%', left: '20%', width: '55vw', height: '55vw', background: 'radial-gradient(circle, rgba(139,92,246,0.18) 0%, transparent 70%)', borderRadius: '50%' }}
+            style={{ filter: 'blur(130px)', willChange: 'transform', position: 'absolute', top: '10%', left: '20%', width: '55vw', height: '55vw', background: 'radial-gradient(circle, rgba(3,105,161,0.18) 0%, transparent 70%)', borderRadius: '50%' }}
           />
         </div>
       </motion.div>
@@ -1995,8 +1995,8 @@ const AnimatedBackground = React.memo(() => {
       <div className="absolute inset-0 z-0">
         {[...Array(40)].map((_, i) => (
           <div
-            key={`pink-${i}`}
-            className="absolute w-[1px] bg-gradient-to-b from-transparent via-pink-500 to-transparent animate-neon-rain"
+            key={`lime-${i}`}
+            className="absolute w-[1px] bg-gradient-to-b from-transparent via-lime-500 to-transparent animate-neon-rain"
             style={{
               left: `${Math.random() * 100}%`,
               height: `${100 + Math.random() * 150}px`,
@@ -2008,8 +2008,8 @@ const AnimatedBackground = React.memo(() => {
         ))}
         {[...Array(30)].map((_, i) => (
           <div
-            key={`purple-${i}`}
-            className="absolute w-[1px] bg-gradient-to-b from-transparent via-purple-500 to-transparent animate-neon-rain"
+            key={`sky-${i}`}
+            className="absolute w-[1px] bg-gradient-to-b from-transparent via-sky-600 to-transparent animate-neon-rain"
             style={{
               left: `${Math.random() * 100}%`,
               height: `${150 + Math.random() * 200}px`,
@@ -2053,7 +2053,7 @@ const ProductCard = ({ product, lang, country, addToCart, ...props }: { product:
       </Link>
       <div className="px-2">
         <Link to={`/product/${product.id}`} className="block">
-          <h3 className="text-xl font-bold mb-2 group-hover:text-pink-500 transition-colors line-clamp-1">{product.title[lang]}</h3>
+          <h3 className="text-xl font-bold mb-2 group-hover:text-lime-500 transition-colors line-clamp-1">{product.title[lang]}</h3>
         </Link>
         <div className="flex justify-between items-center">
           <div className="flex flex-col">
@@ -2061,14 +2061,14 @@ const ProductCard = ({ product, lang, country, addToCart, ...props }: { product:
               <span className="text-[10px] font-bold uppercase tracking-wider opacity-60">{t.startingFrom}</span>
             )}
             <div className="text-2xl font-display font-extrabold">
-              {Math.round(product.price * country.rate)} <span className="text-sm font-bold text-pink-500">{country.symbol}</span>
+              {Math.round(product.price * country.rate)} <span className="text-sm font-bold text-lime-500">{country.symbol}</span>
             </div>
           </div>
           <motion.button 
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
             onClick={() => addToCart(product, product.options?.[0])}
-            className="w-12 h-12 bg-pink-500/10 rounded-2xl flex items-center justify-center text-pink-500 hover:bg-pink-500 hover:text-white transition-all shadow-lg hover:shadow-pink-500/40"
+            className="w-12 h-12 bg-lime-500/10 rounded-2xl flex items-center justify-center text-lime-500 hover:bg-lime-500 hover:text-white transition-all shadow-lg hover:shadow-lime-500/40"
           >
             <ShoppingCart className="w-6 h-6" />
           </motion.button>
@@ -2087,8 +2087,8 @@ const Home = ({ lang, addToCart, country }: { lang: Language; addToCart: (p: Pro
     <>
       {/* Hero */}
       <section className="relative pt-32 md:pt-40 pb-16 md:pb-20 overflow-hidden">
-        <div className="absolute top-1/4 -left-20 w-64 md:w-96 h-64 md:h-96 bg-pink-500/10 blur-[80px] md:blur-[120px] rounded-full" />
-        <div className="absolute bottom-1/4 -right-20 w-64 md:w-96 h-64 md:h-96 bg-purple-600/10 blur-[80px] md:blur-[120px] rounded-full" />
+        <div className="absolute top-1/4 -left-20 w-64 md:w-96 h-64 md:h-96 bg-lime-500/10 blur-[80px] md:blur-[120px] rounded-full" />
+        <div className="absolute bottom-1/4 -right-20 w-64 md:w-96 h-64 md:h-96 bg-sky-700/10 blur-[80px] md:blur-[120px] rounded-full" />
         
         <div className="max-w-7xl mx-auto px-6 text-center relative z-10">
           <motion.h1 
@@ -2119,7 +2119,7 @@ const Home = ({ lang, addToCart, country }: { lang: Language; addToCart: (p: Pro
               <motion.button 
                 whileHover={{ scale: 1.05, y: -5 }}
                 whileTap={{ scale: 0.95 }}
-                className="w-full sm:w-auto px-10 py-5 bg-gradient-to-r from-pink-500 to-purple-600 text-white rounded-2xl font-extrabold shadow-2xl shadow-pink-500/40 flex items-center justify-center gap-3 group magnetic-button"
+                className="w-full sm:w-auto px-10 py-5 bg-gradient-to-r from-lime-500 to-sky-700 text-white rounded-2xl font-extrabold shadow-2xl shadow-lime-500/40 flex items-center justify-center gap-3 group magnetic-button"
               >
                 <Zap className="w-5 h-5 group-hover:animate-pulse" />
                 {t.explore}
@@ -2135,7 +2135,7 @@ const Home = ({ lang, addToCart, country }: { lang: Language; addToCart: (p: Pro
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex justify-between items-center mb-12">
             <h2 className="text-3xl font-display font-bold">{t.featured}</h2>
-            <Link to="/shop" className="text-pink-500 font-bold flex items-center gap-2 hover:gap-3 transition-all">
+            <Link to="/shop" className="text-lime-500 font-bold flex items-center gap-2 hover:gap-3 transition-all">
               {t.shop} <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
@@ -2194,8 +2194,8 @@ const Home = ({ lang, addToCart, country }: { lang: Language; addToCart: (p: Pro
       </section>
 
       {/* Why Choose Us CTA section */}
-      <section className="py-24 relative bg-pink-500/5 overflow-hidden">
-        <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-pink-500/20 to-transparent" />
+      <section className="py-24 relative bg-lime-500/5 overflow-hidden">
+        <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-lime-500/20 to-transparent" />
         <div className="max-w-7xl mx-auto px-6 text-center relative z-10">
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
@@ -2218,7 +2218,7 @@ const Home = ({ lang, addToCart, country }: { lang: Language; addToCart: (p: Pro
               <motion.button
                 whileHover={{ scale: 1.05, y: -5 }}
                 whileTap={{ scale: 0.95 }}
-                className="px-12 py-6 bg-white dark:bg-slate-900 border-2 border-pink-500 text-pink-500 rounded-3xl font-black text-xl flex items-center gap-4 transition-all hover:bg-pink-500 hover:text-white group shadow-2xl shadow-pink-500/10"
+                className="px-12 py-6 bg-white dark:bg-slate-900 border-2 border-lime-500 text-lime-500 rounded-3xl font-black text-xl flex items-center gap-4 transition-all hover:bg-lime-500 hover:text-white group shadow-2xl shadow-lime-500/10"
               >
                 <Sparkles className="w-7 h-7 group-hover:animate-spin" />
                 {lang === 'fr' ? 'Accéder au Studio' : 'Go to Studio'}
@@ -2237,7 +2237,7 @@ const About = ({ lang }: { lang: Language }) => {
   return (
     <>
       <section className="pt-40 pb-20 overflow-hidden relative">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-pink-500/10 blur-[120px] rounded-full" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-lime-500/10 blur-[120px] rounded-full" />
         <div className="max-w-4xl mx-auto px-6 relative z-10">
           <motion.h1 
             initial={{ opacity: 0, scale: 0.9 }}
@@ -2254,13 +2254,13 @@ const About = ({ lang }: { lang: Language }) => {
             animate={{ opacity: 1, y: 0 }}
             className="glass p-10 md:p-16 rounded-[3rem] space-y-10 border-white/20 relative overflow-hidden"
           >
-            <div className="absolute top-0 right-0 w-32 h-32 bg-pink-500/5 blur-3xl rounded-full" />
+            <div className="absolute top-0 right-0 w-32 h-32 bg-lime-500/5 blur-3xl rounded-full" />
             <p className="text-xl text-slate-600 dark:text-slate-200 leading-relaxed font-medium">
               {t.aboutText}
             </p>
             <div className="grid md:grid-cols-2 gap-8">
               <div className="space-y-4">
-                <h2 className="text-3xl font-display font-bold text-pink-500 flex items-center gap-3">
+                <h2 className="text-3xl font-display font-bold text-lime-500 flex items-center gap-3">
                   <Zap className="w-8 h-8" />
                   {t.mission}
                 </h2>
@@ -2270,7 +2270,7 @@ const About = ({ lang }: { lang: Language }) => {
               </div>
               <motion.div 
                 whileHover={{ scale: 1.05, rotate: 2 }}
-                className="bg-gradient-to-br from-pink-500 via-purple-600 to-indigo-600 rounded-[2.5rem] p-10 text-white flex flex-col justify-center relative overflow-hidden group"
+                className="bg-gradient-to-br from-lime-500 via-sky-700 to-sky-900 rounded-[2.5rem] p-10 text-white flex flex-col justify-center relative overflow-hidden group"
               >
                 <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
                 <div className="text-6xl font-black mb-3 text-shadow-lg">10k+</div>
@@ -2285,7 +2285,7 @@ const About = ({ lang }: { lang: Language }) => {
       </section>
 
       {/* About CTA Section */}
-      <section className="py-24 bg-pink-500/5">
+      <section className="py-24 bg-lime-500/5">
         <div className="max-w-7xl mx-auto px-6 text-center">
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
@@ -2293,7 +2293,7 @@ const About = ({ lang }: { lang: Language }) => {
             viewport={{ once: true }}
             className="glass p-16 rounded-[4rem] border-white/20 overflow-hidden relative group"
           >
-            <div className="absolute inset-0 bg-gradient-to-br from-pink-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+            <div className="absolute inset-0 bg-gradient-to-br from-lime-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
             <h2 className="text-4xl md:text-6xl font-display font-black mb-8 relative z-10">
               <CyberpunkGlitchText>
                 {lang === 'fr' ? 'Prêt à ' : 'Ready to '}
@@ -2305,7 +2305,7 @@ const About = ({ lang }: { lang: Language }) => {
                 <motion.button
                   whileHover={{ scale: 1.05, y: -5 }}
                   whileTap={{ scale: 0.95 }}
-                  className="px-10 py-5 bg-pink-500 text-white rounded-2xl font-black flex items-center gap-3 shadow-xl shadow-pink-500/20"
+                  className="px-10 py-5 bg-lime-500 text-white rounded-2xl font-black flex items-center gap-3 shadow-xl shadow-lime-500/20"
                 >
                   <ShoppingCart className="w-6 h-6" />
                   {t.shop}
@@ -2315,7 +2315,7 @@ const About = ({ lang }: { lang: Language }) => {
                 <motion.button
                   whileHover={{ scale: 1.05, y: -5 }}
                   whileTap={{ scale: 0.95 }}
-                  className="px-10 py-5 glass border-2 border-pink-500 text-pink-500 rounded-2xl font-black flex items-center gap-3"
+                  className="px-10 py-5 glass border-2 border-lime-500 text-lime-500 rounded-2xl font-black flex items-center gap-3"
                 >
                   <MessageCircle className="w-6 h-6" />
                   {t.contact}
@@ -2334,7 +2334,7 @@ const Contact = ({ lang }: { lang: Language }) => {
   return (
     <>
       <section className="pt-32 md:pt-40 pb-20 overflow-hidden relative">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-purple-600/5 blur-[120px] rounded-full" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-sky-700/5 blur-[120px] rounded-full" />
         <div className="max-w-7xl mx-auto px-6 relative z-10">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
             <motion.div 
@@ -2353,7 +2353,7 @@ const Contact = ({ lang }: { lang: Language }) => {
               </p>
               <div className="space-y-8 flex flex-col items-center lg:items-start">
                 {[
-                  { icon: Mail, label: 'Email', value: 'dualvibe237@gmail.com', color: 'text-pink-500' },
+                  { icon: Mail, label: 'Email', value: 'dualvibe237@gmail.com', color: 'text-lime-500' },
                   { icon: MessageCircle, label: 'WhatsApp', value: '+1 (289) 630-1143', color: 'text-green-500' }
                 ].map((item, idx) => (
                   <motion.div 
@@ -2361,12 +2361,12 @@ const Contact = ({ lang }: { lang: Language }) => {
                     whileHover={{ x: 10 }}
                     className="flex items-center gap-6 group"
                   >
-                    <div className="w-16 h-16 glass rounded-[1.5rem] flex items-center justify-center text-pink-500 shadow-xl border-white/10 group-hover:border-pink-500/30 transition-all">
+                    <div className="w-16 h-16 glass rounded-[1.5rem] flex items-center justify-center text-lime-500 shadow-xl border-white/10 group-hover:border-lime-500/30 transition-all">
                       <item.icon className={`w-7 h-7 ${item.color}`} />
                     </div>
                     <div className="text-left">
                       <h4 className="font-bold text-sm uppercase tracking-widest opacity-60 mb-1">{item.label}</h4>
-                      <p className="text-xl font-display font-bold group-hover:text-pink-500 transition-colors">{item.value}</p>
+                      <p className="text-xl font-display font-bold group-hover:text-lime-500 transition-colors">{item.value}</p>
                     </div>
                   </motion.div>
                 ))}
@@ -2378,26 +2378,26 @@ const Contact = ({ lang }: { lang: Language }) => {
               animate={{ opacity: 1, scale: 1 }}
               className="glass p-10 md:p-14 rounded-[3.5rem] border-white/20 shadow-2xl relative form-glow-border"
             >
-              <div className="absolute top-0 right-0 w-32 h-32 bg-pink-500/5 blur-3xl rounded-full" />
+              <div className="absolute top-0 right-0 w-32 h-32 bg-lime-500/5 blur-3xl rounded-full" />
               <div className="space-y-8 relative z-10">
                 <div className="grid sm:grid-cols-2 gap-8">
                   <div className="space-y-3">
                     <label className="text-xs font-bold uppercase tracking-widest opacity-60 ml-3">{t.name}</label>
-                    <input type="text" className="w-full glass px-8 py-5 rounded-2xl outline-none focus:border-pink-500/50 transition-all placeholder:text-slate-400 dark:placeholder:text-slate-500 text-lg" placeholder="Votre nom" />
+                    <input type="text" className="w-full glass px-8 py-5 rounded-2xl outline-none focus:border-lime-500/50 transition-all placeholder:text-slate-400 dark:placeholder:text-slate-500 text-lg" placeholder="Votre nom" />
                   </div>
                   <div className="space-y-3">
                     <label className="text-xs font-bold uppercase tracking-widest opacity-60 ml-3">{t.email}</label>
-                    <input type="email" className="w-full glass px-8 py-5 rounded-2xl outline-none focus:border-pink-500/50 transition-all placeholder:text-slate-400 dark:placeholder:text-slate-500 text-lg" placeholder="Email" />
+                    <input type="email" className="w-full glass px-8 py-5 rounded-2xl outline-none focus:border-lime-500/50 transition-all placeholder:text-slate-400 dark:placeholder:text-slate-500 text-lg" placeholder="Email" />
                   </div>
                 </div>
                 <div className="space-y-3">
                   <label className="text-xs font-bold uppercase tracking-widest opacity-60 ml-3">{t.message}</label>
-                  <textarea className="w-full glass px-8 py-5 rounded-2xl outline-none h-44 resize-none focus:border-pink-500/50 transition-all placeholder:text-slate-400 dark:placeholder:text-slate-500 text-lg" placeholder="Message..." />
+                  <textarea className="w-full glass px-8 py-5 rounded-2xl outline-none h-44 resize-none focus:border-lime-500/50 transition-all placeholder:text-slate-400 dark:placeholder:text-slate-500 text-lg" placeholder="Message..." />
                 </div>
                 <motion.button 
                   whileHover={{ scale: 1.02, y: -2 }}
                   whileTap={{ scale: 0.98 }}
-                  className="w-full py-6 bg-gradient-to-r from-pink-500 via-purple-600 to-indigo-600 text-white rounded-3xl font-black text-xl shadow-2xl shadow-pink-500/20 flex items-center justify-center gap-4 transition-all"
+                  className="w-full py-6 bg-gradient-to-r from-lime-500 via-sky-700 to-sky-900 text-white rounded-3xl font-black text-xl shadow-2xl shadow-lime-500/20 flex items-center justify-center gap-4 transition-all"
                 >
                   <Send className="w-6 h-6" />
                   {t.send}
@@ -2416,7 +2416,7 @@ const Contact = ({ lang }: { lang: Language }) => {
               whileHover={{ y: -10 }}
               className="glass p-12 rounded-[3.5rem] border-white/20 text-center flex flex-col items-center group"
             >
-              <div className="w-20 h-20 bg-purple-500/10 rounded-[2rem] flex items-center justify-center text-purple-500 mb-8 group-hover:scale-110 transition-transform">
+              <div className="w-20 h-20 bg-sky-600/10 rounded-[2rem] flex items-center justify-center text-sky-600 mb-8 group-hover:scale-110 transition-transform">
                 <Music className="w-10 h-10" />
               </div>
               <h3 className="text-3xl font-display font-bold mb-4">{lang === 'fr' ? 'Besoin de Musique ?' : 'Need Music?'}</h3>
@@ -2426,7 +2426,7 @@ const Contact = ({ lang }: { lang: Language }) => {
               <Link to="/music-catalog">
                 <motion.button 
                   whileHover={{ scale: 1.05 }}
-                  className="px-8 py-4 bg-purple-600 text-white rounded-2xl font-bold"
+                  className="px-8 py-4 bg-sky-700 text-white rounded-2xl font-bold"
                 >
                   {lang === 'fr' ? 'Voir le Catalogue' : 'View Catalog'}
                 </motion.button>
@@ -2437,7 +2437,7 @@ const Contact = ({ lang }: { lang: Language }) => {
               whileHover={{ y: -10 }}
               className="glass p-12 rounded-[3.5rem] border-white/20 text-center flex flex-col items-center group"
             >
-              <div className="w-20 h-20 bg-pink-500/10 rounded-[2rem] flex items-center justify-center text-pink-500 mb-8 group-hover:scale-110 transition-transform">
+              <div className="w-20 h-20 bg-lime-500/10 rounded-[2rem] flex items-center justify-center text-lime-500 mb-8 group-hover:scale-110 transition-transform">
                 <Sparkles className="w-10 h-10" />
               </div>
               <h3 className="text-3xl font-display font-bold mb-4">{lang === 'fr' ? 'Projet Sur-Mesure ?' : 'Custom Project?'}</h3>
@@ -2447,7 +2447,7 @@ const Contact = ({ lang }: { lang: Language }) => {
               <Link to="/studio">
                 <motion.button 
                   whileHover={{ scale: 1.05 }}
-                  className="px-8 py-4 bg-pink-500 text-white rounded-2xl font-bold"
+                  className="px-8 py-4 bg-lime-500 text-white rounded-2xl font-bold"
                 >
                   {lang === 'fr' ? 'Aller au Studio' : 'Go to Studio'}
                 </motion.button>
@@ -2551,7 +2551,7 @@ const Shop = ({ lang, country, addToCart, searchQuery, setSearchQuery }: { lang:
           <p className="text-lg md:text-xl text-slate-600 dark:text-slate-200 max-w-2xl mx-auto opacity-80 leading-relaxed font-medium">
             {(t as any).shopHeroSubtitle}
           </p>
-          <div className="w-24 h-1.5 bg-gradient-to-r from-pink-500 to-purple-600 mx-auto rounded-full blur-[1px]" />
+          <div className="w-24 h-1.5 bg-gradient-to-r from-lime-500 to-sky-700 mx-auto rounded-full blur-[1px]" />
         </motion.div>
 
         <div className="flex flex-col lg:flex-row gap-8 lg:gap-12">
@@ -2573,7 +2573,7 @@ const Shop = ({ lang, country, addToCart, searchQuery, setSearchQuery }: { lang:
             <div className="glass p-6 rounded-3xl space-y-6 sticky top-32">
               <div>
                 <h3 className="text-sm font-bold uppercase tracking-wider opacity-80 mb-4">{t.search}</h3>
-                <div className="flex items-center glass px-4 py-2 rounded-xl gap-2 border-white/5 focus-within:border-pink-500/50 transition-all">
+                <div className="flex items-center glass px-4 py-2 rounded-xl gap-2 border-white/5 focus-within:border-lime-500/50 transition-all">
                   <Search className="w-4 h-4 opacity-80" />
                   <input 
                     type="text" 
@@ -2605,7 +2605,7 @@ const Shop = ({ lang, country, addToCart, searchQuery, setSearchQuery }: { lang:
 
                       }}
 
-                      className={`w-full text-left px-5 py-3 rounded-2xl text-sm font-bold transition-all relative group overflow-hidden ${category === cat ? 'bg-gradient-to-r from-pink-500 to-purple-600 text-white shadow-lg shadow-pink-500/20' : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'}`}
+                      className={`w-full text-left px-5 py-3 rounded-2xl text-sm font-bold transition-all relative group overflow-hidden ${category === cat ? 'bg-gradient-to-r from-lime-500 to-sky-700 text-white shadow-lg shadow-lime-500/20' : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'}`}
                     >
                       <div className="relative z-10 flex items-center justify-between">
                         <span className="truncate">{cat === 'all' ? t.all : cat}</span>
@@ -2626,7 +2626,7 @@ const Shop = ({ lang, country, addToCart, searchQuery, setSearchQuery }: { lang:
                     step="10000"
                     value={priceRange[1]}
                     onChange={(e) => setPriceRange([priceRange[0], Number(e.target.value)])}
-                    className="w-full h-2 bg-white/10 rounded-lg appearance-none cursor-pointer accent-pink-500"
+                    className="w-full h-2 bg-white/10 rounded-lg appearance-none cursor-pointer accent-lime-500"
                   />
                   <div className="flex justify-between text-xs font-bold">
                     <span>0 {country.symbol}</span>
@@ -2693,7 +2693,7 @@ const Shop = ({ lang, country, addToCart, searchQuery, setSearchQuery }: { lang:
                             }}
 
 
-                            className={`w-full text-left px-5 py-3 rounded-2xl text-sm font-bold transition-all ${category === cat ? 'bg-gradient-to-r from-pink-500 to-purple-600 text-white' : ''}`}
+                            className={`w-full text-left px-5 py-3 rounded-2xl text-sm font-bold transition-all ${category === cat ? 'bg-gradient-to-r from-lime-500 to-sky-700 text-white' : ''}`}
                           >
                             {cat === 'all' ? t.all : cat}
                           </button>
@@ -2716,7 +2716,7 @@ const Shop = ({ lang, country, addToCart, searchQuery, setSearchQuery }: { lang:
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     onClick={() => setFilter(f)}
-                    className={`flex-1 sm:flex-none px-6 py-2 rounded-xl text-sm font-bold transition-all whitespace-nowrap ${filter === f ? 'bg-pink-500 text-white shadow-lg shadow-pink-500/20' : 'hover:bg-white/5'}`}
+                    className={`flex-1 sm:flex-none px-6 py-2 rounded-xl text-sm font-bold transition-all whitespace-nowrap ${filter === f ? 'bg-lime-500 text-white shadow-lg shadow-lime-500/20' : 'hover:bg-white/5'}`}
                   >
                     {t[f as keyof typeof t]}
                   </motion.button>
@@ -2774,7 +2774,7 @@ const Shop = ({ lang, country, addToCart, searchQuery, setSearchQuery }: { lang:
                   animate={{ opacity: 1, scale: 1 }}
                   className="flex flex-col items-center justify-center py-20 glass rounded-[3rem] text-center"
                 >
-                  <div className="w-20 h-20 bg-pink-500/10 rounded-3xl flex items-center justify-center text-pink-500 mb-6">
+                  <div className="w-20 h-20 bg-lime-500/10 rounded-3xl flex items-center justify-center text-lime-500 mb-6">
                     <Package className="w-10 h-10" />
                   </div>
                   <h3 className="text-2xl font-bold mb-2">{lang === 'fr' ? 'Aucun produit trouvé' : 'No products found'}</h3>
@@ -2819,13 +2819,13 @@ const ImageGallery = ({ images, mainImage, title }: { images?: string[]; mainIma
           <>
             <button 
               onClick={(e) => { e.stopPropagation(); setIndex((prev) => (prev - 1 + galleryImages.length) % galleryImages.length); }}
-              className="absolute left-6 top-1/2 -translate-y-1/2 p-3 bg-black/50 backdrop-blur-md text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity hover:bg-pink-500"
+              className="absolute left-6 top-1/2 -translate-y-1/2 p-3 bg-black/50 backdrop-blur-md text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity hover:bg-lime-500"
             >
               <ChevronRight className="w-6 h-6 rotate-180" />
             </button>
             <button 
               onClick={(e) => { e.stopPropagation(); setIndex((prev) => (prev + 1) % galleryImages.length); }}
-              className="absolute right-6 top-1/2 -translate-y-1/2 p-3 bg-black/50 backdrop-blur-md text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity hover:bg-pink-500"
+              className="absolute right-6 top-1/2 -translate-y-1/2 p-3 bg-black/50 backdrop-blur-md text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity hover:bg-lime-500"
             >
               <ChevronRight className="w-6 h-6" />
             </button>
@@ -2839,7 +2839,7 @@ const ImageGallery = ({ images, mainImage, title }: { images?: string[]; mainIma
             <button
               key={i}
               onClick={() => setIndex(i)}
-              className={`relative flex-shrink-0 w-20 h-20 rounded-xl overflow-hidden border-2 transition-all ${index === i ? 'border-pink-500 scale-105' : 'border-transparent opacity-60 hover:opacity-100'}`}
+              className={`relative flex-shrink-0 w-20 h-20 rounded-xl overflow-hidden border-2 transition-all ${index === i ? 'border-lime-500 scale-105' : 'border-transparent opacity-60 hover:opacity-100'}`}
             >
               <img src={img} alt="" className="w-full h-full object-cover" />
             </button>
@@ -2859,7 +2859,7 @@ const ImageGallery = ({ images, mainImage, title }: { images?: string[]; mainIma
           >
             <button 
               onClick={() => setIsLightboxOpen(false)}
-              className="absolute top-6 right-6 w-12 h-12 bg-white/10 rounded-full flex items-center justify-center text-white hover:bg-pink-500 transition-colors z-50"
+              className="absolute top-6 right-6 w-12 h-12 bg-white/10 rounded-full flex items-center justify-center text-white hover:bg-lime-500 transition-colors z-50"
             >
               <X className="w-6 h-6" />
             </button>
@@ -2876,13 +2876,13 @@ const ImageGallery = ({ images, mainImage, title }: { images?: string[]; mainIma
               <>
                 <button 
                   onClick={(e) => { e.stopPropagation(); setIndex((prev) => (prev - 1 + galleryImages.length) % galleryImages.length); }}
-                  className="absolute left-6 md:left-12 top-1/2 -translate-y-1/2 p-4 bg-white/10 backdrop-blur-md text-white rounded-full hover:bg-pink-500 transition-colors"
+                  className="absolute left-6 md:left-12 top-1/2 -translate-y-1/2 p-4 bg-white/10 backdrop-blur-md text-white rounded-full hover:bg-lime-500 transition-colors"
                 >
                   <ChevronRight className="w-8 h-8 rotate-180" />
                 </button>
                 <button 
                   onClick={(e) => { e.stopPropagation(); setIndex((prev) => (prev + 1) % galleryImages.length); }}
-                  className="absolute right-6 md:right-12 top-1/2 -translate-y-1/2 p-4 bg-white/10 backdrop-blur-md text-white rounded-full hover:bg-pink-500 transition-colors"
+                  className="absolute right-6 md:right-12 top-1/2 -translate-y-1/2 p-4 bg-white/10 backdrop-blur-md text-white rounded-full hover:bg-lime-500 transition-colors"
                 >
                   <ChevronRight className="w-8 h-8" />
                 </button>
@@ -2956,7 +2956,7 @@ const ProductDetail = ({ lang, country, addToCart }: { lang: Language; country: 
           >
             <div className="space-y-4">
               <div className="flex flex-wrap items-center gap-3">
-                <span className="glass px-4 py-1 rounded-full text-[10px] md:text-xs font-bold uppercase tracking-widest text-pink-500">
+                <span className="glass px-4 py-1 rounded-full text-[10px] md:text-xs font-bold uppercase tracking-widest text-lime-500">
                   {product.category[lang]}
                 </span>
                 <span className="glass px-4 py-1 rounded-full text-[10px] md:text-xs font-bold uppercase tracking-widest opacity-80">
@@ -2974,20 +2974,20 @@ const ProductDetail = ({ lang, country, addToCart }: { lang: Language; country: 
             </p>
 
             {product.audioPreview && (
-              <div className="glass p-6 rounded-3xl flex flex-col gap-4 bg-pink-500/5 relative overflow-hidden group">
-                <div className="absolute top-0 right-0 w-32 h-32 bg-pink-500/10 blur-3xl rounded-full" />
+              <div className="glass p-6 rounded-3xl flex flex-col gap-4 bg-lime-500/5 relative overflow-hidden group">
+                <div className="absolute top-0 right-0 w-32 h-32 bg-lime-500/10 blur-3xl rounded-full" />
                 <div className="flex items-center gap-4 relative z-10">
                   <motion.button
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     onClick={togglePlay}
-                    className="w-14 h-14 bg-gradient-to-tr from-pink-500 to-purple-600 rounded-full flex items-center justify-center text-white shadow-xl shadow-pink-500/30"
+                    className="w-14 h-14 bg-gradient-to-tr from-lime-500 to-sky-700 rounded-full flex items-center justify-center text-white shadow-xl shadow-lime-500/30"
                   >
                     {isPlaying ? <Pause className="w-6 h-6 fill-current" /> : <Play className="w-6 h-6 fill-current ml-1" />}
                   </motion.button>
                   <div>
                     <h4 className="font-bold text-lg flex items-center gap-2">
-                      <Music className="w-4 h-4 text-pink-500" />
+                      <Music className="w-4 h-4 text-lime-500" />
                       Extrait Audio
                     </h4>
                     <p className="text-xs text-slate-500 dark:text-slate-400">Écoutez un aperçu du style musical</p>
@@ -3006,7 +3006,7 @@ const ProductDetail = ({ lang, country, addToCart }: { lang: Language; country: 
             {[49, 50, 51, 52].includes(product.id) && (
               <Link 
                 to="/music-catalog" 
-                className="w-full py-4 mt-2 mb-2 bg-pink-500/10 border border-pink-500/30 text-pink-500 rounded-2xl font-bold flex items-center justify-center gap-3 transition-colors hover:bg-pink-500 hover:text-white"
+                className="w-full py-4 mt-2 mb-2 bg-lime-500/10 border border-lime-500/30 text-lime-500 rounded-2xl font-bold flex items-center justify-center gap-3 transition-colors hover:bg-lime-500 hover:text-white"
               >
                 <Music className="w-5 h-5" />
                 DÉCOUVRIR LE CATALOGUE MUSICAL
@@ -3021,7 +3021,7 @@ const ProductDetail = ({ lang, country, addToCart }: { lang: Language; country: 
                     <button
                       key={opt.label}
                       onClick={() => setSelectedOption(opt)}
-                      className={`px-6 py-4 rounded-2xl border-2 transition-all text-left flex justify-between items-center ${selectedOption?.label === opt.label ? 'border-pink-500 bg-pink-500/10' : 'border-white/10 hover:border-white/30'}`}
+                      className={`px-6 py-4 rounded-2xl border-2 transition-all text-left flex justify-between items-center ${selectedOption?.label === opt.label ? 'border-lime-500 bg-lime-500/10' : 'border-white/10 hover:border-white/30'}`}
                     >
                       <span className="font-bold">{opt.label}</span>
                       <span className="text-sm opacity-80">{Math.round(opt.price * country.rate)} {country.symbol}</span>
@@ -3035,7 +3035,7 @@ const ProductDetail = ({ lang, country, addToCart }: { lang: Language; country: 
               whileHover={{ scale: 1.02, y: -2 }}
               whileTap={{ scale: 0.98 }}
               onClick={() => addToCart(product, selectedOption)}
-              className="w-full py-5 md:py-6 bg-gradient-to-r from-pink-500 to-purple-600 text-white rounded-2xl font-bold text-lg md:text-xl shadow-xl shadow-pink-500/20 flex items-center justify-center gap-4 transition-all"
+              className="w-full py-5 md:py-6 bg-gradient-to-r from-lime-500 to-sky-700 text-white rounded-2xl font-bold text-lg md:text-xl shadow-xl shadow-lime-500/20 flex items-center justify-center gap-4 transition-all"
             >
               <ShoppingCart className="w-6 h-6 md:w-8 md:h-8" />
               {t.addToCart}
@@ -3080,10 +3080,10 @@ const CountrySelector = ({ onSelect, isDark }: { onSelect: (c: Country) => void;
               whileHover={{ x: 5 }}
               whileTap={{ scale: 0.98 }}
               onClick={() => setSelected(c)}
-              className={`flex items-center justify-between p-4 rounded-2xl transition-all border ${selected?.code === c.code ? 'border-pink-500 bg-pink-500/20' : 'border-white/10 bg-white/5 hover:bg-white/10'}`}
+              className={`flex items-center justify-between p-4 rounded-2xl transition-all border ${selected?.code === c.code ? 'border-lime-500 bg-lime-500/20' : 'border-white/10 bg-white/5 hover:bg-white/10'}`}
             >
               <span className="font-medium text-white">{c.name.fr} / {c.name.en}</span>
-              <span className="text-pink-500 font-bold">{c.symbol}</span>
+              <span className="text-lime-500 font-bold">{c.symbol}</span>
             </motion.button>
           ))}
         </div>
@@ -3093,7 +3093,7 @@ const CountrySelector = ({ onSelect, isDark }: { onSelect: (c: Country) => void;
           whileTap={{ scale: 0.98 }}
           disabled={!selected}
           onClick={() => selected && onSelect(selected)}
-          className="w-full py-4 bg-gradient-to-r from-pink-500 to-purple-600 text-white rounded-2xl font-bold disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-pink-500/20 transition-all"
+          className="w-full py-4 bg-gradient-to-r from-lime-500 to-sky-700 text-white rounded-2xl font-bold disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-lime-500/20 transition-all"
         >
           Continuer / Continue
         </motion.button>
@@ -3266,7 +3266,7 @@ const CartModal = ({
           >
             <div className="p-6 flex justify-between items-center border-b border-white/10">
               <h2 className="text-2xl font-display font-bold flex items-center gap-3">
-                <ShoppingCart className="text-pink-500" />
+                <ShoppingCart className="text-lime-500" />
                 {showMusicForm ? (t as any).musicFormTitle : showCvForm ? (t as any).cvFormTitle : t.cart}
               </h2>
               <button onClick={onClose} className="p-2 hover:bg-white/10 rounded-full transition-colors">
@@ -3280,11 +3280,11 @@ const CartModal = ({
                   <p className="text-sm text-slate-600 dark:text-slate-200 mb-4">{(t as any).musicFormDesc}</p>
                   
                   <div className="space-y-4">
-                    <input type="text" placeholder={(t as any).musicCategory} value={musicData.category} onChange={e => setMusicData({...musicData, category: e.target.value})} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 outline-none focus:border-pink-500/50 placeholder:text-slate-400" />
-                    <input type="text" placeholder={(t as any).musicEvent} value={musicData.event} onChange={e => setMusicData({...musicData, event: e.target.value})} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 outline-none focus:border-pink-500/50 placeholder:text-slate-400" />
-                    <input type="text" placeholder={(t as any).musicEmotion} value={musicData.emotion} onChange={e => setMusicData({...musicData, emotion: e.target.value})} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 outline-none focus:border-pink-500/50 placeholder:text-slate-400" />
-                    <input type="text" placeholder={(t as any).musicTarget} value={musicData.target} onChange={e => setMusicData({...musicData, target: e.target.value})} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 outline-none focus:border-pink-500/50 placeholder:text-slate-400" />
-                    <textarea placeholder={(t as any).musicStory} value={musicData.story} onChange={e => setMusicData({...musicData, story: e.target.value})} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 outline-none focus:border-pink-500/50 h-32 resize-none placeholder:text-slate-400" />
+                    <input type="text" placeholder={(t as any).musicCategory} value={musicData.category} onChange={e => setMusicData({...musicData, category: e.target.value})} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 outline-none focus:border-lime-500/50 placeholder:text-slate-400" />
+                    <input type="text" placeholder={(t as any).musicEvent} value={musicData.event} onChange={e => setMusicData({...musicData, event: e.target.value})} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 outline-none focus:border-lime-500/50 placeholder:text-slate-400" />
+                    <input type="text" placeholder={(t as any).musicEmotion} value={musicData.emotion} onChange={e => setMusicData({...musicData, emotion: e.target.value})} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 outline-none focus:border-lime-500/50 placeholder:text-slate-400" />
+                    <input type="text" placeholder={(t as any).musicTarget} value={musicData.target} onChange={e => setMusicData({...musicData, target: e.target.value})} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 outline-none focus:border-lime-500/50 placeholder:text-slate-400" />
+                    <textarea placeholder={(t as any).musicStory} value={musicData.story} onChange={e => setMusicData({...musicData, story: e.target.value})} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 outline-none focus:border-lime-500/50 h-32 resize-none placeholder:text-slate-400" />
                   </div>
                 </div>
               ) : showCvForm ? (
@@ -3292,15 +3292,15 @@ const CartModal = ({
                   <p className="text-sm text-slate-600 dark:text-slate-200 mb-4">{(t as any).cvFormDesc}</p>
                   
                   <div className="space-y-4">
-                    <input type="text" placeholder={(t as any).fullName} value={cvData.fullName} onChange={e => setCvData({...cvData, fullName: e.target.value})} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 outline-none focus:border-pink-500/50" />
-                    <input type="tel" placeholder={(t as any).phone} value={cvData.phone} onChange={e => setCvData({...cvData, phone: e.target.value})} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 outline-none focus:border-pink-500/50" />
-                    <input type="text" placeholder={(t as any).address} value={cvData.address} onChange={e => setCvData({...cvData, address: e.target.value})} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 outline-none focus:border-pink-500/50" />
+                    <input type="text" placeholder={(t as any).fullName} value={cvData.fullName} onChange={e => setCvData({...cvData, fullName: e.target.value})} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 outline-none focus:border-lime-500/50" />
+                    <input type="tel" placeholder={(t as any).phone} value={cvData.phone} onChange={e => setCvData({...cvData, phone: e.target.value})} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 outline-none focus:border-lime-500/50" />
+                    <input type="text" placeholder={(t as any).address} value={cvData.address} onChange={e => setCvData({...cvData, address: e.target.value})} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 outline-none focus:border-lime-500/50" />
                     
-                    <textarea placeholder={(t as any).profile} value={cvData.profile} onChange={e => setCvData({...cvData, profile: e.target.value})} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 outline-none focus:border-pink-500/50 h-24 resize-none" />
-                    <textarea placeholder={(t as any).experience} value={cvData.experience} onChange={e => setCvData({...cvData, experience: e.target.value})} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 outline-none focus:border-pink-500/50 h-24 resize-none" />
-                    <textarea placeholder={(t as any).education} value={cvData.education} onChange={e => setCvData({...cvData, education: e.target.value})} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 outline-none focus:border-pink-500/50 h-24 resize-none" />
-                    <textarea placeholder={(t as any).skills} value={cvData.skills} onChange={e => setCvData({...cvData, skills: e.target.value})} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 outline-none focus:border-pink-500/50 h-24 resize-none" />
-                    <textarea placeholder={(t as any).languages} value={cvData.languages} onChange={e => setCvData({...cvData, languages: e.target.value})} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 outline-none focus:border-pink-500/50 h-24 resize-none" />
+                    <textarea placeholder={(t as any).profile} value={cvData.profile} onChange={e => setCvData({...cvData, profile: e.target.value})} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 outline-none focus:border-lime-500/50 h-24 resize-none" />
+                    <textarea placeholder={(t as any).experience} value={cvData.experience} onChange={e => setCvData({...cvData, experience: e.target.value})} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 outline-none focus:border-lime-500/50 h-24 resize-none" />
+                    <textarea placeholder={(t as any).education} value={cvData.education} onChange={e => setCvData({...cvData, education: e.target.value})} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 outline-none focus:border-lime-500/50 h-24 resize-none" />
+                    <textarea placeholder={(t as any).skills} value={cvData.skills} onChange={e => setCvData({...cvData, skills: e.target.value})} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 outline-none focus:border-lime-500/50 h-24 resize-none" />
+                    <textarea placeholder={(t as any).languages} value={cvData.languages} onChange={e => setCvData({...cvData, languages: e.target.value})} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 outline-none focus:border-lime-500/50 h-24 resize-none" />
                   </div>
                 </div>
               ) : cart.length === 0 ? (
@@ -3324,7 +3324,7 @@ const CartModal = ({
                           <div className="flex-1">
                             <h4 className="font-bold mb-1">{item.title[lang]}</h4>
                             {item.selectedOption && (
-                              <p className="text-xs font-bold text-pink-500/80 mb-1">{item.selectedOption.label}</p>
+                              <p className="text-xs font-bold text-lime-500/80 mb-1">{item.selectedOption.label}</p>
                             )}
                             {item.customMetadata && (
                               <div className="text-[10px] opacity-60 mb-1 space-y-0.5">
@@ -3332,7 +3332,7 @@ const CartModal = ({
                                 {item.customMetadata.licenseType && <p>Licence: {item.customMetadata.licenseType}</p>}
                               </div>
                             )}
-                            <div className="text-pink-500 font-bold mb-3">
+                            <div className="text-lime-500 font-bold mb-3">
                               {Math.round(price * country.rate)} {country.symbol}
                             </div>
                             <div className="flex items-center gap-3">
@@ -3340,7 +3340,7 @@ const CartModal = ({
                                 whileHover={{ scale: 1.1 }}
                                 whileTap={{ scale: 0.9 }}
                                 onClick={() => updateQuantity(item.id, -1, item.selectedOption?.label)}
-                                className="w-8 h-8 glass rounded-lg flex items-center justify-center hover:bg-pink-500/20"
+                                className="w-8 h-8 glass rounded-lg flex items-center justify-center hover:bg-lime-500/20"
                               >
                                 -
                               </motion.button>
@@ -3349,7 +3349,7 @@ const CartModal = ({
                                 whileHover={{ scale: 1.1 }}
                                 whileTap={{ scale: 0.9 }}
                                 onClick={() => updateQuantity(item.id, 1, item.selectedOption?.label)}
-                                className="w-8 h-8 glass rounded-lg flex items-center justify-center hover:bg-pink-500/20"
+                                className="w-8 h-8 glass rounded-lg flex items-center justify-center hover:bg-lime-500/20"
                               >
                                 +
                               </motion.button>
@@ -3370,9 +3370,9 @@ const CartModal = ({
 
                   {/* Promo Code Section */}
                   <div className="glass p-5 rounded-[2rem] space-y-4 relative overflow-hidden group">
-                    <div className="absolute top-0 right-0 w-24 h-24 bg-pink-500/5 blur-2xl rounded-full -mr-12 -mt-12 group-hover:bg-pink-500/10 transition-colors" />
+                    <div className="absolute top-0 right-0 w-24 h-24 bg-lime-500/5 blur-2xl rounded-full -mr-12 -mt-12 group-hover:bg-lime-500/10 transition-colors" />
                     <div className="flex items-center gap-2 mb-1">
-                      <Zap className="w-4 h-4 text-pink-500" />
+                      <Zap className="w-4 h-4 text-lime-500" />
                       <label className="text-xs font-bold uppercase tracking-[0.2em] opacity-80">{t.promoCode}</label>
                     </div>
                     <div className="flex gap-2 relative z-10">
@@ -3381,14 +3381,14 @@ const CartModal = ({
                         value={promoInput}
                         onChange={(e) => setPromoInput(e.target.value)}
                         disabled={!!appliedPromo}
-                        className="flex-1 bg-white/5 border border-white/10 rounded-2xl px-5 py-3 outline-none focus:border-pink-500/50 focus:bg-white/10 transition-all placeholder:text-slate-400 dark:placeholder:text-slate-500 disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="flex-1 bg-white/5 border border-white/10 rounded-2xl px-5 py-3 outline-none focus:border-lime-500/50 focus:bg-white/10 transition-all placeholder:text-slate-400 dark:placeholder:text-slate-500 disabled:opacity-50 disabled:cursor-not-allowed"
                       />
                       <motion.button
                         whileHover={!appliedPromo ? { scale: 1.05, x: 2 } : {}}
                         whileTap={!appliedPromo ? { scale: 0.95 } : {}}
                         onClick={handleApplyPromo}
                         disabled={!!appliedPromo}
-                        className="px-6 py-3 bg-gradient-to-r from-pink-500 to-purple-600 text-white rounded-2xl font-bold text-sm shadow-lg shadow-pink-500/20 hover:shadow-pink-500/40 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="px-6 py-3 bg-gradient-to-r from-lime-500 to-sky-700 text-white rounded-2xl font-bold text-sm shadow-lg shadow-lime-500/20 hover:shadow-lime-500/40 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                       >
                         {t.apply}
                       </motion.button>
@@ -3459,7 +3459,7 @@ const CartModal = ({
                     whileHover={{ scale: 1.02, y: -2 }}
                     whileTap={{ scale: 0.98 }}
                     onClick={handleCheckout}
-                    className={`${(showCvForm || showMusicForm) ? 'flex-[2]' : 'w-full'} py-4 bg-gradient-to-r from-pink-500 to-purple-600 text-white rounded-2xl font-bold flex items-center justify-center gap-3 shadow-xl shadow-pink-500/20 hover:shadow-pink-500/40 transition-all`}
+                    className={`${(showCvForm || showMusicForm) ? 'flex-[2]' : 'w-full'} py-4 bg-gradient-to-r from-lime-500 to-sky-700 text-white rounded-2xl font-bold flex items-center justify-center gap-3 shadow-xl shadow-lime-500/20 hover:shadow-lime-500/40 transition-all`}
                   >
                     {!showCvForm && !showMusicForm && <MessageCircle className="w-6 h-6" />}
                     {(showCvForm || showMusicForm) ? (t as any).submitOrder : t.checkout}
@@ -3509,9 +3509,9 @@ const FloatingCTA = ({ lang, onSubscribe }: { lang: Language; onSubscribe: (e: a
                 initial={{ opacity: 0, x: 20, scale: 0.9 }}
                 animate={{ opacity: 1, x: 0, scale: 1 }}
                 exit={{ opacity: 0, x: 20, scale: 0.9 }}
-                className="glass p-6 rounded-[2rem] w-80 shadow-2xl border-pink-500/20 relative overflow-hidden group form-glow-border"
+                className="glass p-6 rounded-[2rem] w-80 shadow-2xl border-lime-500/20 relative overflow-hidden group form-glow-border"
               >
-                <div className="absolute top-0 right-0 w-32 h-32 bg-pink-500/5 blur-3xl rounded-full -mr-16 -mt-16 group-hover:bg-pink-500/10 transition-colors" />
+                <div className="absolute top-0 right-0 w-32 h-32 bg-lime-500/5 blur-3xl rounded-full -mr-16 -mt-16 group-hover:bg-lime-500/10 transition-colors" />
                 <button 
                   onClick={() => setIsExpanded(false)}
                   className="absolute top-4 right-4 text-slate-400 hover:text-white transition-colors"
@@ -3520,7 +3520,7 @@ const FloatingCTA = ({ lang, onSubscribe }: { lang: Language; onSubscribe: (e: a
                 </button>
                 <div className="relative z-10">
                   <div className="flex items-center gap-3 mb-4">
-                    <div className="w-10 h-10 bg-pink-500/10 rounded-xl flex items-center justify-center text-pink-500">
+                    <div className="w-10 h-10 bg-lime-500/10 rounded-xl flex items-center justify-center text-lime-500">
                       <Mail className="w-5 h-5" />
                     </div>
                     <div>
@@ -3537,12 +3537,12 @@ const FloatingCTA = ({ lang, onSubscribe }: { lang: Language; onSubscribe: (e: a
                       type="email" 
                       placeholder="votre@email.com" 
                       required 
-                      className="w-full glass px-4 py-3 rounded-xl text-sm outline-none focus:border-pink-500/50 transition-all font-medium"
+                      className="w-full glass px-4 py-3 rounded-xl text-sm outline-none focus:border-lime-500/50 transition-all font-medium"
                     />
                     <motion.button 
                       whileHover={{ scale: 1.02, y: -2 }}
                       whileTap={{ scale: 0.98 }}
-                      className="w-full py-3 bg-gradient-to-r from-pink-500 to-purple-600 text-white rounded-xl font-bold text-xs shadow-lg shadow-pink-500/20"
+                      className="w-full py-3 bg-gradient-to-r from-lime-500 to-sky-700 text-white rounded-xl font-bold text-xs shadow-lg shadow-lime-500/20"
                     >
                       {lang === 'fr' ? "C'est parti !" : "Let's go!"}
                     </motion.button>
@@ -3556,7 +3556,7 @@ const FloatingCTA = ({ lang, onSubscribe }: { lang: Language; onSubscribe: (e: a
             whileHover={{ scale: 1.1, rotate: 5 }}
             whileTap={{ scale: 0.9 }}
             onClick={() => setIsExpanded(!isExpanded)}
-            className="w-14 h-14 bg-gradient-to-br from-pink-500 to-purple-600 text-white rounded-2xl flex items-center justify-center shadow-2xl shadow-pink-500/30 group relative"
+            className="w-14 h-14 bg-gradient-to-br from-lime-500 to-sky-700 text-white rounded-2xl flex items-center justify-center shadow-2xl shadow-lime-500/30 group relative"
           >
             <div className="absolute inset-0 bg-white rounded-2xl opacity-0 group-hover:opacity-20 transition-opacity" />
             <Sparkles className={`w-6 h-6 transition-transform duration-500 ${isExpanded ? 'rotate-90' : ''}`} />
@@ -3593,9 +3593,9 @@ const HeartBurst: React.FC<{ x: number; y: number; onComplete: () => void }> = (
           }}
           transition={{ duration: 0.8, ease: "easeOut" }}
           onAnimationComplete={p.id === 0 ? onComplete : undefined}
-          className="absolute text-pink-500"
+          className="absolute text-lime-500"
         >
-          <Heart className="w-5 h-5 fill-current shadow-pink-500/50 filter drop-shadow-md" />
+          <Heart className="w-5 h-5 fill-current shadow-lime-500/50 filter drop-shadow-md" />
         </motion.div>
       ))}
     </div>
@@ -3617,7 +3617,7 @@ const DynamicRouteHandler = (props: any) => {
   if (location.pathname === '/gabs-nails') {
     return (
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.3 }}>
-        <React.Suspense fallback={<div className="min-h-screen flex items-center justify-center"><div className="w-12 h-12 border-4 border-pink-500 border-t-transparent rounded-full animate-spin" /></div>}>
+        <React.Suspense fallback={<div className="min-h-screen flex items-center justify-center"><div className="w-12 h-12 border-4 border-lime-500 border-t-transparent rounded-full animate-spin" /></div>}>
           <GabNails lang={props.lang} />
         </React.Suspense>
       </motion.div>
@@ -3629,7 +3629,7 @@ const DynamicRouteHandler = (props: any) => {
     <div className="min-h-screen flex flex-col items-center justify-center pt-32 pb-20 text-center px-6">
       <h1 className="text-6xl md:text-8xl font-black gradient-text mb-6">404</h1>
       <p className="text-xl md:text-2xl font-bold opacity-80 mb-8">Page non trouvée / Page not found</p>
-      <Link to="/" className="px-8 py-4 bg-pink-500 text-white rounded-xl font-bold">Retour à l'accueil</Link>
+      <Link to="/" className="px-8 py-4 bg-lime-500 text-white rounded-xl font-bold">Retour à l'accueil</Link>
     </div>
   );
 };
@@ -3774,7 +3774,7 @@ function AppContent() {
           onComplete={() => setHearts(prev => prev.filter(item => item.id !== h.id))} 
         />
       ))}
-      <div className="min-h-screen selection:bg-pink-500 selection:text-white text-[var(--text-primary)] transition-colors duration-300 relative z-10">
+      <div className="min-h-screen selection:bg-lime-500 selection:text-white text-[var(--text-primary)] transition-colors duration-300 relative z-10">
         {/* Notification */}
       <AnimatePresence>
         {notification && (
@@ -3782,7 +3782,7 @@ function AppContent() {
             initial={{ opacity: 0, y: -50 }}
             animate={{ opacity: 1, y: 20 }}
             exit={{ opacity: 0, y: -50 }}
-            className="fixed top-20 left-1/2 -translate-x-1/2 z-[110] glass px-6 py-3 rounded-full border-pink-500/50 flex items-center gap-3 shadow-2xl"
+            className="fixed top-20 left-1/2 -translate-x-1/2 z-[110] glass px-6 py-3 rounded-full border-lime-500/50 flex items-center gap-3 shadow-2xl"
           >
             <CheckCircle2 className="text-green-500 w-5 h-5" />
             <span className="font-bold">{notification}</span>
@@ -3817,33 +3817,33 @@ function AppContent() {
             </Link>
 
             <div className="hidden lg:flex items-center gap-8">
-              <Link to="/" className="text-sm font-bold hover:text-pink-500 transition-colors relative group">
+              <Link to="/" className="text-sm font-bold hover:text-lime-500 transition-colors relative group">
                 {t.home}
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-pink-500 transition-all group-hover:w-full" />
+                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-lime-500 transition-all group-hover:w-full" />
               </Link>
-              <Link to="/shop" className="text-sm font-bold hover:text-pink-500 transition-colors relative group">
+              <Link to="/shop" className="text-sm font-bold hover:text-lime-500 transition-colors relative group">
                 {t.shop}
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-pink-500 transition-all group-hover:w-full" />
+                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-lime-500 transition-all group-hover:w-full" />
               </Link>
-              <Link to="/music-catalog" className="text-sm font-bold hover:text-pink-500 transition-colors relative group">
+              <Link to="/music-catalog" className="text-sm font-bold hover:text-lime-500 transition-colors relative group">
                 {lang === 'fr' ? 'Musique' : 'Music'}
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-pink-500 transition-all group-hover:w-full" />
+                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-lime-500 transition-all group-hover:w-full" />
               </Link>
-              <Link to="/studio" className="text-sm font-bold hover:text-pink-500 transition-colors relative group">
+              <Link to="/studio" className="text-sm font-bold hover:text-lime-500 transition-colors relative group">
                 {t.studio}
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-pink-500 transition-all group-hover:w-full" />
+                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-lime-500 transition-all group-hover:w-full" />
               </Link>
-              <Link to="/services" className="text-sm font-bold hover:text-pink-500 transition-colors relative group">
+              <Link to="/services" className="text-sm font-bold hover:text-lime-500 transition-colors relative group">
                 {t.services}
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-pink-500 transition-all group-hover:w-full" />
+                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-lime-500 transition-all group-hover:w-full" />
               </Link>
-              <Link to="/about" className="text-sm font-bold hover:text-pink-500 transition-colors relative group">
+              <Link to="/about" className="text-sm font-bold hover:text-lime-500 transition-colors relative group">
                 {t.about}
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-pink-500 transition-all group-hover:w-full" />
+                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-lime-500 transition-all group-hover:w-full" />
               </Link>
-              <Link to="/contact" className="text-sm font-bold hover:text-pink-500 transition-colors relative group">
+              <Link to="/contact" className="text-sm font-bold hover:text-lime-500 transition-colors relative group">
                 {t.contact}
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-pink-500 transition-all group-hover:w-full" />
+                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-lime-500 transition-all group-hover:w-full" />
               </Link>
             </div>
           </div>
@@ -3854,7 +3854,7 @@ function AppContent() {
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
                 onClick={() => setLang('fr')} 
-                className={`text-xs font-bold transition-colors ${lang === 'fr' ? 'text-pink-500' : 'opacity-80 hover:opacity-100'}`}
+                className={`text-xs font-bold transition-colors ${lang === 'fr' ? 'text-lime-500' : 'opacity-80 hover:opacity-100'}`}
               >
                 FR
               </motion.button>
@@ -3862,13 +3862,13 @@ function AppContent() {
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
                 onClick={() => setLang('en')} 
-                className={`text-xs font-bold transition-colors ${lang === 'en' ? 'text-pink-500' : 'opacity-80 hover:opacity-100'}`}
+                className={`text-xs font-bold transition-colors ${lang === 'en' ? 'text-lime-500' : 'opacity-80 hover:opacity-100'}`}
               >
                 EN
               </motion.button>
             </div>
             
-            <div className="hidden md:flex items-center glass px-4 py-2 rounded-full gap-2 border-white/5 focus-within:border-pink-500/50 transition-all">
+            <div className="hidden md:flex items-center glass px-4 py-2 rounded-full gap-2 border-white/5 focus-within:border-lime-500/50 transition-all">
               <Search className="w-4 h-4 opacity-80" />
               <input 
                 type="text" 
@@ -3886,9 +3886,9 @@ function AppContent() {
               whileHover={{ scale: 1.1, rotate: 10 }}
               whileTap={{ scale: 0.9 }}
               onClick={() => setIsDark(!isDark)} 
-              className="p-2 rounded-full glass hover:bg-pink-500/10 transition-colors"
+              className="p-2 rounded-full glass hover:bg-lime-500/10 transition-colors"
             >
-              {isDark ? <Sun className="w-5 h-5 text-yellow-400" /> : <Moon className="w-5 h-5 text-purple-600" />}
+              {isDark ? <Sun className="w-5 h-5 text-yellow-400" /> : <Moon className="w-5 h-5 text-sky-700" />}
             </motion.button>
 
             <motion.button 
@@ -3898,11 +3898,11 @@ function AppContent() {
                 setIsCartOpen(true);
                 setIsMenuOpen(false);
               }}
-              className="relative p-2 rounded-full glass hover:bg-pink-500/10 transition-colors"
+              className="relative p-2 rounded-full glass hover:bg-lime-500/10 transition-colors"
             >
               <ShoppingCart className="w-5 h-5" />
               {cart.length > 0 && (
-                <span className="absolute -top-1 -right-1 w-5 h-5 bg-pink-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center shadow-lg shadow-pink-500/40">
+                <span className="absolute -top-1 -right-1 w-5 h-5 bg-lime-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center shadow-lg shadow-lime-500/40">
                   {cart.reduce((acc, item) => acc + item.quantity, 0)}
                 </span>
               )}
@@ -3916,7 +3916,7 @@ function AppContent() {
                 setCountry(null);
                 setIsMenuOpen(false);
               }}
-              className="hidden sm:flex items-center gap-2 glass px-4 py-2 rounded-full text-xs font-bold hover:bg-pink-500/10 transition-colors"
+              className="hidden sm:flex items-center gap-2 glass px-4 py-2 rounded-full text-xs font-bold hover:bg-lime-500/10 transition-colors"
             >
               <Globe className="w-4 h-4" />
               {country.code}
@@ -3926,7 +3926,7 @@ function AppContent() {
             <motion.button
               whileTap={{ scale: 0.9 }}
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="lg:hidden p-2 rounded-full glass hover:bg-pink-500/10 transition-colors"
+              className="lg:hidden p-2 rounded-full glass hover:bg-lime-500/10 transition-colors"
             >
               {isMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </motion.button>
@@ -3947,49 +3947,49 @@ function AppContent() {
                   <Link 
                     to="/" 
                     onClick={() => setIsMenuOpen(false)}
-                    className="text-lg font-bold hover:text-pink-500 transition-colors"
+                    className="text-lg font-bold hover:text-lime-500 transition-colors"
                   >
                     {t.home}
                   </Link>
                   <Link 
                     to="/shop" 
                     onClick={() => setIsMenuOpen(false)}
-                    className="text-lg font-bold hover:text-pink-500 transition-colors"
+                    className="text-lg font-bold hover:text-lime-500 transition-colors"
                   >
                     {t.shop}
                   </Link>
                   <Link 
                     to="/music-catalog" 
                     onClick={() => setIsMenuOpen(false)}
-                    className="text-lg font-bold hover:text-pink-500 transition-colors"
+                    className="text-lg font-bold hover:text-lime-500 transition-colors"
                   >
                     {lang === 'fr' ? 'Musique' : 'Music'}
                   </Link>
                   <Link 
                     to="/studio" 
                     onClick={() => setIsMenuOpen(false)}
-                    className="text-lg font-bold hover:text-pink-500 transition-colors"
+                    className="text-lg font-bold hover:text-lime-500 transition-colors"
                   >
                     {t.studio}
                   </Link>
                   <Link 
                     to="/services" 
                     onClick={() => setIsMenuOpen(false)}
-                    className="text-lg font-bold hover:text-pink-500 transition-colors"
+                    className="text-lg font-bold hover:text-lime-500 transition-colors"
                   >
                     {t.services}
                   </Link>
                   <Link 
                     to="/about" 
                     onClick={() => setIsMenuOpen(false)}
-                    className="text-lg font-bold hover:text-pink-500 transition-colors"
+                    className="text-lg font-bold hover:text-lime-500 transition-colors"
                   >
                     {t.about}
                   </Link>
                   <Link 
                     to="/contact" 
                     onClick={() => setIsMenuOpen(false)}
-                    className="text-lg font-bold hover:text-pink-500 transition-colors"
+                    className="text-lg font-bold hover:text-lime-500 transition-colors"
                   >
                     {t.contact}
                   </Link>
@@ -3999,13 +3999,13 @@ function AppContent() {
                   <div className="flex items-center gap-4">
                     <button 
                       onClick={() => setLang('fr')} 
-                      className={`text-sm font-bold transition-colors ${lang === 'fr' ? 'text-pink-500' : 'opacity-80 hover:opacity-100'}`}
+                      className={`text-sm font-bold transition-colors ${lang === 'fr' ? 'text-lime-500' : 'opacity-80 hover:opacity-100'}`}
                     >
                       FR
                     </button>
                     <button 
                       onClick={() => setLang('en')} 
-                      className={`text-sm font-bold transition-colors ${lang === 'en' ? 'text-pink-500' : 'opacity-80 hover:opacity-100'}`}
+                      className={`text-sm font-bold transition-colors ${lang === 'en' ? 'text-lime-500' : 'opacity-80 hover:opacity-100'}`}
                     >
                       EN
                     </button>
@@ -4024,7 +4024,7 @@ function AppContent() {
                 </div>
 
                 <div className="pt-6">
-                  <div className="flex items-center glass px-4 py-3 rounded-2xl gap-3 border-white/5 focus-within:border-pink-500/50 transition-all">
+                  <div className="flex items-center glass px-4 py-3 rounded-2xl gap-3 border-white/5 focus-within:border-lime-500/50 transition-all">
                     <Search className="w-5 h-5 opacity-80" />
                     <input 
                       type="text" 
@@ -4047,7 +4047,7 @@ function AppContent() {
             <motion.div 
               animate={{ rotate: 360 }}
               transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-              className="w-12 h-12 border-4 border-pink-500 border-t-transparent rounded-full"
+              className="w-12 h-12 border-4 border-lime-500 border-t-transparent rounded-full"
             />
           </div>
         }>
@@ -4109,7 +4109,7 @@ function AppContent() {
 
       {/* Newsletter Section */}
       <section className="py-24 relative overflow-hidden">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-pink-500/5 blur-[120px] rounded-full" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-lime-500/5 blur-[120px] rounded-full" />
         <div className="max-w-7xl mx-auto px-6 relative z-10">
           <motion.div 
             initial={{ opacity: 0, y: 40 }}
@@ -4117,9 +4117,9 @@ function AppContent() {
             viewport={{ once: true }}
             className="glass p-12 md:p-20 rounded-[3rem] text-center border-white/20 relative overflow-hidden group"
           >
-            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-pink-500 to-transparent opacity-50" />
+            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-lime-500 to-transparent opacity-50" />
             
-            <div className="inline-flex p-4 bg-pink-500/10 rounded-2xl text-pink-500 mb-8 animate-float">
+            <div className="inline-flex p-4 bg-lime-500/10 rounded-2xl text-lime-500 mb-8 animate-float">
               <Mail className="w-10 h-10" />
             </div>
             
@@ -4144,14 +4144,14 @@ function AppContent() {
                 type="email" 
                 placeholder="votre@email.com" 
                 required
-                className="flex-[2] bg-white/5 border border-white/10 rounded-2xl px-8 py-5 outline-none focus:border-pink-500/50 focus:bg-white/10 transition-all text-lg"
+                className="flex-[2] bg-white/5 border border-white/10 rounded-2xl px-8 py-5 outline-none focus:border-lime-500/50 focus:bg-white/10 transition-all text-lg"
               />
               <motion.button 
                 whileHover={{ scale: 1.05, y: -2 }}
                 whileTap={{ scale: 0.95 }}
                 type="submit"
                 disabled={isSubmittingNewsletter}
-                className="flex-1 px-8 py-5 bg-gradient-to-r from-pink-500 to-purple-600 text-white rounded-2xl font-bold shadow-xl shadow-pink-500/20 disabled:opacity-50 flex items-center justify-center gap-2"
+                className="flex-1 px-8 py-5 bg-gradient-to-r from-lime-500 to-sky-700 text-white rounded-2xl font-bold shadow-xl shadow-lime-500/20 disabled:opacity-50 flex items-center justify-center gap-2"
               >
                 {t.subscribe}
                 <ArrowRight className="w-5 h-5" />
@@ -4171,7 +4171,7 @@ function AppContent() {
             whileHover={{ scale: 1.1, y: -5 }}
             whileTap={{ scale: 0.9 }}
             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-            className="fixed bottom-8 right-8 z-[100] w-14 h-14 bg-gradient-to-br from-pink-500 to-purple-600 text-white rounded-2xl flex items-center justify-center shadow-2xl shadow-pink-500/40 cursor-pointer animate-pulse-glow"
+            className="fixed bottom-8 right-8 z-[100] w-14 h-14 bg-gradient-to-br from-lime-500 to-sky-700 text-white rounded-2xl flex items-center justify-center shadow-2xl shadow-lime-500/40 cursor-pointer animate-pulse-glow"
           >
             <ChevronRight className="w-6 h-6 -rotate-90" />
           </motion.button>
@@ -4199,21 +4199,21 @@ function AppContent() {
                 <motion.button 
                   whileHover={{ scale: 1.1, y: -2 }}
                   whileTap={{ scale: 0.9 }}
-                  className="w-10 h-10 glass rounded-xl flex items-center justify-center hover:text-pink-500 transition-colors"
+                  className="w-10 h-10 glass rounded-xl flex items-center justify-center hover:text-lime-500 transition-colors"
                 >
                   <Twitter className="w-5 h-5" />
                 </motion.button>
                 <motion.button 
                   whileHover={{ scale: 1.1, y: -2 }}
                   whileTap={{ scale: 0.9 }}
-                  className="w-10 h-10 glass rounded-xl flex items-center justify-center hover:text-pink-500 transition-colors"
+                  className="w-10 h-10 glass rounded-xl flex items-center justify-center hover:text-lime-500 transition-colors"
                 >
                   <Instagram className="w-5 h-5" />
                 </motion.button>
                 <motion.button 
                   whileHover={{ scale: 1.1, y: -2 }}
                   whileTap={{ scale: 0.9 }}
-                  className="w-10 h-10 glass rounded-xl flex items-center justify-center hover:text-pink-500 transition-colors"
+                  className="w-10 h-10 glass rounded-xl flex items-center justify-center hover:text-lime-500 transition-colors"
                 >
                   <Github className="w-5 h-5" />
                 </motion.button>
@@ -4223,18 +4223,18 @@ function AppContent() {
             <div>
               <h4 className="font-bold mb-6">{t.shop}</h4>
               <ul className="space-y-4 text-sm text-slate-600 dark:text-slate-200">
-                <li><Link to="/shop" className="hover:text-pink-500 transition-colors">{t.all}</Link></li>
-                <li><Link to="/shop" className="hover:text-pink-500 transition-colors">{t.physical}</Link></li>
-                <li><Link to="/shop" className="hover:text-pink-500 transition-colors">{t.digital}</Link></li>
+                <li><Link to="/shop" className="hover:text-lime-500 transition-colors">{t.all}</Link></li>
+                <li><Link to="/shop" className="hover:text-lime-500 transition-colors">{t.physical}</Link></li>
+                <li><Link to="/shop" className="hover:text-lime-500 transition-colors">{t.digital}</Link></li>
               </ul>
             </div>
 
             <div>
               <h4 className="font-bold mb-6">{t.about}</h4>
               <ul className="space-y-4 text-sm text-slate-600 dark:text-slate-200">
-                <li><Link to="/about" className="hover:text-pink-500 transition-colors">{t.about}</Link></li>
-                <li><Link to="/contact" className="hover:text-pink-500 transition-colors">{t.contact}</Link></li>
-                <li><button className="hover:text-pink-500 transition-colors">{t.privacy}</button></li>
+                <li><Link to="/about" className="hover:text-lime-500 transition-colors">{t.about}</Link></li>
+                <li><Link to="/contact" className="hover:text-lime-500 transition-colors">{t.contact}</Link></li>
+                <li><button className="hover:text-lime-500 transition-colors">{t.privacy}</button></li>
               </ul>
             </div>
 
@@ -4242,11 +4242,11 @@ function AppContent() {
               <h4 className="font-bold mb-6">{t.contact}</h4>
               <ul className="space-y-4 text-sm text-slate-600 dark:text-slate-200">
                 <li className="flex items-center gap-2">
-                  <MessageCircle className="w-4 h-4 text-pink-500" />
+                  <MessageCircle className="w-4 h-4 text-lime-500" />
                   <span>+1 (289) 630-1143</span>
                 </li>
                 <li className="flex items-center gap-2">
-                  <Mail className="w-4 h-4 text-pink-500" />
+                  <Mail className="w-4 h-4 text-lime-500" />
                   <span>dualvibe237@gmail.com</span>
                 </li>
               </ul>
@@ -4261,13 +4261,13 @@ function AppContent() {
                 handleNewsletterSubmit(email);
                 (e.target as any).reset();
               }} className="flex gap-2">
-                <input name="email" type="email" placeholder="Email" required className="w-full glass px-4 py-2 rounded-xl text-sm outline-none focus:border-pink-500/50 transition-all placeholder:text-slate-400 dark:placeholder:text-slate-500" />
+                <input name="email" type="email" placeholder="Email" required className="w-full glass px-4 py-2 rounded-xl text-sm outline-none focus:border-lime-500/50 transition-all placeholder:text-slate-400 dark:placeholder:text-slate-500" />
                 <motion.button 
                   whileHover={{ scale: 1.1, x: 2 }}
                   whileTap={{ scale: 0.9 }}
                   type="submit"
                   disabled={isSubmittingNewsletter}
-                  className="bg-pink-500 text-white p-2 rounded-xl shadow-lg shadow-pink-500/20 disabled:opacity-50"
+                  className="bg-lime-500 text-white p-2 rounded-xl shadow-lg shadow-lime-500/20 disabled:opacity-50"
                 >
                   <ArrowRight className="w-5 h-5" />
                 </motion.button>
