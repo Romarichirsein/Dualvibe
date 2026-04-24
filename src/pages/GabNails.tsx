@@ -139,7 +139,7 @@ export default function GabNails({ lang }: { lang: 'fr' | 'en' }) {
           initial={{ scale: 0 }}
           animate={{ scale: 1 }}
           transition={{ type: "spring", stiffness: 200, damping: 15, delay: 0.2 }}
-          className="w-36 h-36 md:w-44 md:h-44 mx-auto rounded-full bg-gradient-to-tr from-[#84CC16] via-[#0EA5E9] to-[#84CC16] p-1.5 shadow-2xl shadow-[#84CC16]/40"
+          className="w-36 h-36 md:w-44 md:h-44 mx-auto rounded-full bg-gradient-to-tr from-[#FF006E] via-[#00D1FF] to-[#FF006E] p-1.5 shadow-2xl shadow-[#FF006E]/40"
         >
           <img 
             src="/products/gabs-nails/logo.png" 
@@ -161,7 +161,7 @@ export default function GabNails({ lang }: { lang: 'fr' | 'en' }) {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.6 }}
-          className="text-xl md:text-2xl font-bold text-[#84CC16]"
+          className="text-xl md:text-2xl font-bold text-[#FF006E]"
         >
           {lang === 'fr' ? "L'art de sublimer vos mains ✨" : "The art of enhancing your hands ✨"}
         </motion.p>
@@ -195,7 +195,7 @@ export default function GabNails({ lang }: { lang: 'fr' | 'en' }) {
             <ExternalLink className="w-4 h-4 opacity-60" />
           </a>
           <div className="flex items-center gap-2 px-6 py-3 glass rounded-full font-bold">
-            <MapPin className="w-5 h-5 text-[#84CC16]" />
+            <MapPin className="w-5 h-5 text-[#FF006E]" />
             Cameroun
           </div>
         </motion.div>
@@ -218,7 +218,7 @@ export default function GabNails({ lang }: { lang: 'fr' | 'en' }) {
             onClick={() => setActiveFilter(f.key)}
             className={`px-6 py-3 rounded-2xl font-bold text-sm transition-all duration-300 ${
               activeFilter === f.key
-                ? 'bg-gradient-to-r from-[#84CC16] to-[#0EA5E9] text-white shadow-lg shadow-[#84CC16]/30 scale-105'
+                ? 'bg-gradient-to-r from-[#FF006E] to-[#00D1FF] text-white shadow-lg shadow-[#FF006E]/30 scale-105'
                 : 'glass hover:scale-105'
             }`}
           >
@@ -273,11 +273,11 @@ export default function GabNails({ lang }: { lang: 'fr' | 'en' }) {
               
               {/* Duration badge */}
               <div className="absolute top-3 right-3 glass px-3 py-1.5 rounded-full text-xs font-bold flex items-center gap-1.5 backdrop-blur-xl">
-                <Clock className="w-3.5 h-3.5 text-[#84CC16]" /> {prod.duration}
+                <Clock className="w-3.5 h-3.5 text-[#FF006E]" /> {prod.duration}
               </div>
 
               {/* Category badge */}
-              <div className="absolute top-3 left-3 px-3 py-1.5 rounded-full text-xs font-bold bg-gradient-to-r from-[#84CC16] to-[#0EA5E9] text-white">
+              <div className="absolute top-3 left-3 px-3 py-1.5 rounded-full text-xs font-bold bg-gradient-to-r from-[#FF006E] to-[#00D1FF] text-white">
                 {prod.category === 'capsule' ? '💅 Capsule' : '✨ Polygel'}
               </div>
             </div>
@@ -315,10 +315,10 @@ export default function GabNails({ lang }: { lang: 'fr' | 'en' }) {
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         viewport={{ once: true }}
-        className="glass p-12 md:p-16 rounded-[3rem] text-center mt-20 border-[#84CC16]/20 relative overflow-hidden group"
+        className="glass p-12 md:p-16 rounded-[3rem] text-center mt-20 border-[#FF006E]/20 relative overflow-hidden group"
       >
-        <div className="absolute inset-0 bg-gradient-to-br from-[#84CC16]/10 via-[#0EA5E9]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-        <Sparkles className="w-10 h-10 text-[#84CC16] mx-auto mb-6 animate-pulse" />
+        <div className="absolute inset-0 bg-gradient-to-br from-[#FF006E]/10 via-[#00D1FF]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+        <Sparkles className="w-10 h-10 text-[#FF006E] mx-auto mb-6 animate-pulse" />
         <h2 className="text-3xl md:text-5xl font-display font-black mb-4 relative z-10">
           {lang === 'fr' ? 'Envie d\'ongles parfaits ?' : 'Want perfect nails?'}
         </h2>
@@ -373,7 +373,7 @@ export default function GabNails({ lang }: { lang: 'fr' | 'en' }) {
               </button>
 
               <div className="text-center mb-6">
-                <div className="w-16 h-16 bg-[#84CC16]/20 text-[#84CC16] rounded-2xl flex items-center justify-center mx-auto mb-4">
+                <div className="w-16 h-16 bg-[#FF006E]/20 text-[#FF006E] rounded-2xl flex items-center justify-center mx-auto mb-4">
                   <Star className="w-8 h-8" />
                 </div>
                 <h3 className="text-2xl font-bold mb-2">Code Promo ?</h3>
@@ -393,7 +393,7 @@ export default function GabNails({ lang }: { lang: 'fr' | 'en' }) {
                   className={`w-full px-6 py-4 bg-white/5 border rounded-2xl outline-none transition-all text-center font-bold tracking-widest ${
                     promoCode && VALID_PROMOS.some(p => p.toLowerCase() === promoCode.trim().toLowerCase())
                       ? 'border-green-500/50 text-green-400 bg-green-500/5'
-                      : 'border-white/10 focus:border-[#84CC16]/50'
+                      : 'border-white/10 focus:border-[#FF006E]/50'
                   }`}
                 />
 
@@ -404,7 +404,7 @@ export default function GabNails({ lang }: { lang: 'fr' | 'en' }) {
                     className={`text-center text-sm font-bold ${
                       VALID_PROMOS.some(p => p.toLowerCase() === promoCode.trim().toLowerCase())
                         ? 'text-green-500'
-                        : 'text-[#84CC16]/60'
+                        : 'text-[#FF006E]/60'
                     }`}
                   >
                     {VALID_PROMOS.some(p => p.toLowerCase() === promoCode.trim().toLowerCase())
@@ -416,7 +416,7 @@ export default function GabNails({ lang }: { lang: 'fr' | 'en' }) {
                 <button 
                   disabled={isSubmitting}
                   onClick={() => handleWhatsAppOrder(selectedProduct, promoCode)}
-                  className="w-full py-4 bg-gradient-to-r from-[#84CC16] to-[#0EA5E9] text-white rounded-2xl font-bold shadow-xl shadow-[#84CC16]/20 hover:scale-105 transition-transform disabled:opacity-50 flex items-center justify-center gap-2"
+                  className="w-full py-4 bg-gradient-to-r from-[#FF006E] to-[#00D1FF] text-white rounded-2xl font-bold shadow-xl shadow-[#FF006E]/20 hover:scale-105 transition-transform disabled:opacity-50 flex items-center justify-center gap-2"
                 >
                   {isSubmitting ? (
                     <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />

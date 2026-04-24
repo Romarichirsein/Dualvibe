@@ -180,7 +180,7 @@ export default function MusicCatalog({ lang, searchQuery = "", addToCart, openCa
       <section className="pt-32 md:pt-40 pb-20 min-h-screen">
       <div className="max-w-7xl mx-auto px-6">
         <div className="text-center mb-16 relative">
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-[#84CC16]/10 blur-[100px] rounded-full" />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-[#FF006E]/10 blur-[100px] rounded-full" />
           <motion.h1 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -201,7 +201,7 @@ export default function MusicCatalog({ lang, searchQuery = "", addToCart, openCa
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.2 }}
-            className="mt-8 inline-flex items-center gap-2 glass px-4 py-2 rounded-full text-xs font-bold text-[#84CC16]"
+            className="mt-8 inline-flex items-center gap-2 glass px-4 py-2 rounded-full text-xs font-bold text-[#FF006E]"
           >
             <Shield className="w-4 h-4" />
             {t.antiDownload}
@@ -216,8 +216,8 @@ export default function MusicCatalog({ lang, searchQuery = "", addToCart, openCa
               onClick={() => setActiveCategory(category)}
               className={`px-6 py-3 rounded-full text-sm font-bold transition-all ${
                 activeCategory === category
-                  ? 'bg-gradient-to-r from-[#84CC16] to-[#0EA5E9] text-white shadow-lg shadow-[#84CC16]/25'
-                  : 'glass text-slate-600 dark:text-slate-200 hover:bg-[#84CC16]/10'
+                  ? 'bg-gradient-to-r from-[#FF006E] to-[#00D1FF] text-white shadow-lg shadow-[#FF006E]/25'
+                  : 'glass text-slate-600 dark:text-slate-200 hover:bg-[#FF006E]/10'
               }`}
             >
               {category === "Tout" ? t.all : (t.categories[category as keyof typeof t.categories] || category)}
@@ -234,14 +234,14 @@ export default function MusicCatalog({ lang, searchQuery = "", addToCart, openCa
               animate={{ opacity: 1, scale: 1 }}
               key={track.id}
               className={`glass rounded-[2rem] p-6 transition-all border-2 ${
-                playingTrack === track.id ? 'border-[#84CC16]' : 'border-transparent hover:border-[#84CC16]/30'
+                playingTrack === track.id ? 'border-[#FF006E]' : 'border-transparent hover:border-[#FF006E]/30'
               }`}
             >
               <div className="flex items-start gap-4 mb-6">
                 <div className={`w-14 h-14 rounded-2xl flex items-center justify-center shrink-0 transition-colors ${
                   playingTrack === track.id
-                    ? 'bg-[#84CC16] text-white shadow-lg shadow-[#84CC16]/30'
-                    : 'bg-[#84CC16]/10 text-[#84CC16]'
+                    ? 'bg-[#FF006E] text-white shadow-lg shadow-[#FF006E]/30'
+                    : 'bg-[#FF006E]/10 text-[#FF006E]'
                 }`}>
                   <Music className="w-6 h-6" />
                 </div>
@@ -249,7 +249,7 @@ export default function MusicCatalog({ lang, searchQuery = "", addToCart, openCa
                   <h3 className="font-bold text-lg line-clamp-2 leading-tight mb-1">
                     {track.title}
                   </h3>
-                  <span className="text-xs font-bold text-[#84CC16] uppercase tracking-wider">
+                  <span className="text-xs font-bold text-[#FF006E] uppercase tracking-wider">
                     {t.categories[track.category as keyof typeof t.categories] || track.category}
                   </span>
                 </div>
@@ -272,7 +272,7 @@ export default function MusicCatalog({ lang, searchQuery = "", addToCart, openCa
               <div className="mt-6 pt-6 border-t border-slate-200 dark:border-white/10 text-center">
                 <button 
                   onClick={() => setSelectedTrack(track)}
-                  className="inline-flex items-center gap-2 text-sm font-bold text-slate-500 dark:text-slate-400 hover:text-[#84CC16] transition-colors"
+                  className="inline-flex items-center gap-2 text-sm font-bold text-slate-500 dark:text-slate-400 hover:text-[#FF006E] transition-colors"
                 >
                   <MessageCircle className="w-4 h-4" />
                   {t.contactToBuy}
@@ -305,13 +305,13 @@ export default function MusicCatalog({ lang, searchQuery = "", addToCart, openCa
             >
               <button 
                 onClick={() => setSelectedTrack(null)}
-                className="absolute top-6 right-6 w-10 h-10 bg-slate-100 dark:bg-slate-800 rounded-full flex items-center justify-center hover:bg-[#84CC16] hover:text-white transition-colors"
+                className="absolute top-6 right-6 w-10 h-10 bg-slate-100 dark:bg-slate-800 rounded-full flex items-center justify-center hover:bg-[#FF006E] hover:text-white transition-colors"
               >
                 <X className="w-5 h-5" />
               </button>
 
               <h2 className="text-2xl font-bold mb-2 text-black dark:text-white">{t.formTitle}</h2>
-              <p className="text-[#84CC16] font-bold mb-8 text-sm line-clamp-1">{selectedTrack.title}</p>
+              <p className="text-[#FF006E] font-bold mb-8 text-sm line-clamp-1">{selectedTrack.title}</p>
 
               <form onSubmit={handleAddToCart} className="space-y-5">
                 <div className="space-y-2">
@@ -383,7 +383,7 @@ export default function MusicCatalog({ lang, searchQuery = "", addToCart, openCa
 
     {/* Music Footer CTA */}
     <section className="py-20 border-t border-white/10 overflow-hidden relative">
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-[#0EA5E9]/10 blur-[120px] rounded-full" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-[#00D1FF]/10 blur-[120px] rounded-full" />
       <div className="max-w-4xl mx-auto px-6 text-center relative z-10">
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
@@ -391,8 +391,8 @@ export default function MusicCatalog({ lang, searchQuery = "", addToCart, openCa
           viewport={{ once: true }}
           className="glass p-12 rounded-[3rem] border-white/20 relative overflow-hidden group"
         >
-          <div className="absolute inset-0 bg-gradient-to-br from-[#0EA5E9]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-          <div className="inline-flex p-4 bg-[#0EA5E9]/10 rounded-2xl text-[#0EA5E9] mb-6 animate-float">
+          <div className="absolute inset-0 bg-gradient-to-br from-[#00D1FF]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+          <div className="inline-flex p-4 bg-[#00D1FF]/10 rounded-2xl text-[#00D1FF] mb-6 animate-float">
             <Sparkles className="w-8 h-8" />
           </div>
           <h3 className="text-2xl md:text-4xl font-display font-bold mb-6">
@@ -408,7 +408,7 @@ export default function MusicCatalog({ lang, searchQuery = "", addToCart, openCa
             <motion.button
               whileHover={{ scale: 1.05, y: -5 }}
               whileTap={{ scale: 0.95 }}
-              className="px-10 py-4 bg-gradient-to-r from-[#0EA5E9] to-[#0EA5E9] text-white rounded-2xl font-bold flex items-center justify-center gap-3 mx-auto shadow-xl shadow-[#0EA5E9]/20"
+              className="px-10 py-4 bg-gradient-to-r from-[#00D1FF] to-[#00D1FF] text-white rounded-2xl font-bold flex items-center justify-center gap-3 mx-auto shadow-xl shadow-[#00D1FF]/20"
             >
               <Music className="w-5 h-5" />
               {lang === 'fr' ? 'Contacter le Studio' : 'Contact the Studio'}
