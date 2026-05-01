@@ -199,7 +199,7 @@ function AppContent() {
   }
 
   return (
-    <div className={`min-h-screen bg-transparent dark:text-white text-slate-900 font-sans transition-colors duration-500`}>
+    <div className={`min-h-screen ${isDark ? 'dark' : ''} bg-transparent ${isDark ? 'text-white' : 'text-slate-900'} font-sans transition-colors duration-500`}>
       <AnimatedBackground />
 
       {hearts.map(h => (
