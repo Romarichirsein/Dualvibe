@@ -20,16 +20,7 @@ interface StudioProps {
   lang: 'fr' | 'en';
 }
 
-const CyberpunkGlitchText = ({ children, className = "" }: { children: React.ReactNode, className?: string }) => {
-  return (
-    <div className={`glitch-text-container ${className}`}>
-      <span className="relative z-10">{children}</span>
-      <span className="glitch-layer glitch-layer-1" aria-hidden="true">{children}</span>
-      <span className="glitch-layer glitch-layer-2" aria-hidden="true">{children}</span>
-      <div className="cyber-scanline" />
-    </div>
-  );
-};
+import { CyberpunkGlitchText } from '../components/CyberpunkGlitchText';
 
 const TRANSLATIONS = {
   fr: {
@@ -72,17 +63,16 @@ const TRANSLATIONS = {
   }
 };
 
-type CategoryId = 'music' | 'photo' | 'video' | 'design';
+type CategoryId = 'photo' | 'video' | 'design';
 
 export default function Studio({ lang }: StudioProps) {
   const t = TRANSLATIONS[lang];
-  const [activeCategory, setActiveCategory] = useState<CategoryId>('music');
+  const [activeCategory, setActiveCategory] = useState<CategoryId>('photo');
   const [details, setDetails] = useState('');
   const [links, setLinks] = useState('');
   const [files, setFiles] = useState<File[]>([]);
 
   const categories = [
-    { id: 'music' as CategoryId, icon: Music, title: t.musicCustom, desc: t.musicDesc, color: 'from-[#FF006E] to-[#FF006E]' },
     { id: 'photo' as CategoryId, icon: Camera, title: t.photoCustom, desc: t.photoDesc, color: 'from-blue-500 to-cyan-500' },
     { id: 'video' as CategoryId, icon: Video, title: t.videoCustom, desc: t.videoDesc, color: 'from-[#00D1FF] to-[#00D1FF]' },
     { id: 'design' as CategoryId, icon: Palette, title: t.designCustom, desc: t.designDesc, color: 'from-orange-500 to-yellow-500' },
