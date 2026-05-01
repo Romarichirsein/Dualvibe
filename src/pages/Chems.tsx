@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Sparkles, MapPin, X, MessageCircle, Scissors, Eye } from 'lucide-react';
+import { Sparkles, MapPin, X, MessageCircle, Scissors, Eye, Instagram, Facebook } from 'lucide-react';
 
 const CATEGORIES = [
   { key: 'all', fr: 'Tout voir', en: 'View All' },
@@ -59,6 +59,12 @@ const WhatsAppIcon = () => (
   </svg>
 );
 
+const TikTokIcon = () => (
+  <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+    <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-5.2 1.74 2.89 2.89 0 012.31-4.64 2.93 2.93 0 01.88.13V9.4a6.84 6.84 0 00-1-.05A6.33 6.33 0 005 20.1a6.34 6.34 0 0010.86-4.43v-7a8.16 8.16 0 004.77 1.52v-3.4a4.85 4.85 0 01-1-.1z"/>
+  </svg>
+);
+
 export default function Chems({ lang }: { lang: 'fr' | 'en' }) {
   const [activeFilter, setActiveFilter] = useState('all');
   const [selectedProduct, setSelectedProduct] = useState<ChemsProduct | null>(null);
@@ -103,12 +109,20 @@ export default function Chems({ lang }: { lang: 'fr' | 'en' }) {
         <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.9 }} className="flex flex-wrap justify-center gap-4 pt-4">
           <a href="https://wa.me/237655772944" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 px-6 py-3 bg-[#25D366] text-white rounded-full font-bold hover:scale-105 transition-all duration-300 shadow-lg">
             <WhatsAppIcon />
-            +237 6 55 77 29 44
+            WhatsApp
           </a>
-          <div className="flex items-center gap-2 px-6 py-3 glass rounded-full font-bold">
-            <MapPin className="w-5 h-5 text-[#FF006E]" />
-            Cameroun
-          </div>
+          <a href="https://www.tiktok.com/search?q=CHEM%E2%80%99S&t=1777650709267" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 px-6 py-3 bg-black text-white rounded-full font-bold hover:scale-105 transition-all duration-300 shadow-lg border border-white/10">
+            <TikTokIcon />
+            TikTok
+          </a>
+          <a href="https://www.instagram.com/angeMaevaMC" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-full font-bold hover:scale-105 transition-all duration-300 shadow-lg">
+            <Instagram className="w-5 h-5" />
+            ange Maeva MC
+          </a>
+          <a href="https://www.facebook.com/search/top/?q=ange%20Maeva%20MC" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 px-6 py-3 bg-[#1877F2] text-white rounded-full font-bold hover:scale-105 transition-all duration-300 shadow-lg">
+            <Facebook className="w-5 h-5" />
+            Facebook
+          </a>
         </motion.div>
       </motion.div>
 
@@ -176,10 +190,20 @@ export default function Chems({ lang }: { lang: 'fr' | 'en' }) {
             ? "Contactez CHEM'S directement via WhatsApp pour discuter de votre projet. Confection sur-mesure pour mariages, cérémonies, soirées et plus encore !"
             : "Contact CHEM'S directly via WhatsApp to discuss your project. Custom tailoring for weddings, ceremonies, parties and more!"}
         </p>
-        <a href="https://wa.me/237655772944" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-8 py-4 bg-[#25D366] text-white rounded-2xl font-bold text-lg shadow-xl shadow-green-500/20 hover:scale-105 transition-transform relative z-10">
-          <WhatsAppIcon />
-          {lang === 'fr' ? 'Contacter via WhatsApp' : 'Contact via WhatsApp'}
-        </a>
+        <div className="flex flex-wrap justify-center gap-4 relative z-10">
+          <a href="https://wa.me/237655772944" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-8 py-4 bg-[#25D366] text-white rounded-2xl font-bold text-lg shadow-xl shadow-green-500/20 hover:scale-105 transition-transform">
+            <WhatsAppIcon />
+            {lang === 'fr' ? 'Contacter' : 'Contact'}
+          </a>
+          <a href="https://www.tiktok.com/search?q=CHEM%E2%80%99S&t=1777650709267" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-8 py-4 bg-black text-white rounded-2xl font-bold text-lg shadow-xl hover:scale-105 transition-transform border border-white/10">
+            <TikTokIcon />
+            TikTok
+          </a>
+          <a href="https://www.instagram.com/angeMaevaMC" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-2xl font-bold text-lg shadow-xl hover:scale-105 transition-transform">
+            <Instagram className="w-5 h-5" />
+            Instagram
+          </a>
+        </div>
       </motion.div>
 
       {/* Order Confirm Modal */}
