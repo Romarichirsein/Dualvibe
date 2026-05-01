@@ -50,8 +50,8 @@ export const CartModal = ({
     category: '', event: '', emotion: '', target: '', story: ''
   });
 
-  const VALID_PROMOS = ['Princestore', 'Baecstore', 'Mervistore', 'Gicostore', 'Ashstore'];
-  const DISCOUNT_AMOUNT = 300; 
+  const VALID_PROMOS = ['Princestore', 'Baecstore', 'Mervistore', 'Gicostore', 'Ashstore', 'Barthstore'];
+  const DISCOUNT_AMOUNT = 500; 
 
   const handleApplyPromo = () => {
     if (appliedPromo) {
