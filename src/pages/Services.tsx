@@ -114,6 +114,42 @@ export const Services = ({ lang }: { lang: Language }) => {
         </div>
       </motion.div>
 
+      {/* CHEM'S Promotional Section */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+        className="glass p-8 md:p-12 rounded-[3rem] mb-20 border-[#00D1FF]/30 relative overflow-hidden flex flex-col md:flex-row items-center gap-10"
+      >
+        <div className="absolute inset-0 bg-gradient-to-br from-[#FF006E]/10 via-[#00D1FF]/5 to-transparent pointer-events-none" />
+        
+        <div className="w-40 h-40 md:w-64 md:h-64 shrink-0 rounded-full bg-gradient-to-tr from-[#FF006E] to-[#00D1FF] p-1 shadow-2xl shadow-[#FF006E]/20 relative z-10">
+          <img 
+            src="/products/chems/logo.png" 
+            alt="CHEM'S Logo" 
+            className="w-full h-full object-cover rounded-full bg-white"
+          />
+        </div>
+
+        <div className="flex-1 text-center md:text-left relative z-10">
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-[#00D1FF]/20 text-[#00D1FF] rounded-full font-bold text-sm mb-4">
+            <Sparkles className="w-4 h-4" /> {lang === 'fr' ? 'Nouveau Partenaire' : 'New Partner'}
+          </div>
+          <h2 className="text-3xl md:text-5xl font-display font-black mb-4">
+            CHEM'<span className="gradient-text">S</span>
+          </h2>
+          <p className="text-lg opacity-80 mb-6 leading-relaxed">
+            {lang === 'fr' 
+              ? "Spécialiste en confection sur-mesure : robes de mariage traditionnel, robes de soirée, tenues de cocktail et survêtements. Des créations qui allient style, qualité et authenticité pour sublimer chaque moment de votre vie." 
+              : "Custom tailoring specialist: traditional wedding dresses, evening gowns, cocktail outfits and tracksuits. Creations that combine style, quality and authenticity to enhance every moment of your life."}
+          </p>
+          <Link to="/chems" className="inline-flex px-8 py-4 bg-gradient-to-r from-[#FF006E] to-[#00D1FF] text-white rounded-2xl font-bold text-lg shadow-xl shadow-[#FF006E]/30 hover:scale-105 transition-transform items-center gap-2">
+            {lang === 'fr' ? "Visiter le catalogue CHEM'S" : "Visit CHEM'S Catalog"}
+            <ArrowRight className="w-5 h-5" />
+          </Link>
+        </div>
+      </motion.div>
+
 
       <motion.div
         initial={{ opacity: 0 }}

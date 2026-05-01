@@ -27,6 +27,7 @@ import { ProductDetail } from './pages/ProductDetail';
 const MusicCatalog = React.lazy(() => import('./pages/MusicCatalog'));
 const Studio = React.lazy(() => import('./pages/Studio'));
 const GabNails = React.lazy(() => import('./pages/GabNails'));
+const Chems = React.lazy(() => import('./pages/Chems'));
 
 type Language = 'fr' | 'en';
 
@@ -47,6 +48,16 @@ const DynamicRouteHandler = (props: any) => {
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.3 }}>
         <React.Suspense fallback={<div className="min-h-screen flex items-center justify-center"><div className="w-12 h-12 border-4 border-[#FF006E] border-t-transparent rounded-full animate-spin" /></div>}>
           <GabNails lang={props.lang} />
+        </React.Suspense>
+      </motion.div>
+    );
+  }
+
+  if (location.pathname === '/chems') {
+    return (
+      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.3 }}>
+        <React.Suspense fallback={<div className="min-h-screen flex items-center justify-center"><div className="w-12 h-12 border-4 border-[#FF006E] border-t-transparent rounded-full animate-spin" /></div>}>
+          <Chems lang={props.lang} />
         </React.Suspense>
       </motion.div>
     );
