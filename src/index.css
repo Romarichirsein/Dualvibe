@@ -16,7 +16,7 @@
     --text-primary: #0f172a;
     --card-bg: rgba(255, 255, 255, 0.7);
     --card-border: rgba(0, 0, 0, 0.05);
-    --section-bg: #ffffff;
+    --section-bg: transparent;
   }
 
   .dark {
@@ -24,7 +24,7 @@
     --text-primary: #ffffff;
     --card-bg: rgba(15, 15, 15, 0.6);
     --card-border: rgba(255, 255, 255, 0.08);
-    --section-bg: #000000;
+    --section-bg: transparent;
   }
 
   body {
