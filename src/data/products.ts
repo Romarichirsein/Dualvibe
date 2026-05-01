@@ -125,49 +125,47 @@ export const PRODUCTS: Product[] = [
     reviews: []
   },
 
-  // 3. Musiques Personnalisées, Beats & Jingles
-  { 
-    id: 7, 
-    title: { fr: "Beat / Instrumentale Exclusive", en: "Exclusive Beat / Instrumental" }, 
-    price: 30000, 
-    category: { fr: "Musique & Audio", en: "Music & Audio" }, 
-    image: "https://picsum.photos/seed/beat/800/600", 
-    type: 'digital', 
-    date: '2024-03-18',
-    description: { 
-      fr: "Création sur mesure (Afrobeat, Hip-Hop, Pop) avec cession complète des droits commerciaux.", 
-      en: "Custom creation (Afrobeat, Hip-Hop, Pop) with full commercial rights transfer." 
+    // 3. Nouvelle offre Musique - Packs Réorganisés
+    // Pack Cérémonies & Événements Sociaux (id: 100)
+    {
+      id: 100,
+      title: { fr: "Pack Cérémonies & Événements Sociaux", en: "Ceremonies & Social Events Pack" },
+      price: 0,
+      category: { fr: "Création Musicale", en: "Music Creation" },
+      image: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=2070&auto=format&fit=crop",
+      type: 'digital',
+      date: '2024-05-01',
+      description: {
+        fr: "• Mariage & Mariage Coutumier : Musiques pour le Dot, le Toquer porte, les Fiançailles, la Demande en Mariage.\n• Célébrations : Musiques pour les Baptêmes, les Anniversaires, l'arrivée d'un nouveau-né (Bébé).\n• Soutien & Recueillement : musiques pour le Deuil.",
+        en: "• Wedding & Customary Wedding: Music for Dowry, Door Knocking, Engagements, Proposals.\n• Celebrations: Music for Baptisms, Birthdays, New Baby Arrival.\n• Support & Remembrance: Music for Mourning."
+      },
+      reviews: [],
+      options: [
+        { label: "Standard (2000 FCFA)", price: 2000 },
+        { label: "Professionnel (3500 FCFA) - votre propre voix", price: 3500 },
+        { label: "Premium (5000 FCFA) - voix d'artiste", price: 5000 }
+      ]
     },
-    reviews: []
-  },
-  { 
-    id: 8, 
-    title: { fr: "Jingle Audio Pro", en: "Pro Audio Jingle" }, 
-    price: 15000, 
-    category: { fr: "Musique & Audio", en: "Music & Audio" }, 
-    image: "https://picsum.photos/seed/jingle/800/600", 
-    type: 'digital', 
-    date: '2024-03-20',
-    description: { 
-      fr: "Identité sonore courte (5 à 15s) avec voix off et effets sonores pour radio ou podcast.", 
-      en: "Short sonic identity (5 to 15s) with voiceover and sound effects for radio or podcast." 
+    // Pack Relations & Communication Personnelle (id: 101)
+    {
+      id: 101,
+      title: { fr: "Pack Relations & Communication Personnelle", en: "Relations & Personal Communication Pack" },
+      price: 0,
+      category: { fr: "Création Musicale", en: "Music Creation" },
+      image: "https://images.unsplash.com/photo-1516280440614-37939bbacd81?q=80&w=2070&auto=format&fit=crop",
+      type: 'digital',
+      date: '2024-05-01',
+      description: {
+        fr: "• Pardon & Réconciliation : demande de pardon aux parents, à son ex, à son gar ou sa go.\n• Demandes de couples : musique pour draguer une go ou un gar.",
+        en: "• Forgiveness & Reconciliation: asking forgiveness from parents, ex, boyfriend or girlfriend.\n• Couple Requests: music to flirt with a girl or a boy."
+      },
+      reviews: [],
+      options: [
+        { label: "Standard (2000 FCFA)", price: 2000 },
+        { label: "Professionnel (3500 FCFA) - votre propre voix", price: 3500 },
+        { label: "Premium (5000 FCFA) - voix d'artiste", price: 5000 }
+      ]
     },
-    reviews: []
-  },
-  { 
-    id: 9, 
-    title: { fr: "Chanson Personnalisée", en: "Personalized Song" }, 
-    price: 50000, 
-    category: { fr: "Musique & Audio", en: "Music & Audio" }, 
-    image: "https://picsum.photos/seed/song/800/600", 
-    type: 'digital', 
-    date: '2024-03-22',
-    description: { 
-      fr: "Écriture, composition et enregistrement pour mariage, anniversaire ou déclaration.", 
-      en: "Writing, composition, and recording for weddings, birthdays, or declarations." 
-    },
-    reviews: []
-  },
 
   // 4. Design Graphique & Identité Visuelle
   { 
