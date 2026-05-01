@@ -141,12 +141,16 @@ export const PRODUCTS: Product[] = [
       options: [
         { label: "Dot (Standard - 2000 FCFA)", price: 2000 },
         { label: "Dot (Votre voix - 3500 FCFA)", price: 3500 },
+        { label: "Dot (Voix d'artiste - 5000 FCFA)", price: 5000 },
         { label: "Toquer porte (Standard - 2000 FCFA)", price: 2000 },
         { label: "Toquer porte (Votre voix - 3500 FCFA)", price: 3500 },
+        { label: "Toquer porte (Voix d'artiste - 5000 FCFA)", price: 5000 },
         { label: "Fiançailles (Standard - 2000 FCFA)", price: 2000 },
         { label: "Fiançailles (Votre voix - 3500 FCFA)", price: 3500 },
+        { label: "Fiançailles (Voix d'artiste - 5000 FCFA)", price: 5000 },
         { label: "Demande en Mariage (Standard - 2000 FCFA)", price: 2000 },
-        { label: "Demande en Mariage (Votre voix - 3500 FCFA)", price: 3500 }
+        { label: "Demande en Mariage (Votre voix - 3500 FCFA)", price: 3500 },
+        { label: "Demande en Mariage (Voix d'artiste - 5000 FCFA)", price: 5000 }
       ],
       reviews: []
     },
@@ -165,10 +169,13 @@ export const PRODUCTS: Product[] = [
       options: [
         { label: "Baptême (Standard - 2000 FCFA)", price: 2000 },
         { label: "Baptême (Votre voix - 3500 FCFA)", price: 3500 },
+        { label: "Baptême (Voix d'artiste - 5000 FCFA)", price: 5000 },
         { label: "Anniversaire (Standard - 2000 FCFA)", price: 2000 },
         { label: "Anniversaire (Votre voix - 3500 FCFA)", price: 3500 },
+        { label: "Anniversaire (Voix d'artiste - 5000 FCFA)", price: 5000 },
         { label: "Nouveau-né / Bébé (Standard - 2000 FCFA)", price: 2000 },
-        { label: "Nouveau-né / Bébé (Votre voix - 3500 FCFA)", price: 3500 }
+        { label: "Nouveau-né / Bébé (Votre voix - 3500 FCFA)", price: 3500 },
+        { label: "Nouveau-né / Bébé (Voix d'artiste - 5000 FCFA)", price: 5000 }
       ],
       reviews: []
     },
@@ -186,7 +193,8 @@ export const PRODUCTS: Product[] = [
       },
       options: [
         { label: "Deuil (Standard - 2000 FCFA)", price: 2000 },
-        { label: "Deuil (Votre voix - 3500 FCFA)", price: 3500 }
+        { label: "Deuil (Votre voix - 3500 FCFA)", price: 3500 },
+        { label: "Deuil (Voix d'artiste - 5000 FCFA)", price: 5000 }
       ],
       reviews: []
     },
@@ -205,12 +213,16 @@ export const PRODUCTS: Product[] = [
       options: [
         { label: "Pardon Parents (Standard - 2000 FCFA)", price: 2000 },
         { label: "Pardon Parents (Votre voix - 3500 FCFA)", price: 3500 },
+        { label: "Pardon Parents (Voix d'artiste - 5000 FCFA)", price: 5000 },
         { label: "Pardon Ex (Standard - 2000 FCFA)", price: 2000 },
         { label: "Pardon Ex (Votre voix - 3500 FCFA)", price: 3500 },
+        { label: "Pardon Ex (Voix d'artiste - 5000 FCFA)", price: 5000 },
         { label: "Pardon Gar (Standard - 2000 FCFA)", price: 2000 },
         { label: "Pardon Gar (Votre voix - 3500 FCFA)", price: 3500 },
+        { label: "Pardon Gar (Voix d'artiste - 5000 FCFA)", price: 5000 },
         { label: "Pardon Go (Standard - 2000 FCFA)", price: 2000 },
-        { label: "Pardon Go (Votre voix - 3500 FCFA)", price: 3500 }
+        { label: "Pardon Go (Votre voix - 3500 FCFA)", price: 3500 },
+        { label: "Pardon Go (Voix d'artiste - 5000 FCFA)", price: 5000 }
       ],
       reviews: []
     },
@@ -229,8 +241,10 @@ export const PRODUCTS: Product[] = [
       options: [
         { label: "Draguer une go (Standard - 2000 FCFA)", price: 2000 },
         { label: "Draguer une go (Votre voix - 3500 FCFA)", price: 3500 },
+        { label: "Draguer une go (Voix d'artiste - 5000 FCFA)", price: 5000 },
         { label: "Draguer un gar (Standard - 2000 FCFA)", price: 2000 },
-        { label: "Draguer un gar (Votre voix - 3500 FCFA)", price: 3500 }
+        { label: "Draguer un gar (Votre voix - 3500 FCFA)", price: 3500 },
+        { label: "Draguer un gar (Voix d'artiste - 5000 FCFA)", price: 5000 }
       ],
       reviews: []
     },

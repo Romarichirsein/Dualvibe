@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
-import { ShoppingCart, FileDigit, Package } from 'lucide-react';
+import { ShoppingCart, FileDigit, Package, ArrowRight } from 'lucide-react';
 import { Product, ProductOption } from '../data/products';
 import { Country } from '../data/countries';
 import { TRANSLATIONS } from '../data/translations';
@@ -46,7 +46,7 @@ export const ProductCard = ({
         <Link to={`/product/${product.id}`} className="block">
           <h3 className="text-xl font-bold mb-2 group-hover:text-pink-500 transition-colors line-clamp-1">{product.title[lang]}</h3>
         </Link>
-        <div className="flex justify-between items-center">
+        <div className="flex justify-between items-center mb-4">
           <div className="flex flex-col">
             {product.options && product.options.length > 0 && (
               <span className="text-[10px] font-bold uppercase tracking-wider opacity-60">{t.startingFrom}</span>
@@ -64,6 +64,16 @@ export const ProductCard = ({
             <ShoppingCart className="w-6 h-6" />
           </motion.button>
         </div>
+
+        {product.category.fr === "Création Musicale" && (
+          <Link 
+            to="/music-catalog"
+            className="flex items-center justify-center gap-2 w-full py-3 bg-white/5 hover:bg-[#00D1FF]/10 text-[#00D1FF] rounded-xl text-xs font-bold uppercase tracking-widest border border-[#00D1FF]/20 hover:border-[#00D1FF]/40 transition-all group/cta"
+          >
+            <span className="group-hover/cta:mr-1 transition-all">{(t as any).viewMusicCatalog}</span>
+            <ArrowRight className="w-4 h-4 group-hover/cta:translate-x-1 transition-transform" />
+          </Link>
+        )}
       </div>
     </motion.div>
   );
