@@ -129,14 +129,14 @@ export const PRODUCTS: Product[] = [
     {
       id: 100,
       title: { fr: "Mariage & Mariage Coutumier", en: "Wedding & Customary Wedding" },
-      price: 0,
+      price: 2000,
       category: { fr: "Création Musicale", en: "Music Creation" },
       image: "https://images.unsplash.com/photo-1511795409834-ef04bbd61622?q=80&w=2069&auto=format&fit=crop",
       type: 'digital',
       date: '2024-05-01',
       description: {
-        fr: "Création musicale unique pour vos dots, fiançailles et demandes en mariage.",
-        en: "Unique music creation for dowries, engagements, and proposals."
+        fr: "Création musicale sur-mesure pour vos mariages et dots. Suscitez des larmes de joie avec des mélodies pop émotionnelles, afropop ou orchestrales.",
+        en: "Custom music creation for your weddings and dowries. Spark tears of joy with emotional pop, afropop, or orchestral melodies."
       },
       options: [
         { label: "Dot (Standard - 2000 FCFA)", price: 2000 },
@@ -157,14 +157,14 @@ export const PRODUCTS: Product[] = [
     {
       id: 101,
       title: { fr: "Célébrations & Naissance", en: "Celebrations & Birth" },
-      price: 0,
+      price: 2000,
       category: { fr: "Création Musicale", en: "Music Creation" },
       image: "https://images.unsplash.com/photo-1530103043960-ef38714abb15?q=80&w=2070&auto=format&fit=crop",
       type: 'digital',
       date: '2024-05-01',
       description: {
-        fr: "Célébrez les baptêmes, anniversaires et l'arrivée de bébé en musique.",
-        en: "Celebrate baptisms, birthdays, and baby arrivals in music."
+        fr: "Création musicale sur-mesure pour baptêmes et anniversaires. Suscitez des larmes de joie avec des mélodies pop émotionnelles, afropop ou orchestrales.",
+        en: "Custom music creation for baptisms and birthdays. Spark tears of joy with emotional pop, afropop, or orchestral melodies."
       },
       options: [
         { label: "Baptême (Standard - 2000 FCFA)", price: 2000 },
@@ -182,14 +182,14 @@ export const PRODUCTS: Product[] = [
     {
       id: 102,
       title: { fr: "Soutien & Recueillement (Deuil)", en: "Support & Remembrance (Mourning)" },
-      price: 0,
+      price: 2000,
       category: { fr: "Création Musicale", en: "Music Creation" },
       image: "https://images.unsplash.com/photo-1495446815901-a7297e633e8d?q=80&w=2070&auto=format&fit=crop",
       type: 'digital',
       date: '2024-05-01',
       description: {
-        fr: "Un hommage musical respectueux pour honorer le souvenir de vos proches.",
-        en: "A respectful musical tribute to honor the memory of your loved ones."
+        fr: "Un hommage musical respectueux pour honorer le souvenir de vos proches avec des mélodies douces et orchestrales.",
+        en: "A respectful musical tribute to honor the memory of your loved ones with soft and orchestral melodies."
       },
       options: [
         { label: "Deuil (Standard - 2000 FCFA)", price: 2000 },
@@ -201,14 +201,14 @@ export const PRODUCTS: Product[] = [
     {
       id: 103,
       title: { fr: "Pardon & Réconciliation", en: "Forgiveness & Reconciliation" },
-      price: 0,
+      price: 2000,
       category: { fr: "Création Musicale", en: "Music Creation" },
       image: "https://images.unsplash.com/photo-1516280440614-37939bbacd81?q=80&w=2070&auto=format&fit=crop",
       type: 'digital',
       date: '2024-05-01',
       description: {
-        fr: "Exprimez vos regrets et demandez pardon avec la puissance des mots et du son.",
-        en: "Express your regrets and ask for forgiveness with the power of words and sound."
+        fr: "Demandez pardon avec émotion grâce à des compositions sur-mesure, pop ou afropop, qui touchent l'âme.",
+        en: "Ask for forgiveness with emotion through custom compositions, pop or afropop, that touch the soul."
       },
       options: [
         { label: "Pardon Parents (Standard - 2000 FCFA)", price: 2000 },
@@ -229,14 +229,14 @@ export const PRODUCTS: Product[] = [
     {
       id: 104,
       title: { fr: "Demandes de couples (Séduction)", en: "Couple Requests (Seduction)" },
-      price: 0,
+      price: 2000,
       category: { fr: "Création Musicale", en: "Music Creation" },
       image: "https://images.unsplash.com/photo-1518131394553-c3fd0b956d9d?q=80&w=2070&auto=format&fit=crop",
       type: 'digital',
       date: '2024-05-01',
       description: {
-        fr: "Des mélodies envoûtantes pour draguer et séduire l'élu(e) de votre cœur.",
-        en: "Enchanting melodies to flirt and seduce the chosen one of your heart."
+        fr: "Séduisez avec des mélodies pop ou afropop sur-mesure. Des musiques qui créent des liens inoubliables.",
+        en: "Seduce with custom pop or afropop melodies. Music that creates unforgettable bonds."
       },
       options: [
         { label: "Draguer une go (Standard - 2000 FCFA)", price: 2000 },
