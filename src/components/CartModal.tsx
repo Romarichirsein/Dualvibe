@@ -81,7 +81,7 @@ export const CartModal = ({
 
   const handleCheckout = () => {
     const hasCvProduct = cart.some(item => item.id === 13 || item.id === 14);
-    const hasMusicProduct = cart.some(item => [100, 101].includes(Number(item.id)));
+    const hasMusicProduct = cart.some(item => [100, 101, 102, 103, 104].includes(Number(item.id)));
     
     if (hasCvProduct && !showCvForm) {
       setShowCvForm(true);
@@ -116,22 +116,11 @@ export const CartModal = ({
     }
 
     if (hasMusicProduct && showMusicForm) {
-      message += `\n\n--- INSTRUCTIONS MUSICALES ---\nCatégorie: ${musicData.category}\nType: ${musicData.event}\nDestinataire: ${musicData.target}\nÉmotions: ${musicData.emotion}\n\nHistoire:\n${musicData.story}\n`;
+      message += `\n\n--- INSTRUCTIONS MUSICALES ---\nDestinataire: ${musicData.target}\nÉmotions: ${musicData.emotion}\n\nHistoire:\n${musicData.story}\n`;
     }
     
     const encodedMessage = encodeURIComponent(message);
     window.open(`https://wa.me/12896301143?text=${encodedMessage}`, '_blank');
-  };
-
-  const musicPacksConfig = {
-    'fr': {
-      'Pack Cérémonies & Événements Sociaux': ["Mariage & Mariage Coutumier", "Célébrations", "Soutien & Recueillement"],
-      'Pack Relations & Communication Personnelle': ["Pardon & Réconciliation", "Demandes de couples"]
-    },
-    'en': {
-      'Ceremonies & Social Events Pack': ["Wedding & Customary Wedding", "Celebrations", "Support & Remembrance"],
-      'Relations & Personal Communication Pack': ["Forgiveness & Reconciliation", "Couple Requests"]
-    }
   };
 
   return (
@@ -160,31 +149,7 @@ export const CartModal = ({
                 <div className="space-y-4">
                   <p className="text-sm opacity-80 mb-4">{(t as any).musicFormDesc}</p>
                   <div className="space-y-4">
-                    <select 
-                      value={musicData.category} 
-                      onChange={e => setMusicData({...musicData, category: e.target.value, event: ''})}
-                      className="w-full glass px-4 py-3 rounded-xl outline-none appearance-none"
-                    >
-                      <option value="" disabled>{(t as any).musicCategory}</option>
-                      {Object.keys(musicPacksConfig[lang]).map(cat => (
-                        <option key={cat} value={cat}>{cat}</option>
-                      ))}
-                    </select>
-
-                    {musicData.category && (
-                      <select 
-                        value={musicData.event} 
-                        onChange={e => setMusicData({...musicData, event: e.target.value})}
-                        className="w-full glass px-4 py-3 rounded-xl outline-none appearance-none"
-                      >
-                        <option value="" disabled>{(t as any).musicSubCategory}</option>
-                        {musicPacksConfig[lang][musicData.category as keyof typeof musicPacksConfig['fr']].map(sub => (
-                          <option key={sub} value={sub}>{sub}</option>
-                        ))}
-                      </select>
-                    )}
-
-                    <input type="text" placeholder={(t as any).musicEvent} value={musicData.target} onChange={e => setMusicData({...musicData, target: e.target.value})} className="w-full glass px-4 py-3 rounded-xl outline-none" />
+                    <input type="text" placeholder={(t as any).musicTarget} value={musicData.target} onChange={e => setMusicData({...musicData, target: e.target.value})} className="w-full glass px-4 py-3 rounded-xl outline-none" />
                     <input type="text" placeholder={(t as any).musicEmotion} value={musicData.emotion} onChange={e => setMusicData({...musicData, emotion: e.target.value})} className="w-full glass px-4 py-3 rounded-xl outline-none" />
                     <textarea placeholder={(t as any).musicStory} value={musicData.story} onChange={e => setMusicData({...musicData, story: e.target.value})} className="w-full glass px-4 py-3 rounded-xl outline-none h-32 resize-none" />
                   </div>

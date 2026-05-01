@@ -125,46 +125,114 @@ export const PRODUCTS: Product[] = [
     reviews: []
   },
 
-    // 3. Nouvelle offre Musique - Packs Réorganisés
-    // Pack Cérémonies & Événements Sociaux (id: 100)
+    // 3. Nouvelle offre Musique - Catalogue Réorganisé
     {
       id: 100,
-      title: { fr: "Pack Cérémonies & Événements Sociaux", en: "Ceremonies & Social Events Pack" },
+      title: { fr: "Mariage & Mariage Coutumier", en: "Wedding & Customary Wedding" },
       price: 0,
       category: { fr: "Création Musicale", en: "Music Creation" },
-      image: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=2070&auto=format&fit=crop",
+      image: "https://images.unsplash.com/photo-1511795409834-ef04bbd61622?q=80&w=2069&auto=format&fit=crop",
       type: 'digital',
       date: '2024-05-01',
       description: {
-        fr: "• Mariage & Mariage Coutumier : Musiques pour le Dot, le Toquer porte, les Fiançailles, la Demande en Mariage.\n• Célébrations : Musiques pour les Baptêmes, les Anniversaires, l'arrivée d'un nouveau-né (Bébé).\n• Soutien & Recueillement : musiques pour le Deuil.",
-        en: "• Wedding & Customary Wedding: Music for Dowry, Door Knocking, Engagements, Proposals.\n• Celebrations: Music for Baptisms, Birthdays, New Baby Arrival.\n• Support & Remembrance: Music for Mourning."
+        fr: "Création musicale unique pour vos dots, fiançailles et demandes en mariage.",
+        en: "Unique music creation for dowries, engagements, and proposals."
       },
-      reviews: [],
       options: [
-        { label: "Standard (2000 FCFA)", price: 2000 },
-        { label: "Professionnel (3500 FCFA) - votre propre voix", price: 3500 },
-        { label: "Premium (5000 FCFA) - voix d'artiste", price: 5000 }
-      ]
+        { label: "Dot (Standard - 2000 FCFA)", price: 2000 },
+        { label: "Dot (Votre voix - 3500 FCFA)", price: 3500 },
+        { label: "Toquer porte (Standard - 2000 FCFA)", price: 2000 },
+        { label: "Toquer porte (Votre voix - 3500 FCFA)", price: 3500 },
+        { label: "Fiançailles (Standard - 2000 FCFA)", price: 2000 },
+        { label: "Fiançailles (Votre voix - 3500 FCFA)", price: 3500 },
+        { label: "Demande en Mariage (Standard - 2000 FCFA)", price: 2000 },
+        { label: "Demande en Mariage (Votre voix - 3500 FCFA)", price: 3500 }
+      ],
+      reviews: []
     },
-    // Pack Relations & Communication Personnelle (id: 101)
     {
       id: 101,
-      title: { fr: "Pack Relations & Communication Personnelle", en: "Relations & Personal Communication Pack" },
+      title: { fr: "Célébrations & Naissance", en: "Celebrations & Birth" },
+      price: 0,
+      category: { fr: "Création Musicale", en: "Music Creation" },
+      image: "https://images.unsplash.com/photo-1530103043960-ef38714abb15?q=80&w=2070&auto=format&fit=crop",
+      type: 'digital',
+      date: '2024-05-01',
+      description: {
+        fr: "Célébrez les baptêmes, anniversaires et l'arrivée de bébé en musique.",
+        en: "Celebrate baptisms, birthdays, and baby arrivals in music."
+      },
+      options: [
+        { label: "Baptême (Standard - 2000 FCFA)", price: 2000 },
+        { label: "Baptême (Votre voix - 3500 FCFA)", price: 3500 },
+        { label: "Anniversaire (Standard - 2000 FCFA)", price: 2000 },
+        { label: "Anniversaire (Votre voix - 3500 FCFA)", price: 3500 },
+        { label: "Nouveau-né / Bébé (Standard - 2000 FCFA)", price: 2000 },
+        { label: "Nouveau-né / Bébé (Votre voix - 3500 FCFA)", price: 3500 }
+      ],
+      reviews: []
+    },
+    {
+      id: 102,
+      title: { fr: "Soutien & Recueillement (Deuil)", en: "Support & Remembrance (Mourning)" },
+      price: 0,
+      category: { fr: "Création Musicale", en: "Music Creation" },
+      image: "https://images.unsplash.com/photo-1495446815901-a7297e633e8d?q=80&w=2070&auto=format&fit=crop",
+      type: 'digital',
+      date: '2024-05-01',
+      description: {
+        fr: "Un hommage musical respectueux pour honorer le souvenir de vos proches.",
+        en: "A respectful musical tribute to honor the memory of your loved ones."
+      },
+      options: [
+        { label: "Deuil (Standard - 2000 FCFA)", price: 2000 },
+        { label: "Deuil (Votre voix - 3500 FCFA)", price: 3500 }
+      ],
+      reviews: []
+    },
+    {
+      id: 103,
+      title: { fr: "Pardon & Réconciliation", en: "Forgiveness & Reconciliation" },
       price: 0,
       category: { fr: "Création Musicale", en: "Music Creation" },
       image: "https://images.unsplash.com/photo-1516280440614-37939bbacd81?q=80&w=2070&auto=format&fit=crop",
       type: 'digital',
       date: '2024-05-01',
       description: {
-        fr: "• Pardon & Réconciliation : demande de pardon aux parents, à son ex, à son gar ou sa go.\n• Demandes de couples : musique pour draguer une go ou un gar.",
-        en: "• Forgiveness & Reconciliation: asking forgiveness from parents, ex, boyfriend or girlfriend.\n• Couple Requests: music to flirt with a girl or a boy."
+        fr: "Exprimez vos regrets et demandez pardon avec la puissance des mots et du son.",
+        en: "Express your regrets and ask for forgiveness with the power of words and sound."
       },
-      reviews: [],
       options: [
-        { label: "Standard (2000 FCFA)", price: 2000 },
-        { label: "Professionnel (3500 FCFA) - votre propre voix", price: 3500 },
-        { label: "Premium (5000 FCFA) - voix d'artiste", price: 5000 }
-      ]
+        { label: "Pardon Parents (Standard - 2000 FCFA)", price: 2000 },
+        { label: "Pardon Parents (Votre voix - 3500 FCFA)", price: 3500 },
+        { label: "Pardon Ex (Standard - 2000 FCFA)", price: 2000 },
+        { label: "Pardon Ex (Votre voix - 3500 FCFA)", price: 3500 },
+        { label: "Pardon Gar (Standard - 2000 FCFA)", price: 2000 },
+        { label: "Pardon Gar (Votre voix - 3500 FCFA)", price: 3500 },
+        { label: "Pardon Go (Standard - 2000 FCFA)", price: 2000 },
+        { label: "Pardon Go (Votre voix - 3500 FCFA)", price: 3500 }
+      ],
+      reviews: []
+    },
+    {
+      id: 104,
+      title: { fr: "Demandes de couples (Séduction)", en: "Couple Requests (Seduction)" },
+      price: 0,
+      category: { fr: "Création Musicale", en: "Music Creation" },
+      image: "https://images.unsplash.com/photo-1518131394553-c3fd0b956d9d?q=80&w=2070&auto=format&fit=crop",
+      type: 'digital',
+      date: '2024-05-01',
+      description: {
+        fr: "Des mélodies envoûtantes pour draguer et séduire l'élu(e) de votre cœur.",
+        en: "Enchanting melodies to flirt and seduce the chosen one of your heart."
+      },
+      options: [
+        { label: "Draguer une go (Standard - 2000 FCFA)", price: 2000 },
+        { label: "Draguer une go (Votre voix - 3500 FCFA)", price: 3500 },
+        { label: "Draguer un gar (Standard - 2000 FCFA)", price: 2000 },
+        { label: "Draguer un gar (Votre voix - 3500 FCFA)", price: 3500 }
+      ],
+      reviews: []
     },
 
   // 4. Design Graphique & Identité Visuelle
