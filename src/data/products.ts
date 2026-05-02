@@ -231,7 +231,7 @@ export const PRODUCTS: Product[] = [
       title: { fr: "Demandes de couples (Séduction)", en: "Couple Requests (Seduction)" },
       price: 2000,
       category: { fr: "Création Musicale", en: "Music Creation" },
-      image: "https://images.unsplash.com/photo-1518131394553-c3fd0b956d9d?q=80&w=2070&auto=format&fit=crop",
+      image: "/products/music/seduction-pack.png",
       type: 'digital',
       date: '2024-05-01',
       description: {
