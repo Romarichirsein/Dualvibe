@@ -1147,46 +1147,5 @@ export const PRODUCTS: Product[] = [
       { label: "Abonnement 1 mois", price: 3500 }
     ],
     reviews: []
-  },
-  // 14. Création Musicale (Audio & Beats)
-  { 
-    id: 49, 
-    title: { fr: "Pack Célébration & Amour", en: "Celebration & Love Pack" }, 
-    price: 2000, 
-    category: { fr: "Création Musicale", en: "Music Creation" }, 
-    image: "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?q=80&w=800&auto=format&fit=crop", 
-    audioPreview: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
-    type: 'digital', 
-    date: '2024-05-02',
-    description: { 
-      fr: "Création musicale sur-mesure pour vos mariages, baptêmes, demandes en mariage ou anniversaires. Suscitez des larmes de joie avec des mélodies pop émotionnelles, afropop ou orchestrales.", 
-      en: "Custom music creation for weddings, baptisms, proposals or birthdays. Evoke tears of joy with emotional pop, afropop or orchestral melodies." 
-    },
-    options: [
-      { label: "Standard (Usage Personnel, 1 min)", price: 2000 },
-      { label: "Professionnel (Standard, jusqu'à 3 min)", price: 3500 },
-      { label: "Premium (Droits Commerciaux, Illimité)", price: 5000 }
-    ],
-    reviews: []
-  },
-  { 
-    id: 50, 
-    title: { fr: "Pack Déclaration & Pardon", en: "Declaration & Forgiveness Pack" }, 
-    price: 2000, 
-    category: { fr: "Création Musicale", en: "Music Creation" }, 
-    image: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=800&auto=format&fit=crop", 
-    audioPreview: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3",
-    type: 'digital', 
-    date: '2024-05-03',
-    description: { 
-      fr: "Une lettre musicale pour demander pardon (parents, amis) ou faire une déclaration d'amour intense. Des sons profonds (piano nostalgique, R&B spirituel, acoustique intimiste).", 
-      en: "A musical letter to apologize (parents, friends) or make an intense declaration of love. Deep sounds (nostalgic piano, spiritual R&B, intimate acoustic)." 
-    },
-    options: [
-      { label: "Standard (Usage Personnel, 1 min)", price: 2000 },
-      { label: "Professionnel (Standard, jusqu'à 3 min)", price: 3500 },
-      { label: "Premium (Droits Commerciaux, Illimité)", price: 5000 }
-    ],
-    reviews: []
   }
 ];
