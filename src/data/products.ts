@@ -1188,45 +1188,5 @@ export const PRODUCTS: Product[] = [
       { label: "Premium (Droits Commerciaux, Illimité)", price: 5000 }
     ],
     reviews: []
-  },
-  { 
-    id: 51, 
-    title: { fr: "Pack Créateur & Beats", en: "Creator & Beats Pack" }, 
-    price: 2000, 
-    category: { fr: "Création Musicale", en: "Music Creation" }, 
-    image: "https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?q=80&w=800&auto=format&fit=crop", 
-    audioPreview: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3",
-    type: 'digital', 
-    date: '2024-05-04',
-    description: { 
-      fr: "Des beats explosifs pour le Rap/Chant (Afrobeats, Trap, Drill) ou de la musique de fond parfaite pour vos vidéos YouTube, podcasts et publicités.", 
-      en: "Explosive beats for Rap/Singing (Afrobeats, Trap, Drill) or perfect background music for your YouTube videos, podcasts, and ads." 
-    },
-    options: [
-      { label: "Standard (Usage Personnel, 1 min)", price: 2000 },
-      { label: "Professionnel (Standard, jusqu'à 3 min)", price: 3500 },
-      { label: "Premium (Droits Commerciaux, Illimité)", price: 5000 }
-    ],
-    reviews: []
-  },
-  { 
-    id: 52, 
-    title: { fr: "Pack Cinématique & Zen", en: "Cinematic & Zen Pack" }, 
-    price: 2000, 
-    category: { fr: "Création Musicale", en: "Music Creation" }, 
-    image: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?q=80&w=800&auto=format&fit=crop", 
-    audioPreview: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3",
-    type: 'digital', 
-    date: '2024-05-05',
-    description: { 
-      fr: "Plongez dans des univers sonores absolus. Idéal pour la méditation (fréquences de guérison), le yoga, ou pour des trailers et courts-métrages épiques.", 
-      en: "Immerse yourself in absolute sound universes. Ideal for meditation (healing frequencies), yoga, or epic trailers and short films." 
-    },
-    options: [
-      { label: "Standard (Usage Personnel, 1 min)", price: 2000 },
-      { label: "Professionnel (Standard, jusqu'à 3 min)", price: 3500 },
-      { label: "Premium (Droits Commerciaux, Illimité)", price: 5000 }
-    ],
-    reviews: []
   }
 ];
