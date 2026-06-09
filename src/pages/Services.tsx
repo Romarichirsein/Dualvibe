@@ -150,6 +150,42 @@ export const Services = ({ lang }: { lang: Language }) => {
         </div>
       </motion.div>
 
+      {/* Paty Beauté Promotional Section */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+        className="glass p-8 md:p-12 rounded-[3rem] mb-20 border-[#FF006E]/30 relative overflow-hidden flex flex-col md:flex-row items-center gap-10"
+      >
+        <div className="absolute inset-0 bg-gradient-to-br from-pink-500/10 via-purple-500/5 to-transparent pointer-events-none" />
+        
+        <div className="w-40 h-40 md:w-64 md:h-64 shrink-0 rounded-full bg-gradient-to-tr from-[#FF006E] to-[#00D1FF] p-1 shadow-2xl shadow-[#FF006E]/20 relative z-10">
+          <img 
+            src="/products/paty-beaute/logo.png" 
+            alt="Paty Beauté Logo" 
+            className="w-full h-full object-cover rounded-full bg-white"
+          />
+        </div>
+
+        <div className="flex-1 text-center md:text-left relative z-10">
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-pink-500/20 text-pink-500 rounded-full font-bold text-sm mb-4">
+            <Sparkles className="w-4 h-4" /> {lang === 'fr' ? 'Nouveau Partenaire Coiffure' : 'New Haircare Partner'}
+          </div>
+          <h2 className="text-3xl md:text-5xl font-display font-black mb-4">
+            Paty <span className="gradient-text">Beauté</span>
+          </h2>
+          <p className="text-lg opacity-80 mb-6 leading-relaxed">
+            {lang === 'fr' 
+              ? "Découvrez l'excellence des tresses africaines et diverses, des prestations d'onglerie soignées et d'extensions de cils à des prix très attractifs. Prestations de qualité sur rendez-vous à Bonaloka, Douala." 
+              : "Discover the excellence of African and varied braids, careful nail services and lash extensions at highly attractive prices. Quality services by appointment in Bonaloka, Douala."}
+          </p>
+          <Link to="/paty-beaute" className="inline-flex px-8 py-4 bg-gradient-to-r from-[#FF006E] to-[#00D1FF] text-white rounded-2xl font-bold text-lg shadow-xl shadow-[#FF006E]/30 hover:scale-105 transition-transform items-center gap-2">
+            {lang === 'fr' ? "Visiter le catalogue Paty Beauté" : "Visit Paty Beauté Catalog"}
+            <ArrowRight className="w-5 h-5" />
+          </Link>
+        </div>
+      </motion.div>
+
 
       <motion.div
         initial={{ opacity: 0 }}
